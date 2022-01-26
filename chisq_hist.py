@@ -2,7 +2,6 @@
 import matplotlib.pyplot as plt
 from scipy import stats
 import numpy as np
-
 from lcg import prng
 
 sample_size = 12000
@@ -25,7 +24,6 @@ def chi_squared_test():
     return sum(map(lambda x: (x-expected_frequency)**2, frequencies))/expected_frequency
 
 results = [chi_squared_test() for _ in range(5000)] # the results of 5000 chi_squared tests
-
 
 # plot a histogram of the results of the 5000 tests
 plt.hist(results, bins = 50, density = True)
