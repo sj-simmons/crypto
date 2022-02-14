@@ -969,9 +969,9 @@ decrypting exponent, <img alt="$d,$" src="svgs/7194e1d4b173c3ff8fec4422c3f90097.
     ```python
     504779851614048359547310249856
     ```
-    What is Arthur's plaintext to Marvin? :medal_sports: **Marina**, **Laura**
+    What is Arthur's plaintext to Marvin? :medal_sports: **Marina**, **Laura**, **Alvaro**
 
-    Can you also decrypt the following intercepted ciphertext? :medal_sports: **Laura**, **Marina**
+    Can you also decrypt the following intercepted ciphertext? :medal_sports: **Laura**, **Marina**, **Alvaro**
     ```python
     538940096304536933932071588652
     ```
@@ -1103,7 +1103,7 @@ estimate of the probability, <img alt="$P,$" src="svgs/d514f3df2bd7d47a9400ca5ce
 
 17. If Robertson picked his <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> at random, how unlucky was he, given that he used 512-bit primes?  Asked differently, if one picks two 512-bit primes uniformly randomly, how likely is it that the resulting <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is factorable using less than a trillion steps in our implementation of Fermat factoring?  What if one uses 100-bit primes? 200-bit primes?
 
-In the appendix of the draft standard [DSS](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5-draft.pdf) (from [NIST](https://csrc.nist.gov/publications/fips)), the requirement is <img alt="$|p-q|&gt;2^{nlen/2-100}.$" src="svgs/898d9ade224f35c6ca1644093ecdc5e8.svg" valign=-4.109588999999997px width="150.8793165pt" height="18.7050765pt"/>  Here <img alt="$nlen$" src="svgs/376ce454e223b514ba4111a8e79e6aa0.svg" valign=0.0px width="32.61623474999999pt" height="11.4155283pt"/> is the bit-length of <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, so <img alt="$nlen/2$" src="svgs/8d8c02f5af80bda3bea2bc832ff00a14.svg" valign=-4.109589000000009px width="49.05465509999999pt" height="16.438356pt"/> is
+On page 40 of the appendix of the draft standard [DSS](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5-draft.pdf) (from [NIST](https://csrc.nist.gov/publications/fips)), the requirement is <img alt="$|p-q|&gt;2^{nlen/2-100}.$" src="svgs/898d9ade224f35c6ca1644093ecdc5e8.svg" valign=-4.109588999999997px width="150.8793165pt" height="18.7050765pt"/>  Here <img alt="$nlen$" src="svgs/376ce454e223b514ba4111a8e79e6aa0.svg" valign=0.0px width="32.61623474999999pt" height="11.4155283pt"/> is the bit-length of <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, so <img alt="$nlen/2$" src="svgs/8d8c02f5af80bda3bea2bc832ff00a14.svg" valign=-4.109589000000009px width="49.05465509999999pt" height="16.438356pt"/> is
 our <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>, the bit-length of each of <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/> So, for 512-bit primes, they require that
 <img alt="$|p-q|&gt;2^{412}\approx 10^{124}.$" src="svgs/dcd90f790069cd4082c06b9bad48b1a9.svg" valign=-4.109589000000009px width="159.44049495pt" height="17.4904653pt"/> Comparing with our very rough estimates above, NIST clearly anticipates adversaries armed with state-of-the-art machinery and advanced computational skill.
 
@@ -1405,6 +1405,212 @@ are encrypted using the public-key &mdash;
 RSA with OAEP is non-deterministic; multiple ciphertexts corresponding to the same message
 will, with extremely high-probability, be mutually distinct.
 
+#### Encoding human-readable messages
+
+In our plain RSA scheme, our
+message has so far been some element of <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/>, which we naturally represent
+with a positive integer less than <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> What's the standard way to implement messages
+containing letters and other characters?
+
+In RSA, the modulus <img alt="$n=pq$" src="svgs/dd91a3c974e35acb9bfc9b9833a127b8.svg" valign=-3.1963502999999895px width="47.98317974999999pt" height="10.2739725pt"/> is large &mdash; 1024-bit, say.  Suppose that we
+use a small *alphabet* to construct human-readable messages. For English speakers one
+might minimally choose the 26 lowercase letters *a* to *z*. If we allow arbitrary messages,
+using those letters, of length, say, <img alt="$\ell,$" src="svgs/ac83c4d50a360c128227d15fb6d25884.svg" valign=-3.1963503000000055px width="11.41559099999999pt" height="14.611878599999999pt"/> then we already have a problem if
+<img alt="$\ell^{26}\ge n$" src="svgs/4032298ea417792e6c43b9b3ad12182f.svg" valign=-2.235141150000008px width="52.56087704999999pt" height="15.616017449999998pt"/> &mdash; if <img alt="$\ell &gt; 1024/\log_2(26)\approx 217$" src="svgs/293c7cbec4fcccf9e3d571f0322e3aa7.svg" valign=-4.109589000000009px width="177.00918509999997pt" height="16.438356pt"/> &mdash; since then we
+cannot *injectively* map the human-readable messages to <img alt="$\mathbb{Z}/n.$" src="svgs/b2db6c8686053451d402312789bf8098.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/>
+
+If we want spaces and punctuation, we could use [ASCII](https://en.wikipedia.org/wiki/ASCII)
+which is a character encoding comprising upper- and lower-case letters, single-digit decimals,
+and various punctuation, along with 32 control characters that we probably don't need. There
+are 95 printable characters.
+All together, ASCII encodes 128 characters into 7-bit integers
+(see this [chart](https://en.wikipedia.org/wiki/ASCII#/media/File:USASCII_code_chart.png)).
+
+[PKCS #1](https://en.wikipedia.org/wiki/PKCS_1) (Public-key Cryptography Standards)
+provides basic definitions and mathematical constructs underlying the RSA encryption
+scheme and makes recommendations in terms of *primitives* for implementations.
+Since PKCS recommends an 8-bit &mdash; so one byte, or, octet &mdash; encoding, it makes
+sense to use [UTF-8](https://en.wikipedia.org/wiki/UTF-8) (which includes ASCII as its
+first 128 characters).
+
+Using an 8-bit encoding, we can encode UTF-8 messages of length <img alt="$\log_2(n)/8$" src="svgs/07ccdb74af1b821937c2af6522666825.svg" valign=-4.109589000000009px width="67.69809914999998pt" height="16.438356pt"/>
+(<img alt="$\approx 128$" src="svgs/1c3a2564437192713d94f081a20dee3d.svg" valign=0.0px width="42.00916004999999pt" height="10.5936072pt"/> if <img alt="$n\approx 2^{1024}).$" src="svgs/a5275f955b85f5b684e0a440b1baa1fd.svg" valign=-4.109589000000009px width="77.99474264999999pt" height="17.4904653pt"/> Longer messages would have to be broken up into blocks, each of which would be encrypted in turn.
+
+PKCS #1 defines a primitive called
+[OS2IP](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=9)
+(Octet String to Integer
+Primitive) which takes a sequence of bytes and returns a non-negative integer.
+Let us implement OS2IP in Python.
+
+First, we convert a string holding our message to a Python
+[bytes](https://docs.python.org/3/library/stdtypes.html#bytes) object.
+```pycon
+>>> message = b'"Information: the negative reciprocal value of probability." -- Shannon, 1948'
+>>> message
+b'"Information: the negative reciprocal value of probability." -- Shannon, 1948'
+>>> type(message) # <class 'bytes'>
+```
+
+Note: if you want to include unicode characters beyond ASCII, then you may need to specify
+UTF-8 when converting to bytes:.
+```pycon
+>>> message = '« Secret de deux, secret de Dieu; secret de trois, secret de tous. » -- proverbe français'.encode('utf8')
+>>> message
+b'\xc2\xab Secret de deux, secret de Dieu; secret de trois, secret de tous. \xc2\xbb -- proverbe fran\xc3\xa7ais'
+```
+A Python [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) object behaves somewhat like a string:
+```pycon
+>>> message[0]
+194
+```
+UTF-8 is a *variable-length* encoding (see, for example, [here](https://sethmlarson.dev/blog/utf-8));
+each character is encoded using one to four octets (bytes). More frequently occurring characters
+generally use less bytes.  The [left guillemet](https://unicode-table.com/en/00AB/)
+uses two bytes: **C2 AB** in hex, which is **194 171** in decimal.
+
+Let us now implement
+[OS2IP](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=9).
+
+```python
+def OS2IP(X):
+    """Return the integer primitive x for the octet-string X."""
+    # the sum below is the same as: int.from_bytes(X, byteorder = 'big', signed = False)
+    return sum([x * 256**i for i, x in enumerate(X[::-1])])
+```
+
+The standard uses the notation <img alt="$xLen$" src="svgs/ccd980f9aeab6b5d4b9bee60ff66c017.svg" valign=0.0px width="38.103245399999984pt" height="11.232861749999998pt"/> for the number of octets in the input octet string.
+If <img alt="$x_{xLen-1}x_{xLen-2}\ldots x_{1}x_{0},$" src="svgs/4e948ff57f32be23156b9828b90923ca.svg" valign=-3.8356081499999894px width="178.52049599999998pt" height="10.91323035pt"/> where each <img alt="$x_i\in\{0, 1, 2, \ldots,255\},$" src="svgs/cece3527405b121c79ccf48dc01f5c27.svg" valign=-4.109589000000009px width="156.4200033pt" height="16.438356pt"/> represents
+our octet string, then **OS2IP** maps this to the integer <img alt="$\sum_{i=0}^{xLen-1}x_i 256^i$" src="svgs/c2cc9102cd83bcb426ae0ef47b2cdaf9.svg" valign=-4.931582699999996px width="112.75166759999999pt" height="21.0595869pt"/>
+(the left-most octet determines the most significant portion of the integer).
+
+For fixed <img alt="$xLen$" src="svgs/ccd980f9aeab6b5d4b9bee60ff66c017.svg" valign=0.0px width="38.103245399999984pt" height="11.232861749999998pt"/>, the map defines a bijection from the set of octet strings of length <img alt="$xLen$" src="svgs/ccd980f9aeab6b5d4b9bee60ff66c017.svg" valign=0.0px width="38.103245399999984pt" height="11.232861749999998pt"/>
+to the set <img alt="$\{j\in\mathbb{Z}~|~ 0 \le j&lt; 256^{xLen}\}.$" src="svgs/ba02457a75e8aad93cda348c5c1c5b3d.svg" valign=-4.109589px width="191.3702736pt" height="17.9379651pt"/>
+The inverse mapping is called
+[I20SP](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=8):
+```python
+def I2OSP(x, xLen):
+    """Map an integer x to an octet-string X."""
+    assert x < 256**xLen, "integer too large"
+    return x.to_bytes(xLen, byteorder = 'big', signed = False)
+```
+
+Test driving those two functions on the message above, we have:
+```pycon
+>>> m = OS2IP(message)
+>>> m
+274873227007013220853194865361031398209358857387795228459596366470548372698409537461728865739289920635511061986596506444387159296380925336687869159143300946529393908706703078375797190040253439843230647079564428903853418867
+>>> I2OSP(m, len(message)).decode('utf8')
+« Secret de deux, secret de Dieu; secret de trois, secret de tous. » -- proverbe français
+```
+
+#### Exercise
+
+23.  The following integers were obtained by partitioning the **bytes** version of a long human-readable message into pieces and applying OS2IP to each piece in turn.  Decode the 3 integers back into a single human-readable message assuming that <img alt="$xLen = 125$" src="svgs/f8d7227d277962cfbf35e34a12bfbca7.svg" valign=0.0px width="84.67850324999999pt" height="11.232861749999998pt"/>.
+     ```python
+     8148005161556551804043142199660631494681528140650822600136084998387357112108317491287436260923406505931864938073161946364938332791368570105875948573513727327591104929790537105755837082151488779548034635309275341934058978012160570568794235012357380859739572435669585019614245512029471707669863116139888
+     4536349843976346312836460170468749286561964424351466747171040921929279400531580926025621971360458028850193810030292112586186499583889141942059093666096467348224496980293734851564288662520367071658728765218415511795671620978766949287934200652050299193168658544707334905806785657101906068685821747491616
+     12208130087930690061449158021184773120883647178368244218281293496571934819926953
+     ```
+
+#### Padding
+
+A short input to OS2IP results in small output, and we've already seen that small <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> (relative
+to <img alt="$n)$" src="svgs/d5832d8437237f9b3dbe873f044d5de9.svg" valign=-4.109589000000009px width="16.25959334999999pt" height="16.438356pt"/> can lead to weak encryption.   We want a given plaintext <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> to land essentially
+uniformly in <img alt="$\mathbb{Z}/n,$" src="svgs/4ee8f29e8fc6ff907c10277ad56123ba.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/> regardless of specifics such length of our human-readable message.
+A good approximation to uniformly distributed plaintexts can be achieved by padding our
+human-readable messages in such a way that they are of more or less maximum length. Also,
+if we pad with randomly generated bytes, then the same message leads to distinct plaintexts
+under repeated encodings.
+
+Let us implement the padding scheme recommended in
+[PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
+
+:warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding involving hashing is implemented below.
+
+The function **RSAencrypt** in the following codeblock implements the encryption protocol in the
+standard except that it outputs the ciphertext in the form of an integer (note that it uses the
+Blum Blum Shub PRBG that we constructed above).  Likewise, the function **RSAdecrypt** takes the
+ciphertext in the form of a positive integer.
+
+```python
+import math
+from blumblumshub import prbg
+
+def RSAencrypt(n, e, message):
+    """Return ciphertext given an RSA key (n, e) and a message.
+
+    Args:
+        n (int): the modulus.
+        e (int): the encrypting exponent.
+        message (bytes): the message (as a bytestring) to encrypt.
+
+    Returns:
+        int. A non-negative integer less than n.
+    """
+    # the length of n in whole octets
+    k = math.floor(math.log(n, 256))
+
+    # check that message is short enough leaving room for padding
+    mLen = len(message)
+    if mLen > k - 11:
+        raise ValueError("message too long")
+
+    # generate a random bytes-string consisting of non-zero bytes
+    # (this will have length at least 8)
+    ps = b''
+    while len(ps) < k - mLen - 3:
+        decimal = int(prbg(8), 2)
+        if decimal != 0:
+            ps += decimal.to_bytes(1, byteorder = 'big')
+
+    # pad message and convert to integer, encrypt, and return
+    m = OS2IP(b'\x00' + b'\x02' + ps + b'\x00' + message)
+    return pow(m, e, n)
+
+def RSAdecrypt(n, d, ciphertext):
+    """Return message decrypted from ciphertext using key (n, d).
+
+    Args:
+        n (int): the modulus.
+        d (int): the decrypting exponent.
+        ciphertext (int): the message to decrypt.
+
+    Returns:
+        bytes. A bytes-string representing the decrypted message.
+    """
+    # get the padded message
+    m = pow(ciphertext, d, n)
+    k = math.floor(math.log(n, 256))
+    message = I2OSP(m, k)
+
+    # strip away the padding
+    error = False
+    if message[0] != 0:
+        error = True
+    message = message[1:]
+    if message[0] != 2:
+        error = True
+    message = message[1:]
+    while message[0] != 0:
+        message = message[1:]
+    if message[0] != 0:
+        error = True
+    message = message[1:]
+
+    assert not error, "decryption error"
+
+    return message
+```
+#### Exercise
+
+24. Send Simmons a human-readable message that you have encoded using UTF-8 and encrypted
+    using padding. Simmons' RSA key is $(n, e)$ where $e=65537$ and $n$ is below.
+    ```python
+    0x7d3b3ba931c1a9d94ce8ab5f1dcc660d0bb932c402aa7f8370050b3da70c2d2a54ac712db75c75acbe3388161dd6ce133b1fcb5b3eb1b1156ac1eda2ef6d572e4c180c8a999d9b238e6cf6ed95675cc8395e7c9892236d8003f51dfb9e0e646c10467fa09594028f8be4082aad091e840104c3d4911dee623859aa100ce547cdb324a49672c74afbd07704ebf3ba87e1f80c1e764b2eb90de348da6038930e17570c965524d65ef25e5819974b0fda19efda7f5ecfafe5b4487bdc86830513a1
+    ```
+25. :zap:**Challenge**:zap: Send Simmons a long message that you had to break up into pieces, where
+    you used the minimal number of pieces.
+
 
 <a id="references2">
 
@@ -1432,162 +1638,7 @@ will, with extremely high-probability, be mutually distinct.
 
 <p align="center"> :construction: BELOW IS CURRENTLY UNDER CONSTRUCTION :construction: </p>
 
-#### Encoding human-readable messages
 
-In our plain RSA scheme, our
-message has so far been some element of <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/>, which we naturally represent
-with a positive integer less than <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> What's the standard way to implement messages
-containing letters and other characters?
-
-In RSA, the modulus <img alt="$n=pq$" src="svgs/dd91a3c974e35acb9bfc9b9833a127b8.svg" valign=-3.1963502999999895px width="47.98317974999999pt" height="10.2739725pt"/> is large &mdash; 1024-bit,say.  Suppose that we
-use a small *alphabet* to construct human-readable messages. For English speakers one
-might minimally choose the 26 lowercase letters *a* to *z*. If we allow arbitrary messages,
-using those letters, of length, say, <img alt="$\ell,$" src="svgs/ac83c4d50a360c128227d15fb6d25884.svg" valign=-3.1963503000000055px width="11.41559099999999pt" height="14.611878599999999pt"/> then we already have a problem if
-<img alt="$\ell^{26}\ge n$" src="svgs/4032298ea417792e6c43b9b3ad12182f.svg" valign=-2.235141150000008px width="52.56087704999999pt" height="15.616017449999998pt"/> &mdash; i.e., if <img alt="$\ell &gt; 1024/\log_2(26)\approx 217$" src="svgs/293c7cbec4fcccf9e3d571f0322e3aa7.svg" valign=-4.109589000000009px width="177.00918509999997pt" height="16.438356pt"/> &mdash; since then we
-cannot *injectively* map the human-readable messages to <img alt="$\mathbb{Z}/n.$" src="svgs/b2db6c8686053451d402312789bf8098.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/>
-
-If we want spaces and punctuation, we could use [ASCII](https://en.wikipedia.org/wiki/ASCII)
-which is a character encoding comprising upper- and lower-case letters, single-digit decimals,
-and various punctuation, along with 32 control characters that we probably don't need. There
-are 95 printable characters.
-All together, ASCII encodes 128 characters into 7-bit integers
-(see this [chart](https://en.wikipedia.org/wiki/ASCII#/media/File:USASCII_code_chart.png)).
-
-[PKCS #1](https://en.wikipedia.org/wiki/PKCS_1) (Public-key Cryptography Standards)
-provides basic definitions and mathematical constructs underlying the RSA encryption
-scheme and makes recommendations in terms of *primitives* for implementations.
-Since PKCS recommends an 8-bit &mdash; so one byte, or, octet &mdash; encoding, it makes
-sense to use [UTF-8](https://en.wikipedia.org/wiki/UTF-8) (which includes ASCII as its
-first 128 characters).
-
-Using an 8-bit encoding, we can encode UTF-8 messages of length <img alt="$\log_2(n)/8$" src="svgs/07ccdb74af1b821937c2af6522666825.svg" valign=-4.109589000000009px width="67.69809914999998pt" height="16.438356pt"/> (<img alt="$=128$" src="svgs/6e67b0704ac62b4845c237433cadbab7.svg" valign=0.0px width="42.00916004999999pt" height="10.5936072pt"/> if <img alt="$n=1024).$" src="svgs/9c0a185a0d9192c6cf16fe2c5cd026f8.svg" valign=-4.109589000000009px width="75.62028539999999pt" height="16.438356pt"/>
-Longer messages would have to be broken up into blocks, each of which would be encrypted
-in turn. (Note that we would have to somehow similarly "partition" integers larger that <img alt="$n,$" src="svgs/85bc1f723bdc744666d4f2241b1031f7.svg" valign=-3.1963502999999895px width="14.433101099999991pt" height="10.2739725pt"/>
-before encrypting.)
-
-PKCS #1 defines a primitive called **OS2IP** (which stands for Octet String to Integer
-Primitive); this takes a sequence of bytes and returns a non-negative integer.
-
-Let us implement OS2IP in Python. First, we convert a string holding our message to a Python
-[bytes](https://docs.python.org/3/library/stdtypes.html#bytes) object.
-```pycon
->>> message = b'"Information: the negative reciprocal value of probability." -- Shannon, 1948'
->>> type(message) # <class 'bytes'>
-```
-
-Note: if you want to include unicode characters beyond ASCII, then you may need to specify
-UTF-8 when converting to bytes:.
-```pycon
->>> message = '« Secret de deux, secret de Dieu; secret de trois, secret de tous. » -- proverbe français'.encode('utf8')
->>> message
-b'\xc2\xab Secret de deux, secret de Dieu; secret de trois, secret de tous. \xc2\xbb -- proverbe fran\xc3\xa7ais'
-```
-A Python [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) object behaves somewhat like a string:
-```pycon
->>> message[0]
-194
-```
-UTF-8 is a *variable-length* encoding (see, for example, [here](https://sethmlarson.dev/blog/utf-8));
-each character is encoded using one to four octets (bytes). More frequently occurring characters
-generally use less bytes.  The [left guillemet](https://unicode-table.com/en/00AB/)
-uses two bytes: **C2 AB** in hex, which is **194 171** in decimal.
-
-Let us now implement
-[OS2IP](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=9).
-
-```python
-def OS2IP(X):
-    """Return the integer primitive x for the octet-string X."""
-    return sum([x * 256**i for i, x in enumerate(X[::-1])])
-```
-
-If <img alt="$x_{xLen-1}x_{xLen-2}\ldots x_{1}k_{0},$" src="svgs/5e2bceb124e17fbbdc696766e0c20dcd.svg" valign=-3.835608150000004px width="177.68338334999999pt" height="15.251136449999997pt"/> where each <img alt="$x_i\in\{0, 1, 2, \ldots,255\},$" src="svgs/cece3527405b121c79ccf48dc01f5c27.svg" valign=-4.109589000000009px width="156.4200033pt" height="16.438356pt"/> represents
-our octet string, then **OS2IP** maps this to the integer <img alt="$\sum_{\ell=0}^{xLen-1}x_\ell 256^i$" src="svgs/2987849e0808ebfa8111d4f7a27d748f.svg" valign=-4.931582699999996px width="113.60313359999998pt" height="21.0595869pt"/>
-(the leftmost octet determines the most significant portion of the integer).
-For fixed <img alt="$xLen$" src="svgs/ccd980f9aeab6b5d4b9bee60ff66c017.svg" valign=0.0px width="38.103245399999984pt" height="11.232861749999998pt"/>, the map defines a bijection from the set of length-<img alt="$xLen$" src="svgs/ccd980f9aeab6b5d4b9bee60ff66c017.svg" valign=0.0px width="38.103245399999984pt" height="11.232861749999998pt"/>
-octet- or byte-strings to <img alt="$\{j\in\mathbb{Z}~|~ 0 \le j&lt; 256^xLen\}.$" src="svgs/1c0d91e749b3b57e10f6c1eda366d856.svg" valign=-4.109589000000009px width="196.69729034999997pt" height="16.438356pt"/>
-
-It's inverse is called [I20SP](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=8):
-```python
-def I2OSP(x, xLen):
-    """Map an integer x to an octet-string X."""
-    assert x < 256**xLen, "integer too large"
-    return x.to_bytes(xLen, byteorder = 'big', signed = False)
-```
-
-Test driving those two functions on the message above:
-```pycon
->>> m = OS2IP(message)
->>> m
-274873227007013220853194865361031398209358857387795228459596366470548372698409537461728865739289920635511061986596506444387159296380925336687869159143300946529393908706703078375797190040253439843230647079564428903853418867
->>> I2OSP(m, len(message)).decode('utf8')
-« Secret de deux, secret de Dieu; secret de trois, secret de tous. » -- proverbe français
-```
-
-#### Padding
-
-A short input to OS2IP results in small output, and we've already seen that small <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> (relative
-to <img alt="$n)$" src="svgs/d5832d8437237f9b3dbe873f044d5de9.svg" valign=-4.109589000000009px width="16.25959334999999pt" height="16.438356pt"/> can lead to weak encryption.  What we really want is for plaintext, <img alt="$m,$" src="svgs/85e0696fc8ec9dcd16fd64c9f562ae0c.svg" valign=-3.1963502999999895px width="18.99932429999999pt" height="10.2739725pt"/> to land essentially
-uniformly in <img alt="$\mathbb{Z}/n,$" src="svgs/4ee8f29e8fc6ff907c10277ad56123ba.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/> regardless of specifics such length of our human-readable message.
-A good approximation to uniformly distributed plaintexts can be achieved by padding our human-readable
-messages so that they are of more or less maximum length.
-
-Let us implement the padding scheme recommended in
-[PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
-
-:warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding involving hashing is implemented below.
-
-
-
-Let us first work out a general encoding scheme in Abstract-Algebraic parlance.  Suppose we have
-some *alphabet* denoted by <img alt="$A$" src="svgs/53d147e7f3fe6e47ee05b88b166bd3f6.svg" valign=0.0px width="12.32879834999999pt" height="11.232861749999998pt"/>; as an example, think of the <img alt="$A$" src="svgs/53d147e7f3fe6e47ee05b88b166bd3f6.svg" valign=0.0px width="12.32879834999999pt" height="11.232861749999998pt"/> as being the symbols parametrized
-by the [ASCII](https://en.wikipedia.org/wiki/ASCII) 
-
-
-In Python, we could do something like this:
-```pycon
->>> print(*map(bin, b'ascii message'))
-0b1100001 0b1110011 0b1100011 0b1101001 0b1101001 0b100000 0b1101101 0b1100101 0b1110011 0b1110011 0b1100001 0b1100111 0b1100101
-```
-That displays the 7-bit binary representation, in turn, of each letter in the message, including the space.
-Or, if we just care about the decimal representations:
-```pycon
->>> print(*b'ascii message')
-97 115 99 105 105 32 109 101 115 115 97 103 101
-```
-
-What's a sensible way to map ASCII messages to our numeric RSA message space, <img alt="$\mathbb{Z}/n?$" src="svgs/a754575d0a2cda45ec2740998a46fe6c.svg" valign=-4.109589000000009px width="36.80761754999999pt" height="16.438356pt"/>
-Well, each ASCII character is naturally a non-negative integer less than <img alt="$128=2^7;$" src="svgs/013537e2bce5bef2462b92ce1469c28c.svg" valign=-3.1963503000000086px width="66.73515255pt" height="16.5772266pt"/> so we could use
-the obvious "base 128" style mapping:
-```python
-def as2ip(ascii_string):
-    """map an ascii (bytes) string to an integer primitive"""
-    return sum([x * 128**i for i, x in enumerate(ascii_string[::-1])])
-```
-
-Let us encode a message:
-```pycon
->>> m = as2ip(b"To be 1 or to be 0, that is the question.")
->>> m
-164872730915884903844907696833369336819868410977606951439509069395468793412552843065134
-```
-Next, let us invert this mapping:
-```python
-def ip2as(integer):
-    """map an integer to """
-```
-
-
-First, we want to encode text to bytes using some flavor of character encoding. In Python, we
-can simply do the following which encodes our text message to 
-[utf-8](https://sethmlarson.dev/blog/utf-8):
-```pycon
->>> m = b"This is our ascii message." # same as "This is our ascii message.".encode('ascii')
->>> type(m)
-<class 'bytes'>
-```
-A [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) object in Python behaves similarly
-to a string in Python.
 
 
 
