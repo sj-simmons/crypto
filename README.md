@@ -844,7 +844,7 @@ as multiplicative groups.
 **Proof**. Arguing as above, except additively, the map <img alt="$x \mapsto (x \mod m, x \mod n)$" src="svgs/995d140a6fe30225897e70143a750cd6.svg" valign=-4.109589000000009px width="194.03668349999998pt" height="16.438356pt"/>, where <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> generates
 <img alt="$\mathbb{Z}/mn$" src="svgs/c8b3d4f7d2deabec23c20e9348fc1b28.svg" valign=-4.109589000000009px width="43.478126999999986pt" height="16.438356pt"/>, is necessarily an isomorphism of additive groups that one easily checks is also a ring homomorphism (that, then, restricts to an isomorphism of multiplicative groups). :black_medium_square:
 
-More generally, one has [Chinese Remainder Theorem](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n#General_composite_numbers).
+More generally, one has the [Chinese Remainder Theorem](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n#General_composite_numbers).
 
 ### Plain RSA
 
@@ -1001,12 +1001,12 @@ factoring method does better.
 First, notice that, if <img alt="$b$" src="svgs/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg" valign=0.0px width="7.054796099999991pt" height="11.4155283pt"/> is manageably small in the equality <img alt="$n+b^2=a^2$" src="svgs/87f2706d0438596747159a030c363d5e.svg" valign=-1.3698729000000083px width="81.54665474999999pt" height="14.750749199999998pt"/>, then we
 have that <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/>, which is bounded below by <img alt="$\sqrt{n}$" src="svgs/4fd78aba72015f7697ab298a89ec8a9c.svg" valign=-3.940686749999999px width="23.565549149999992pt" height="16.438356pt"/>, shouldn't be hugely larger than <img alt="$\sqrt{n}.$" src="svgs/17b40019388603fede3e78d493732825.svg" valign=-3.940686749999999px width="28.13177234999999pt" height="16.438356pt"/>
 Also, <img alt="$a^2-n =b^2;$" src="svgs/5a9aa6721384bd8fe11df516dd003e64.svg" valign=-3.1963503000000086px width="86.93479244999999pt" height="16.5772266pt"/> so let us try to find <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> by starting with <img alt="$a = \lceil\sqrt{n}\rceil$" src="svgs/8b88a03370f2f59aada5be95bb364b74.svg" valign=-4.109588999999997px width="68.78424299999999pt" height="16.607258249999997pt"/>
-and incrementing it until <img alt="$a^2-n$" src="svgs/c5405a628f1c3bd1bea686634a9db29c.svg" valign=-1.3698729000000083px width="46.02168119999999pt" height="14.750749199999998pt"/> is a perfect square (which must be <img alt="$b.)$" src="svgs/daf5a7a5b7972b8f4a158210008f26d2.svg" valign=-4.109589000000009px width="18.01373804999999pt" height="16.438356pt"/>
+and incrementing it until <img alt="$a^2-n$" src="svgs/c5405a628f1c3bd1bea686634a9db29c.svg" valign=-1.3698729000000083px width="46.02168119999999pt" height="14.750749199999998pt"/> is a perfect square (which must be <img alt="$b^2).$" src="svgs/294092b5fadf2bcf89f34e837ec61dc3.svg" valign=-4.109589000000009px width="25.38819689999999pt" height="17.4904653pt"/>
 Algorithmically, one could do something like:
 
-1. Set <img alt="$a \leftarrow \lceil\sqrt{n}\rceil$" src="svgs/fb42dfd64b0590b4ff097cdc307b9396.svg" valign=-4.109588999999997px width="72.43721264999999pt" height="16.607258249999997pt"/> and <img alt="$b\leftarrow a^2-n.$" src="svgs/1a78143f258cd50d3252d69f9905a735.svg" valign=-1.3698729000000083px width="83.21330324999998pt" height="14.750749199999998pt"/>
-2. If <img alt="$b$" src="svgs/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg" valign=0.0px width="7.054796099999991pt" height="11.4155283pt"/> is a perfect square, go to step 3; otherwise set <img alt="$a \leftarrow a + 1$" src="svgs/94ed1f7251b3a458f663664586034777.svg" valign=-1.3698745499999938px width="71.25930899999999pt" height="11.96348175pt"/>,  <img alt="$b\leftarrow a^2-n$" src="svgs/a5564c51e723d0b02bde29ee034cff7e.svg" valign=-1.3698729000000083px width="78.64707839999998pt" height="14.750749199999998pt"/> and repeat step 2.
-3. Return <img alt="$a-b$" src="svgs/3db94e1f2989d6890a93270f166723f6.svg" valign=-1.3698745500000056px width="35.83514219999999pt" height="12.785402849999999pt"/>.
+1. Set <img alt="$a \leftarrow \lceil\sqrt{n}\rceil$" src="svgs/fb42dfd64b0590b4ff097cdc307b9396.svg" valign=-4.109588999999997px width="72.43721264999999pt" height="16.607258249999997pt"/> and <img alt="$b2\leftarrow a^2-n.$" src="svgs/4b119712635ff64a33861b150b04341c.svg" valign=-1.3698729000000083px width="91.4325126pt" height="14.750749199999998pt"/>
+2. If <img alt="$b2$" src="svgs/b5522aeb42ad4c7fed8330a435caced5.svg" valign=0.0px width="15.274005449999992pt" height="11.4155283pt"/> is a perfect square, go to step 3; otherwise set <img alt="$a \leftarrow a + 1$" src="svgs/94ed1f7251b3a458f663664586034777.svg" valign=-1.3698745499999938px width="71.25930899999999pt" height="11.96348175pt"/>,  <img alt="$b2\leftarrow a^2-n$" src="svgs/3301faf4a8768eda399103e0655c89af.svg" valign=-1.3698729000000083px width="86.86628774999998pt" height="14.750749199999998pt"/> and repeat step 2.
+3. Return <img alt="$a- \sqrt{b2}.$" src="svgs/fe7f3ca3e995e638f765c40703475869.svg" valign=-1.7717139000000102px width="62.31922289999999pt" height="16.438356pt"/>
 
 Notice that the discussion above doesn't use that <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> are prime, so that the algorithm
 returns a factor for any product of odd (positive) integers &mdash; not just odd primes.
@@ -1524,7 +1524,6 @@ under repeated encodings.
 
 Let us implement the padding scheme recommended in
 [PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
-
 :warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding involving hashing is implemented below.
 
 The function **RSAencrypt** in the following codeblock implements the encryption protocol in the
@@ -1537,7 +1536,7 @@ import math
 from blumblumshub import prbg
 
 def RSAencrypt(n, e, message):
-    """Return ciphertext given an RSA key (n, e) and a message.
+    """Return ciphertext given an RSA key {n, e} and a message.
 
     Args:
         n (int): the modulus.
@@ -1568,7 +1567,7 @@ def RSAencrypt(n, e, message):
     return pow(m, e, n)
 
 def RSAdecrypt(n, d, ciphertext):
-    """Return message decrypted from ciphertext using key (n, d).
+    """Return message decrypted from ciphertext using key {n, d}.
 
     Args:
         n (int): the modulus.
@@ -1601,15 +1600,14 @@ def RSAdecrypt(n, d, ciphertext):
 
     return message
 ```
-#### Exercise
+#### Exercises
 
-24. Send Simmons a human-readable message that you have encoded using UTF-8 and encrypted
-    using padding. Simmons' RSA key is $(n, e)$ where $e=65537$ and $n$ is below.
+24. Send Simmons a human-readable message that you have encoded using UTF-8 and encrypted using padding. Simmons' RSA key is <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> where <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is below.
     ```python
-    0x7d3b3ba931c1a9d94ce8ab5f1dcc660d0bb932c402aa7f8370050b3da70c2d2a54ac712db75c75acbe3388161dd6ce133b1fcb5b3eb1b1156ac1eda2ef6d572e4c180c8a999d9b238e6cf6ed95675cc8395e7c9892236d8003f51dfb9e0e646c10467fa09594028f8be4082aad091e840104c3d4911dee623859aa100ce547cdb324a49672c74afbd07704ebf3ba87e1f80c1e764b2eb90de348da6038930e17570c965524d65ef25e5819974b0fda19efda7f5ecfafe5b4487bdc86830513a1
+    0xba8bc3ac255165d1175b0c4fc74c8f2563aa5ad3ff80787d8849f0049d1202baa0eb667a837d0c5c6f49da4120cbc949fed060f92960c150526b7e0704dae798b5739363a5cac39323a03f7ac2cd5c5bca2a59a7b78dc3dfc5613f1a3d5804e3f4d990a98042724e1ab25b87a30e935d3ad36a270d879d23f19432006367ce7b3822f94038044eb66790aa1d61587c6d46ef7cf95818fb59df4ebb1d87b3a1a08bcb5e1e5416e9ca136ffe64c7742cfb048c316ca5a595aab3cd151d28c66a31
     ```
-25. :zap:**Challenge**:zap: Send Simmons a long message that you had to break up into pieces, where
-    you used the minimal number of pieces.
+25. :zap:**Challenge**:zap: Send Simmons a long (encrypted) message that you had to break up
+    into pieces, where you used the minimal number of pieces.
 
 
 <a id="references2">
