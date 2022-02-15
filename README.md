@@ -25,6 +25,8 @@ II. [Numero-algebraic practicalities](#ii-numero-algebraic-practicalities)
    * [Prime fields](#prime-fields)
    * [Generating primes](#generating-primes)
    * [Euler's totient function](#eulers-totient-function)
+
+III. [Leveraging intractability: integer factorization](#iii-leveraging-intractability-integer-factorization)
    * [Plain RSA](#plain-rsa)
      * [Fermat-factoring attack](#fermat-factoring-attack)
    * [Pseudo-random bit generation](#pseudo-random-bit-generation)
@@ -846,6 +848,8 @@ as multiplicative groups.
 
 More generally, one has the [Chinese Remainder Theorem](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n#General_composite_numbers).
 
+## III. Leveraging intractability: integer factorization
+
 ### Plain RSA
 
 :warning: *Plain*, or so-called *textbook*, RSA is inherently and dangerously insecure for
@@ -955,26 +959,26 @@ Let your public key be <img alt="$\{n, e\},$" src="svgs/8cbafb9a3db34ec0c1a7e97b
 of the two primes in the previous code-block.
 
 #### Exercises
-12. Verify that your key <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> is indeed relatively prime to <img alt="$\phi(n)$" src="svgs/f4bdf2149704f6b9d6d0068d05021138.svg" valign=-4.109589000000009px width="32.44685399999999pt" height="16.438356pt"/> for your <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
+1. Verify that your key <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> is indeed relatively prime to <img alt="$\phi(n)$" src="svgs/f4bdf2149704f6b9d6d0068d05021138.svg" valign=-4.109589000000009px width="32.44685399999999pt" height="16.438356pt"/> for your <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
 
-13. Suppose that Carmichael uses your private key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> to encrypt a (numeric) message. What is your
+2. Suppose that Carmichael uses your private key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> to encrypt a (numeric) message. What is your
 decrypting exponent, <img alt="$d,$" src="svgs/7194e1d4b173c3ff8fec4422c3f90097.svg" valign=-3.1963503000000055px width="13.12218764999999pt" height="14.611878599999999pt"/> and what was the original message if the ciphertext you receive from Carmichael is:
-    ```python
-    1228656544646342294930925759475188964963998457780851975302427012554675014888739125369008335923675038120110871984093074455
-    ```
+   ```python
+   1228656544646342294930925759475188964963998457780851975302427012554675014888739125369008335923675038120110871984093074455
+   ```
 
 <a id="arthurmarvin">
 
-14. :zap:**Challenge**:zap: Marvin can't be bothered to use large primes, so his public key is <img alt="$\{n, e\}=$" src="svgs/08190cb050929da6f85279c0ab82dc8a.svg" valign=-4.109589000000009px width="58.616848949999984pt" height="16.438356pt"/> \{932311734169679424087726241879, 65537\}. Arthur sends Marvin the following encrypted very secret message. You break Marvin's encryption, and intercept and decode the following ciphertext.
-    ```python
-    504779851614048359547310249856
-    ```
-    What is Arthur's plaintext to Marvin? :medal_sports: **Marina**, **Laura**, **Alvaro**
+3. :zap:**Challenge**:zap: Marvin can't be bothered to use large primes, so his public key is <img alt="$\{n, e\}=$" src="svgs/08190cb050929da6f85279c0ab82dc8a.svg" valign=-4.109589000000009px width="58.616848949999984pt" height="16.438356pt"/> \{932311734169679424087726241879, 65537\}. Arthur sends Marvin the following encrypted very secret message. You break Marvin's encryption, and intercept and decode the following ciphertext.
+   ```python
+   504779851614048359547310249856
+   ```
+   What is Arthur's plaintext to Marvin? :medal_sports: **Marina**, **Laura**, **Alvaro**
 
-    Can you also decrypt the following intercepted ciphertext? :medal_sports: **Laura**, **Marina**, **Alvaro**
-    ```python
-    538940096304536933932071588652
-    ```
+   Can you also decrypt the following intercepted ciphertext? :medal_sports: **Laura**, **Marina**, **Alvaro**
+   ```python
+   538940096304536933932071588652
+   ```
 
 #### Fermat-factoring attack
 
@@ -1009,7 +1013,7 @@ Algorithmically, one could do something like:
 3. Return <img alt="$a- \sqrt{b2}.$" src="svgs/fe7f3ca3e995e638f765c40703475869.svg" valign=-1.7717139000000102px width="62.31922289999999pt" height="16.438356pt"/>
 
 Notice that the discussion above doesn't use that <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> are prime, so that the algorithm
-returns a factor for any product of odd (positive) integers &mdash; not just odd primes.
+returns a factor for any product of odd, or of even, (positive) integers, not just odd primes.
 
 How many steps should this take? Consider <img alt="$(\sqrt{n}+i)^2-n=b^2.$" src="svgs/aec0f32946eb20f122ace7f9e7c3b318.svg" valign=-4.109589000000009px width="140.35103775pt" height="17.4904653pt"/> Solving this for <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.svg" valign=0.0px width="5.663225699999989pt" height="10.84150485pt"/>, we
 get
@@ -1064,18 +1068,18 @@ Note that the algorithm in each function has order <img alt="$\log(n).$" src="sv
 
 #### ~~Exercises~~ :zap:Challenges:zap:
 
-15. Robertson uses 512-bit primes to generate his RSA public-key.  For his encryption key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/>, he uses <img alt="$e =$" src="svgs/5ea054d9d68928a88e3fac889ab224ac.svg" valign=0.0px width="25.00566914999999pt" height="7.0776222pt"/> 65537 and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> equal to (in hex):
-    ```python
-    0x50886174e2215b2a1af3aa90b4856cc816f2d93732342613699c424c8b4a9e022974cf8aadd449dd8c80149f76854c61f139b4f7180acbdf49971d867809d4cb06603a3c5645295f0083b276f0f751f5bc71630d0c1c84ef65306ae9efd9820fc8bc162d07ea1ff9bf5dc4720f72dc4a6d33ffdcfc4a1f7847df61eeaa56c5bd
-    ```
-    Simmons encrypts a very important message and sends it to Robertson. Here is the (hex)
-    ciphertext:
-    ```python
-    0x50886174e2215b2a1af3aa90b4856cc816f2d93732342613699c424c8b4a9e022974cf8aadd449dd8c80149f76854c61f139b4f7180acbdf49971d867809d4cb06603a3c5645295f0083b276f0f751f5bc71630d0c1c84ef65306ae9efd9820fc8bc162d07ea1ff9bf5dc4720f72dc4a6d33ffdcfc4a1f7847df61eeaa56c5bd
-    ```
-    You break the key and you intercept the ciphertext.  What is the plaintext?
+4. Robertson uses 512-bit primes to generate his RSA public-key.  For his encryption key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/>, he uses <img alt="$e =$" src="svgs/5ea054d9d68928a88e3fac889ab224ac.svg" valign=0.0px width="25.00566914999999pt" height="7.0776222pt"/> 65537 and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> equal to (in hex):
+   ```python
+   0x50886174e2215b2a1af3aa90b4856cc816f2d93732342613699c424c8b4a9e022974cf8aadd449dd8c80149f76854c61f139b4f7180acbdf49971d867809d4cb06603a3c5645295f0083b276f0f751f5bc71630d0c1c84ef65306ae9efd9820fc8bc162d07ea1ff9bf5dc4720f72dc4a6d33ffdcfc4a1f7847df61eeaa56c5bd
+   ```
+   Simmons encrypts a very important message and sends it to Robertson. Here is the (hex)
+   ciphertext:
+   ```python
+   0x162f500e12eb59444046adb4d34d4d8184c534136dee2d798b25d6e0fea86135bda2504b2217f0f37613360079e5a77adb9af13b415744c54473047e7f01789cc7774fe4b2c35e47bfed7e34c61e4c9295f5f11943e0043a7f978886210c4bab34b3159cfcedb5e7ba143234205cf27c04a5b6c9a42df5245cf1bc13bc601425
+   ```
+   You break the key and you intercept the ciphertext.  What is the plaintext? :medal_sports: **Marina**
 
-16. How big is the difference between Robertson's <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/>? E.g., what's the smallest integer <img alt="$j$" src="svgs/36b5afebdba34564d884d347484ac0c7.svg" valign=-3.1963519500000044px width="7.710416999999989pt" height="14.0378568pt"/> such that <img alt="$|p-q|&lt;2^{j}?$" src="svgs/5a888367a595b9e5156ed97f480fa342.svg" valign=-4.109589000000009px width="90.2481261pt" height="17.689090649999997pt"/>
+5. How big is the difference between Robertson's <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/>? E.g., what's the smallest integer <img alt="$j$" src="svgs/36b5afebdba34564d884d347484ac0c7.svg" valign=-3.1963519500000044px width="7.710416999999989pt" height="14.0378568pt"/> such that <img alt="$|p-q|&lt;2^{j}?$" src="svgs/5a888367a595b9e5156ed97f480fa342.svg" valign=-4.109589000000009px width="90.2481261pt" height="17.689090649999997pt"/>
 
 Realizing that there are many other tricks and optimizations useful when Fermat factoring (see, for
 example, the [Wikipedia page](https://en.wikipedia.org/wiki/Fermat%27s_factorization_method)), let
@@ -1101,7 +1105,7 @@ estimate of the probability, <img alt="$P,$" src="svgs/d514f3df2bd7d47a9400ca5ce
 
 #### Exercise
 
-17. If Robertson picked his <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> at random, how unlucky was he, given that he used 512-bit primes?  Asked differently, if one picks two 512-bit primes uniformly randomly, how likely is it that the resulting <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is factorable using less than a trillion steps in our implementation of Fermat factoring?  What if one uses 100-bit primes? 200-bit primes?
+6. If Robertson picked his <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> at random, how unlucky was he, given that he used 512-bit primes?  Asked differently, if one picks two 512-bit primes uniformly randomly, how likely is it that the resulting <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is factorable using less than a trillion steps in our implementation of Fermat factoring?  What if one uses 100-bit primes? 200-bit primes?
 
 On page 40 of the appendix of the draft standard [DSS](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5-draft.pdf) (from [NIST](https://csrc.nist.gov/publications/fips)), the requirement is <img alt="$|p-q|&gt;2^{nlen/2-100}.$" src="svgs/898d9ade224f35c6ca1644093ecdc5e8.svg" valign=-4.109588999999997px width="150.8793165pt" height="18.7050765pt"/>  Here <img alt="$nlen$" src="svgs/376ce454e223b514ba4111a8e79e6aa0.svg" valign=0.0px width="32.61623474999999pt" height="11.4155283pt"/> is the bit-length of <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, so <img alt="$nlen/2$" src="svgs/8d8c02f5af80bda3bea2bc832ff00a14.svg" valign=-4.109589000000009px width="49.05465509999999pt" height="16.438356pt"/> is
 our <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>, the bit-length of each of <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/> So, for 512-bit primes, they require that
@@ -1205,28 +1209,28 @@ there is something wrong with our PRBG.
 
 #### ~~Exercises~~ Projects
 
-18. Write a program that collects, say, 10,000 zeros and ones from an instance of our Blum Blum
-    Shub PRBG and tally up the total number of ones that occur.
-    There likely won't be exactly 5000 ones, which is not cause for alarm, of course. How do
-    we analyze this? Formulate an carry out an appropriate statistical test. How does our
-    Blum Blum Shub PRBG perform?
+7. Write a program that collects, say, 10,000 zeros and ones from an instance of our Blum Blum
+   Shub PRBG and tally up the total number of ones that occur.
+   There likely won't be exactly 5000 ones, which is not cause for alarm, of course. How do
+   we analyze this? Formulate an carry out an appropriate statistical test. How does our
+   Blum Blum Shub PRBG perform?
 
-19. Formulate and perform a statistical "runs" test which analyzes appropriately the length
-    of *runs* in samples bit-strings. How did our PRBG do?
+8. Formulate and perform a statistical "runs" test which analyzes appropriately the length
+   of *runs* in samples bit-strings. How did our PRBG do?
 
-    Here a *run* refers to a substring consisting of consecutive zeros (called a *gap*) or
-    of successive ones (called a *block*).
+   Here a *run* refers to a substring consisting of consecutive zeros (called a *gap*) or
+   of successive ones (called a *block*).
 
 
-20. Apply the test above to our final LCG from before &mdash; you might want to construct
-    some other LCG(s). How to do they perform?
+9. Apply the test above to our final LCG from before &mdash; you might want to construct
+   some other LCG(s). How to do they perform?
 
-    Note that you don't want to simply take the outputs modulo 2 on our final LCG. That
-    LCG has modulus a power of 2, so the final bit just alternates (as we saw explicitly).
-    But you could do something different, like output the parity of the numbers, or take
-    some high-significance bit instead of the lowest.  Or you use a different modulus
-    but then you'd likely want to ensure that your LCG is full period and performs well
-    on other test such as the chi-squared and spectral tests, and so on.
+   Note that you don't want to simply take the outputs modulo 2 on our final LCG. That
+   LCG has modulus a power of 2, so the final bit just alternates (as we saw explicitly).
+   But you could do something different, like output the parity of the numbers, or take
+   some high-significance bit instead of the lowest.  Or you use a different modulus
+   but then you'd likely want to ensure that your LCG is full period and performs well
+   on other test such as the chi-squared and spectral tests, and so on.
 
 Previously, we used Python's **randint** in our program to generate <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit primes.
 Then we used that program to generate primes for our Blum Blum Shub PRBG. Now,
@@ -1290,7 +1294,7 @@ the plaintext was likely a smallish number, then they could encrypt every number
 
 #### Exercise
 
-21. Write a tiny program to mount this sort of attack and uncover the first plaintext message
+10. Write a tiny program to mount this sort of attack and uncover the first plaintext message
     that Arthur sends to Marvin in [this problem above](#arthurmarvin). Why doesn't this method
     reveal Arthur's second message?
 
@@ -1356,7 +1360,7 @@ Suppose that Bloem discovers a very special number, encrypts it using Harshad's 
 ```python
 0xa8713dfdd0acb832e983ad568087001493afb8de806d45dedcf8cc2f35607e3aa7bf9fed857ee35aeb3c880962dbf5491b596528908007f1c89504c03b948917704fe29eef5afe934a9bcd5e7334daa994584109d704ee8bd6d3733323d7ce14e5f7bfd63e92441206e95d8316b8c25d8093c7afc219032ef56d354830c81f2
 ```
-22. Next, you use Harshad's public key to encrypt, say, <img alt="$m'=142857$" src="svgs/91688f5ff10555c58f3052647d17ef46.svg" valign=0.0px width="90.27786239999999pt" height="12.358064399999998pt"/> obtaining <img alt="$c'$" src="svgs/3ce681234d1b2ad17008503143e3ed8b.svg" valign=0.0px width="10.90376594999999pt" height="12.358064399999998pt"/>. Then you trick Harshad into deciphering the product <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> and sending the resulting plaintext to you.  If he sends you <img alt="$288071548868146555184504832$" src="svgs/7803dcdee68289fd1b7f60f7ce8c8016.svg" valign=0.0px width="221.91865409999997pt" height="10.5936072pt"/>, how can you now compute Bloem's original plaintext?  What is Bloem's original plaintext?
+11. Next, you use Harshad's public key to encrypt, say, <img alt="$m'=142857$" src="svgs/91688f5ff10555c58f3052647d17ef46.svg" valign=0.0px width="90.27786239999999pt" height="12.358064399999998pt"/> obtaining <img alt="$c'$" src="svgs/3ce681234d1b2ad17008503143e3ed8b.svg" valign=0.0px width="10.90376594999999pt" height="12.358064399999998pt"/>. Then you trick Harshad into deciphering the product <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> and sending the resulting plaintext to you.  If he sends you <img alt="$288071548868146555184504832$" src="svgs/7803dcdee68289fd1b7f60f7ce8c8016.svg" valign=0.0px width="221.91865409999997pt" height="10.5936072pt"/>, how can you now compute Bloem's original plaintext?  What is Bloem's original plaintext?
 
 In algebraic terms, the attacker picks any <img alt="$m'\in (\mathbb{Z}/n)^*$" src="svgs/21e3ec33ebbafec11263001d6e76a59a.svg" valign=-4.109589px width="87.70176855pt" height="16.4676534pt"/> and encrypts it using the public key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> obtaining <img alt="$c'=(m')^e.$" src="svgs/746fed1486569b6e9ad56e48833ec0d3.svg" valign=-4.109589px width="77.09875799999999pt" height="16.4676534pt"/>   Then the attacker somehow tricks Harshad into decrypting <img alt="$c'c \in \mathbb{Z}/n$" src="svgs/1b658c365ea1e2931cadbd60058f850f.svg" valign=-4.109589px width="67.97564729999998pt" height="16.4676534pt"/> where, of course, <img alt="$c=m^e$" src="svgs/1436d3cf9e0a368740082b75397824b9.svg" valign=0.0px width="49.70145344999999pt" height="10.91968515pt"/>, which can then easily be used to compute <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> since <img alt="$m'$" src="svgs/6a0d5b419381f23bef964dd9f443238f.svg" valign=0.0px width="18.223061999999988pt" height="12.358064399999998pt"/> is invertible.
 
@@ -1382,21 +1386,23 @@ As we saw above, Plain RSA is not secure against choosen-ciphertext attacks; wor
 even secure against so-called *passive* attacks that assume that attacker has access only to
 the public-key and so can only choose plaintexts and encrypt them.
 
-For a public-key cryptosystem to be [semantically secure](https://en.wikipedia.org/wiki/Semantic_security)
-it must provably bar against an attacker gaining any practical advantagous partial information
+For a public-key cryptosystem to be
+[semantically secure](https://en.wikipedia.org/wiki/Semantic_security)
+it must provably bar against an attacker gaining any practically advantageous partial information
 about a plaintext given only the corresponding ciphertext and the public key. The technical
 definition requires *chosen-plaintext* indistinguishability which, in turn, imagines an oracle
-that randomly selects from two equal-length messages submitted by an adversary, encrypts it with
-a randomly selected public-key, and returns the resulting ciphertext along with the public-key
-to the adversary.  The requirement is that the attacker cannot practically distinguish which
-message was chosen by the oracle with probability significantly greater that 1/2.
+that randomly selects from two equal-length messages submitted by an adversary, encrypts its
+choice with a randomly selected public-key, and returns the resulting ciphertext along with
+the public-key to the adversary.  The requirement is that the attacker cannot practically
+distinguish which message was chosen by the oracle with probability significantly greater
+than 1/2.
 
 Plain RSA immediately fails this test because it is deterministic: the attacker need
 only use the public-key to encrypt two messages &mdash; 0 and 1, say &mdash; and then submit
 those ciphertexts to the oracle.  The one randomly selected by the oracle can be identified
 with 100% accuracy.
 
-That is to say, Plain RSA has to be enhanced in order to have a chance of being
+Plain RSA has to be enhanced in order to have a chance of being
 semantically secure which, even then, may be still be open to chosen-ciphertext attacks.
 The modern solution is to use randomly-generated padding to augment messages before they
 are encrypted using the public-key &mdash;
@@ -1474,7 +1480,7 @@ Let us now implement
 ```python
 def OS2IP(X):
     """Return the integer primitive x for the octet-string X."""
-    # the sum below is the same as: int.from_bytes(X, byteorder = 'big', signed = False)
+    # the sum below is the same as: int.from_bytes(X, byteorder = 'big')
     return sum([x * 256**i for i, x in enumerate(X[::-1])])
 ```
 
@@ -1491,7 +1497,7 @@ The inverse mapping is called
 def I2OSP(x, xLen):
     """Map an integer x to an octet-string X."""
     assert x < 256**xLen, "integer too large"
-    return x.to_bytes(xLen, byteorder = 'big', signed = False)
+    return x.to_bytes(xLen, byteorder = 'big')
 ```
 
 Test driving those two functions on the message above, we have:
@@ -1505,7 +1511,7 @@ Test driving those two functions on the message above, we have:
 
 #### Exercise
 
-23.  The following integers were obtained by partitioning the **bytes** version of a long human-readable message into pieces and applying OS2IP to each piece in turn.  Decode the 3 integers back into a single human-readable message assuming that <img alt="$xLen = 125$" src="svgs/f8d7227d277962cfbf35e34a12bfbca7.svg" valign=0.0px width="84.67850324999999pt" height="11.232861749999998pt"/>.
+12.  The following integers were obtained by partitioning the **bytes** version of a long human-readable message into pieces and applying OS2IP to each piece in turn.  Decode the 3 integers back into a single human-readable message assuming that <img alt="$xLen = 125$" src="svgs/f8d7227d277962cfbf35e34a12bfbca7.svg" valign=0.0px width="84.67850324999999pt" height="11.232861749999998pt"/>.
      ```python
      8148005161556551804043142199660631494681528140650822600136084998387357112108317491287436260923406505931864938073161946364938332791368570105875948573513727327591104929790537105755837082151488779548034635309275341934058978012160570568794235012357380859739572435669585019614245512029471707669863116139888
      4536349843976346312836460170468749286561964424351466747171040921929279400531580926025621971360458028850193810030292112586186499583889141942059093666096467348224496980293734851564288662520367071658728765218415511795671620978766949287934200652050299193168658544707334905806785657101906068685821747491616
@@ -1516,11 +1522,13 @@ Test driving those two functions on the message above, we have:
 
 A short input to OS2IP results in small output, and we've already seen that small <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> (relative
 to <img alt="$n)$" src="svgs/d5832d8437237f9b3dbe873f044d5de9.svg" valign=-4.109589000000009px width="16.25959334999999pt" height="16.438356pt"/> can lead to weak encryption.   We want a given plaintext <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> to land essentially
-uniformly in <img alt="$\mathbb{Z}/n,$" src="svgs/4ee8f29e8fc6ff907c10277ad56123ba.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/> regardless of specifics such length of our human-readable message.
-A good approximation to uniformly distributed plaintexts can be achieved by padding our
-human-readable messages in such a way that they are of more or less maximum length. Also,
-if we pad with randomly generated bytes, then the same message leads to distinct plaintexts
-under repeated encodings.
+uniformly in <img alt="$\mathbb{Z}/n,$" src="svgs/4ee8f29e8fc6ff907c10277ad56123ba.svg" valign=-4.109589000000009px width="33.61125074999999pt" height="16.438356pt"/> regardless of specifics such as the length of our human-readable
+message.  A good approximation to uniformly distributed plaintexts can be achieved by padding our
+human-readable messages in such a way that all are of maximum length.
+
+Also,
+we want to pad with randomly generated bytes; then the same message leads to distinct plaintexts
+under repeated encodings, so that we our scheme at least has a chance at being semantically secure.
 
 Let us implement the padding scheme recommended in
 [PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
@@ -1602,13 +1610,12 @@ def RSAdecrypt(n, d, ciphertext):
 ```
 #### Exercises
 
-24. Send Simmons a human-readable message that you have encoded using UTF-8 and encrypted using padding. Simmons' RSA key is <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> where <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is below.
+13. Send Simmons a human-readable message that you have encoded using UTF-8 and encrypted using padding. Simmons' RSA public key is <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> where <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is below.
     ```python
     0xba8bc3ac255165d1175b0c4fc74c8f2563aa5ad3ff80787d8849f0049d1202baa0eb667a837d0c5c6f49da4120cbc949fed060f92960c150526b7e0704dae798b5739363a5cac39323a03f7ac2cd5c5bca2a59a7b78dc3dfc5613f1a3d5804e3f4d990a98042724e1ab25b87a30e935d3ad36a270d879d23f19432006367ce7b3822f94038044eb66790aa1d61587c6d46ef7cf95818fb59df4ebb1d87b3a1a08bcb5e1e5416e9ca136ffe64c7742cfb048c316ca5a595aab3cd151d28c66a31
     ```
-25. :zap:**Challenge**:zap: Send Simmons a long (encrypted) message that you had to break up
+14. :zap:**Challenge**:zap: Send Simmons a long (encrypted) message that you had to break up
     into pieces, where you used the minimal number of pieces.
-
 
 <a id="references2">
 
@@ -1636,49 +1643,105 @@ def RSAdecrypt(n, d, ciphertext):
 
 <p align="center"> :construction: BELOW IS CURRENTLY UNDER CONSTRUCTION :construction: </p>
 
-
-
-
-
 ### Hashing and Signing
 
-The Plain RSA protocol can be augmented in such a way to bar against the exploits mentioned
-above. But doing so is all for naught if we cannot prevent an attacker from replacing a ciphertext
-in transit.  How can the recipient of a ciphertext guarantee the identity of the sender &mdash; or,
-at least, detect whether a received ciphertext has been tampered with? Answer, the sender needs
-to sign the message, and the receiver needs to verify the signature.
+As we have seen, padding can be factored into the Plain RSA protocol in such a way as to
+bar against several well-known exploits. But doing so is for naught if we cannot prevent
+an attacker from replacing a ciphertext in transit.  How can the recipient of a ciphertext
+guarantee the identity of the sender &mdash; or, at least, detect whether a received
+ciphertext has been tampered with? Answer, the sender needs to sign the message, and the
+receiver needs to verify the signature.
 
-First, what if we want to use, say, RSA to en/decrypt human readable messages? How do we map
-characters to integers when encoding and inters back to characters when decoding?
+A [cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function) is
+a computationally efficient [one-way function](https://en.wikipedia.org/wiki/One-way_function)
+that maps binary strings or arrays (or, more generally, data) of arbitrary length to binary
+strings or arrays of fixed length.
+For a given hash function to be useful in cryptography, finding *collisions* &mdash; distinct
+inputs mapping to the same output &mdash; must be computational infeasible, as must be
+inverting the hash &mdash; finding a *pre-image* that maps to a pre-specified output.
 
-:warning: For the following discussion and exercise, we continue to use plain RSA;
-i.e., non-padded, and so not secure.
+Without going into a detailed discussion, not all hash functions are created equal.
+[MD5](https://en.wikipedia.org/wiki/MD5) is still in wide use, despite it famously
+yielding, in August of 2004, to a [birthday attack](https://en.wikipedia.org/wiki/Birthday_attack);
+and, later in 2004, being shown to admit collisions that could be practically significant in the
+wild.
 
-A standard way to do this encode the
+Modern cryptographic hash functions, such as those in the [SHA-256](https://en.wikipedia.org/wiki/SHA-2)
+family, strive to be both fast and secure.  But proofs of cryptographic security are elusive;
+so modern hashes generally aim to exhibit desirable properties such as the
+[avalanche effect](https://en.wikipedia.org/wiki/Avalanche_effect) in mind.
 
- let us encode, in Python, a string of
+Several secure hash functions are implemented in the
+[hashlib](https://docs.python.org/3/library/hashlib.html) Python module. To use, for example,
+SHA-256 in Python:
+
+```pycon
+>>> from hashlib import sha256
+>>> message = b"to be one, or to be zero, that is the question"
+>>> sha256(message).hexdigest()
+'4e484012b464fb2f0740725fc4ac3ec4cbe07b3d539f19ee031ebb71827d56fe'
+```
+Or, if you want byte-string output:
+```pycon
+>>> sha256(message).digest()
+b'NH@\x12\xb4d\xfb/\x07@r_\xc4\xac>\xc4\xcb\xe0{=S\x9f\x19\xee\x03\x1e\xbbq\x82}V\xfe'
+```
+The output is a hex-string of length 64 (so 32 bytes, or 256 bits), which is always the
+case regardless of the length of the input:
+```pycon
+>>> sha256(100*message).hexdigest()
+'9ee1a60e25c2eeba9dcb3159b03dbba3ad928e6babe7d4d92d96035551c57f44'
+```
+The output always being of uniform length is itself handy since we can hash any
+message, no matter the length, to an essentially unique 32-byte output.
+
+Suppose that, as in previous exercises, you want to send Simmons an
+encrypted message <img alt="$c$" src="svgs/3e18a4a28fdee1744e5e3f79d13b9ff6.svg" valign=0.0px width="7.11380504999999pt" height="7.0776222pt"/> using, say, his RSA public key *and* that you want to
+*digitally sign* your message in such a way that Simmons can verify
+that it wasn't replaced or tampered with in transit, and that it came
+from you.
+
+First, you create your own RSA public key and publish it. Then you take
+the bytes-string version of your human-readable message and hash it with
+sha256, the output of which you convert to an integer using OS2IP
+(provided above);  denote this integer by <img alt="$hash(message).$" src="svgs/2284271299286a9ac90c5d6e68a0d85d.svg" valign=-4.109589000000009px width="114.96036749999999pt" height="16.438356pt"/>
+
+Next, you exponentiate <img alt="$(hash(message))^d \mod n$" src="svgs/9990163f2ddd2daa6872c42e12e2be77.svg" valign=-4.109588999999991px width="188.65636184999997pt" height="18.06580875pt"/> where <img alt="$\{n, d\}$" src="svgs/de3bd9768742ee7537342ce023ae5d20.svg" valign=-4.109589000000009px width="42.167142599999984pt" height="16.438356pt"/> is your
+*private* RSA key.  This last quantity is the *signature*; let us denote it
+by <img alt="$s.$" src="svgs/475cfe7eb7b01b7be594dc5e74eae36c.svg" valign=0.0px width="12.27170339999999pt" height="7.0776222pt"/>
+
+Now, you send Simmons the pair <img alt="$\{c, s\}$" src="svgs/9206ddcb769d2e7eb359f5e684874739.svg" valign=-4.109589000000009px width="38.56358549999999pt" height="16.438356pt"/>, the ciphertext of your message along
+with your signature of your message. Simmons decrypts <img alt="$c$" src="svgs/3e18a4a28fdee1744e5e3f79d13b9ff6.svg" valign=0.0px width="7.11380504999999pt" height="7.0776222pt"/> obtaining the
+bytes-string <img alt="$message.$" src="svgs/46941de06abc8277295bf5ca8d6ad2f1.svg" valign=-3.1963502999999895px width="66.83807129999998pt" height="10.2739725pt"/> He then hashes <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> using SHA-256.
+
+To *authenticate* that the message was send by you and to verify the integrity
+of <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/>  that it wasn't altered &mdash; Simmons uses *your* public key
+<img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> to compute <img alt="$s^e \mod n$" src="svgs/66508303fbd7c023f2a7478f5ae2fb7a.svg" valign=0.0px width="72.57608489999998pt" height="11.4155283pt"/>, obtaining <img alt="$hash(message);$" src="svgs/f28f0a8b32f490210ba585c665dcbd0d.svg" valign=-4.109589000000009px width="114.96036749999999pt" height="16.438356pt"/>  He then verifies
+that this indeed equal to the hash of the message obtained in the last paragraph.
+
+#### Exercises
+
+15. Write a function called **RSAsign** that takes a (bytes-string) message and
+    outputs its signature as an integer.
+
+16. Write a function called **RSAverify** that takes as input a message and a
+    signature, and that outputs True or False depending on whether the message
+    is authentic.
+
+17. Send or point Simmons to your public key so he send you a signed message
+    that you can decode and verify.
+
+#### Project
+
+18. The signing scheme outlined in this section is deterministic. Do we need
+    to pad it? If, so implement a padded version; if not, why not.
 
 
+## III. Leveraging intractability: discrete logarithms
 
-
-## III. Cryptographic primitives
-
-*Cryptography* is the study of *cipher algorithms* by which we obscure data.
-The cipher algorithm involves a *key* that is used to encrypt *plaintext* data
-into *ciphertext*.  In *symmetric cryptography* (or *symmetric-key encryption*)
-the key used for encryption is also used to decrypt the ciphertext back into
-plaintext so that they key must be kept secret.
-
-Cryptanalysis deals with the process by which attackers might "break" the
-encryption
-
-Cryptology
-
-In *asymmetric cryptography* (or *public-key encryption*)
-
-### Symmetric Cryptography
-
-
+In the RSA cryptosystem, one subverts the encryption by finding the base <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> of the
+exponentiation <img alt="$c=m^e,$" src="svgs/c21223909224afca54749906c4e29c91.svg" valign=-3.1963519500000044px width="55.08957464999999pt" height="14.116037099999998pt"/> modulo <img alt="$n=pq,$" src="svgs/f507d5050558ba240219861b52ba2f39.svg" valign=-3.1963502999999895px width="52.549384799999984pt" height="10.2739725pt"/> where the exponent <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.svg" valign=0.0px width="7.654137149999991pt" height="7.0776222pt"/> is known.
+In a discrete logarithm problem, one knows the base and wants to find the exponent.
 
 ### Elliptic Curves
 
@@ -1710,6 +1773,24 @@ order.
 >>> G_order * G
 [0: 1: 0]
 ```
+
+## Cryptographic primitives
+
+*Cryptography* is the study of *cipher algorithms* by which we obscure data.
+The cipher algorithm involves a *key* that is used to encrypt *plaintext* data
+into *ciphertext*.  In *symmetric cryptography* (or *symmetric-key encryption*)
+the key used for encryption is also used to decrypt the ciphertext back into
+plaintext so that they key must be kept secret.
+
+Cryptanalysis deals with the process by which attackers might "break" the
+encryption
+
+Cryptology
+
+In *asymmetric cryptography* (or *public-key encryption*)
+
+
+
 
 ## Preliminaries
 
