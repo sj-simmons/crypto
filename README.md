@@ -36,6 +36,8 @@ III. [Leveraging the intractability integer factorization](#iii-leveraging-the-i
    * [Toward semantic security](#toward-semantic-security)
    * [Hashing and signing](#hashing-and-signing)
 
+IV. [Leveraging intractability: discrete logarithms](#iv-leveraging-intractability-discrete-logarithms)
+
 ## I. Preliminaries
 
 ### Getting started
@@ -1834,14 +1836,14 @@ around <img alt="$2^{20}$" src="svgs/1131f55f436cf2a4c5c9222109756439.svg" valig
 
 Briefly, the attack works as follows. The adversary eavesdrops and collects a
 ciphertext <img alt="$c = m^e \mod n$" src="svgs/3a6858b3697e97ca767f7e2bb2606410.svg" valign=0.0px width="108.33514064999997pt" height="11.4155283pt"/> on its way to a server.  Then they send <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> where
-<img alt="$c' = (m')^e \mod n$" src="svgs/595456c0cced48cab713f7c569472780.svg" valign=-4.109589px width="130.34432399999997pt" height="16.4676534pt"/> to say the server. With very high probability, the
+<img alt="$c' = (m')^e \mod n$" src="svgs/595456c0cced48cab713f7c569472780.svg" valign=-4.109589px width="130.34432399999997pt" height="16.4676534pt"/> to the server. With very high probability, the
 server rejects <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> since it decrypts to <img alt="$m' m$" src="svgs/ba16452d0338d8c6e3c6bcccc5e4d77d.svg" valign=0.0px width="33.47807594999999pt" height="12.358064399999998pt"/> which very likely does
 not start with **\x00\x02** followed later by **\x00**.
 
-Occasionally (but very rarely), <img alt="$c'c \mod n$" src="svgs/2356b51a3b1945a1eaab452222a1db1b.svg" valign=0.0px width="76.65127304999999pt" height="12.358064399999998pt"/> will have the correct pattern.
+Occasionally (but very rarely), the server will not reject <img alt="$c'c.$" src="svgs/dbe975b9eff8ecfe3a5b42e7d3f452af.svg" valign=0.0px width="23.405707049999993pt" height="12.358064399999998pt"/>
 Based on that knowledge alone, the attacker now knows that <img alt="$m'm \mod n$" src="svgs/826acbe93793771dee9e2135a2a922fd.svg" valign=0.0px width="91.28986514999998pt" height="12.358064399999998pt"/> is
 an integer that starts with **\x00\x02** &mdash;  and has therefore narrowed
-the possible range of values <img alt="$m.$" src="svgs/4bc868b30aee0dfd5de42ea15b2cb2d8.svg" valign=0.0px width="18.99932429999999pt" height="7.0776222pt"/>  Using advantageously chosen values of the
+the possible range of values for <img alt="$m.$" src="svgs/4bc868b30aee0dfd5de42ea15b2cb2d8.svg" valign=0.0px width="18.99932429999999pt" height="7.0776222pt"/>  Using advantageously chosen values of the
 mask <img alt="$m'$" src="svgs/6a0d5b419381f23bef964dd9f443238f.svg" valign=0.0px width="18.223061999999988pt" height="12.358064399999998pt"/>, the attacker eventually further narrows the range until uncovering
 <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> exactly.
 
@@ -1859,7 +1861,7 @@ The standard that does that is [OAEP](https://en.wikipedia.org/wiki/Optimal_asym
 G and H are [mask generating function](https://en.wikipedia.org/wiki/Mask_generation_function);
 each plays a role similar to a hash.
 OAEP is a [probabilitic](https://en.wikipedia.org/wiki/Probabilistic_encryption) encryption
-scheme &mdash;  <img alt="$r$" src="svgs/89f2e0d2d24bcf44db73aab8fc03252c.svg" valign=0.0px width="7.87295519999999pt" height="7.0776222pt"/> is a random bit string &mdash;  with enough intrinsic reduncancy
+scheme &mdash;  <img alt="$R$" src="svgs/1e438235ef9ec72fc51ac5025516017c.svg" valign=0.0px width="12.60847334999999pt" height="11.232861749999998pt"/> is a random bit string &mdash;  with enough intrinsic reduncancy
 that no partial decryption or other  information is leaked (cf. [Boyko](#references)).
 
 To be clear, OAEP is an encryption/decryption scheme; it replaces the older PKCS #1 version
@@ -1884,6 +1886,71 @@ includes two probabilistic signature schemes.
 * Wang, Feng, Lai, and Yu, [Collisions for Hash Functions MD4, MD5, HAVAL-128 and RIPEMD](https://eprint.iacr.org/2004/199), 2004.
 
 
+## IV. Leveraging intractability: discrete logarithms
+
+In the RSA cryptosystem, one subverts the encryption by finding the base <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> of the
+exponentiation <img alt="$c=m^e,$" src="svgs/c21223909224afca54749906c4e29c91.svg" valign=-3.1963519500000044px width="55.08957464999999pt" height="14.116037099999998pt"/> modulo <img alt="$n=pq,$" src="svgs/f507d5050558ba240219861b52ba2f39.svg" valign=-3.1963502999999895px width="52.549384799999984pt" height="10.2739725pt"/> where the exponent <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.svg" valign=0.0px width="7.654137149999991pt" height="7.0776222pt"/> is known.
+In a discrete logarithm problem, one knows the base and wants to find the exponent.
+
+Let <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> be a finite cyclic group of order <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> And let <img alt="$g\in G$" src="svgs/ebc6f9fefaeb3eabf7a11d5c7bb4e6a9.svg" valign=-3.196350299999991px width="41.44613879999999pt" height="14.42921205pt"/> generate <img alt="$G;$" src="svgs/395d7f03b14e3d07f456a9cf3a24cd2a.svg" valign=-3.196350299999991px width="17.49086789999999pt" height="14.42921205pt"/> i.e.,
+<img alt="$G = \langle g\rangle = \{g^\ell~|~ 0\le \ell &lt; n\}.$" src="svgs/2a3a0b1d82951b8989bc58c47f11fde4.svg" valign=-4.109588999999991px width="198.03078404999997pt" height="18.06580875pt"/> Now let <img alt="$h\in G$" src="svgs/5cfe5d217b5faf309a321aba2f2e5d65.svg" valign=-0.6427030500000053px width="42.48689609999999pt" height="12.05823135pt"/>, then of course
+<img alt="$h = g^x$" src="svgs/c92e611bf40e5dbe151b1b5cefe2fb3d.svg" valign=-3.1963503000000055px width="47.27347514999998pt" height="14.611878599999999pt"/> for some integer <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> in the <img alt="$0\le x &lt; n.$" src="svgs/22454b19ff642fda89b605b08a319ab4.svg" valign=-2.2351411499999947px width="75.88255949999999pt" height="12.82874835pt"/> This (unique) <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is the
+*discrete logarithm* of <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> to the base <img alt="$g.$" src="svgs/be2451a0e7253f40d6336b30d3eca49a.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/>
+
+Given such a group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> along with a generator <img alt="$g,$" src="svgs/34a5e0267da1d722f0aa361fafc47931.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/> the associated *discrete logarithm problem*
+is: given <img alt="$h\in G,$" src="svgs/0ba7508d8c5c56d3b8c9cd58384cb930.svg" valign=-3.1963503000000055px width="47.053120949999986pt" height="14.611878599999999pt"/> find <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> such that <img alt="$g^x=h.$" src="svgs/61fd231d88be6696e2b6d83a90357905.svg" valign=-3.1963503000000055px width="52.661593049999986pt" height="14.611878599999999pt"/>
+
+The obvious brute force algorithm for solving the discrete log problem &mdash;
+trying <img alt="$x = 1, 2, \ldots$" src="svgs/18c4a2fc6dceab120e649b2fb99db6b8.svg" valign=-3.196350299999994px width="81.54079395pt" height="13.789957499999998pt"/> until <img alt="$g^x=h$" src="svgs/55bf4011513de244655938e23c1db22b.svg" valign=-3.1963503000000055px width="48.09536984999999pt" height="14.611878599999999pt"/>  &mdash; takes <img alt="$O(n)$" src="svgs/1f08ccc9cd7309ba1e756c3d9345ad9f.svg" valign=-4.109589000000009px width="35.64773519999999pt" height="16.438356pt"/> multiplications where <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is
+the order of <img alt="$g$" src="svgs/3cf4fbd05970446973fc3d9fa3fe3c41.svg" valign=-3.1963502999999895px width="8.430376349999989pt" height="10.2739725pt"/> and is therefore infeasible if <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is large.
+Meanwhile, the best algorithm for solving the discrete log problem, over a generic
+group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> of order <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, uses <img alt="$O(\sqrt{n})$" src="svgs/aea3a2d1b6dea2f0a1568ec4cb4269ad.svg" valign=-4.109588999999997px width="49.34640644999999pt" height="16.607258249999997pt"/> group multiplications &mdash; still
+intractable for large enough <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
+
+As an example, let <img alt="$p=303+2^{100}-3^{100}+5^{100}$" src="svgs/9595f25e950e18dc0db79c1e486b286e.svg" valign=-3.1963503000000086px width="200.39375565pt" height="16.5772266pt"/> (which is prime) and consider the
+multiplicative group of units <img alt="$(\mathbb{Z}/p)^*.$" src="svgs/cd2ed76ff1f03db53e977fde3970b52f.svg" valign=-4.109589000000009px width="52.35746339999999pt" height="16.438356pt"/>
+
+It is a theorem of Gauss that <img alt="$(\mathbb{Z}/n)^*$" src="svgs/cc450b1fd7ccdc41e54fbd9d0ee2bd9c.svg" valign=-4.109589000000009px width="48.565654499999994pt" height="16.438356pt"/> is cyclic exactly when <img alt="$n=1, 2,$" src="svgs/e3626c3d5b4d293ff9f2e6d691ec5bcf.svg" valign=-3.196350299999994px width="60.09503279999999pt" height="13.789957499999998pt"/> or <img alt="$4,$" src="svgs/43630ecd0d888ca765ce75b2d04bd1a7.svg" valign=-3.196350299999994px width="12.785434199999989pt" height="13.789957499999998pt"/>
+or <img alt="$p^k$" src="svgs/394d05645a9f1005d2570249301c9610.svg" valign=-3.1963519499999897px width="15.536596349999991pt" height="17.1525717pt"/> or <img alt="$2p^k,$" src="svgs/7e61e44ab0fbd0b5c8dd3550580a45c4.svg" valign=-3.1963519499999897px width="29.14394504999999pt" height="17.1525717pt"/> where <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is an odd prime and <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> is a positive integer.
+
+Suppose we pick an element of <img alt="$(\mathbb{Z}/p)^*,$" src="svgs/838505e2dc3a37302351e398af15ddd4.svg" valign=-4.109589000000009px width="52.35746339999999pt" height="16.438356pt"/> say <img alt="$101\cdot 5^{77};$" src="svgs/ea4835d1c26256033519e6213a5629fd.svg" valign=-3.1963503000000086px width="63.24204479999999pt" height="16.5772266pt"/> how can we
+quickly check if we've found a generator?  More generally, how can we quickly
+compute the order of <img alt="$101\cdot 5^{77}?$" src="svgs/0050672fe4d743f28b48538e1ebd3d53.svg" valign=0.0px width="66.43841159999998pt" height="13.380876299999999pt"/> We know the order our group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> which happens
+to have some small to middling prime factors and so easily decomposes using any
+factoring algorithm.
+```pycon
+>>> import numlib as nl
+>>> p=303+2**100-3**100+5**100
+>>> nl.factor(p-1)
+[2, 101, 2571953, 289269094313323, 52490897720515368208330287977576768339094101729]
+```
+Now, we know that the order of any element divides <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>.  Using the list in the code
+block we can quickly find all divisors of <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/> and check each in turn, in increasing
+order starting from 2, until we find the order of <img alt="$101\cdot 5^{77}.$" src="svgs/bf0d9e8ca0cde837b6b341efb722382f.svg" valign=0.0px width="63.24204479999999pt" height="13.380876299999999pt"/>  This is exactly what
+numlib's function **mulorder** does:
+```pycon
+>>> F = nl.Zmodp(p)  # This is the field (Z/p)*
+>>> g = F(101*5**77)
+>>> g_order = nl.mulorder(g, exponent = p-1)
+>>> g_order == p-1
+True
+```
+Technical Notes:
+* Again, since we know that the order of any element divides the order of the group, and
+  the order of the group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> we have included that information as argument to the
+  parameter **exponent** since otherwise mulorder would have resorted to brute force which
+  would have been painfully slow.
+* Each time one calls mulorder as in the code block above, it has to (re)factor <img alt="$p-1.$" src="svgs/2ad55de588e0025342173e657988d28d.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> Alternatively, if you want to compute the order of more than one element, consider calling the helper function **mulorder_** like this:
+  ```pycon
+  >>> divs = divisors(p-1)  # a list of all divisors greater than 1, in increasing order
+  >>> g_order = nl.mulorder_(g, divs)  # mulorder_ accepts a list of potential orders
+  ```
+
+#### Exercise
+
+1. With <img alt="$p = 303+2^{100}-3^{100}+5^{100}$" src="svgs/de8807f55ec1b41501f8c727c96cd351.svg" valign=-3.1963503000000086px width="200.39375565pt" height="16.5772266pt"/>, compute the probability that a uniformly randomly chosen element of <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> is a generator.
+
+
 
 
 <p align="right">  <a href="#contents"> contents </a></p>
@@ -1898,67 +1965,41 @@ includes two probabilistic signature schemes.
 
 <p align="center"> :construction: BELOW IS CURRENTLY UNDER CONSTRUCTION :construction: </p>
 
+### El Gamal encryption
 
-## III. Leveraging intractability: discrete logarithms
+So, if <img alt="$p = 303+2^{100}-3^{100}+5^{100},$" src="svgs/1b297fc6b8d56cb07f03baefbffc7b60.svg" valign=-3.1963503000000086px width="205.78188344999998pt" height="16.5772266pt"/> then <img alt="$g = 101\cdot 5^{77}$" src="svgs/6f573fe7668b354708639d74a1e1375d.svg" valign=-3.1963503000000086px width="88.20190169999998pt" height="16.5772266pt"/> is a generator of
+<img alt="$G=(\mathbb{Z}/p)^*.$" src="svgs/2518d400562631d8397fd611eeb3270e.svg" valign=-4.109589000000009px width="87.19973789999999pt" height="16.438356pt"/> How can we use the intractability of the discrete log problem for
+<img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> to set up a public-key encryption protocol? (Note: <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> here
+is a 233-bit prime, so <img alt="$\sqrt{n}$" src="svgs/4fd78aba72015f7697ab298a89ec8a9c.svg" valign=-3.940686749999999px width="23.565549149999992pt" height="16.438356pt"/> is well over 100 bits.)
 
-In the RSA cryptosystem, one subverts the encryption by finding the base <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> of the
-exponentiation <img alt="$c=m^e,$" src="svgs/c21223909224afca54749906c4e29c91.svg" valign=-3.1963519500000044px width="55.08957464999999pt" height="14.116037099999998pt"/> modulo <img alt="$n=pq,$" src="svgs/f507d5050558ba240219861b52ba2f39.svg" valign=-3.1963502999999895px width="52.549384799999984pt" height="10.2739725pt"/> where the exponent <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.svg" valign=0.0px width="7.654137149999991pt" height="7.0776222pt"/> is known.
-In a discrete logarithm problem, one knows the base and wants to find the exponent.
+Suppose that you want to receive private messages. To generate your public/private
+key, you
+* randomly pick an integer <img alt="$d$" src="svgs/2103f85b8b1477f430fc407cad462224.svg" valign=0.0px width="8.55596444999999pt" height="11.4155283pt"/> in the range <img alt="$1&lt; d &lt; p-1,$" src="svgs/3b0475bff66103afde90331647f8abfc.svg" valign=-3.1963503000000055px width="101.75762519999998pt" height="14.611878599999999pt"/> then you
+* compute <img alt="$h=g^d \mod p.$" src="svgs/7e960486bbc46e2a9c6bd2becd10448a.svg" valign=-3.1963519499999897px width="108.26580269999998pt" height="17.1525717pt"/>
+* Your public key is then <img alt="$\{p, g, h\};$" src="svgs/4e770c5a776ba4f927662700b5d63b3e.svg" valign=-4.109589000000009px width="61.788447599999984pt" height="16.438356pt"/> your private key is simply <img alt="$d.$" src="svgs/2d94d6868b0dbbea61050c0cabe84f89.svg" valign=0.0px width="13.12218764999999pt" height="11.4155283pt"/>
 
-Let <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> be a finite cyclic group of order <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> And let <img alt="$g\in G$" src="svgs/ebc6f9fefaeb3eabf7a11d5c7bb4e6a9.svg" valign=-3.196350299999991px width="41.44613879999999pt" height="14.42921205pt"/> generate <img alt="$G;$" src="svgs/395d7f03b14e3d07f456a9cf3a24cd2a.svg" valign=-3.196350299999991px width="17.49086789999999pt" height="14.42921205pt"/> i.e.,
-<img alt="$G = \langle g\rangle = \{g^\ell~|~ 0\le \ell &lt; n\}.$" src="svgs/2a3a0b1d82951b8989bc58c47f11fde4.svg" valign=-4.109588999999991px width="198.03078404999997pt" height="18.06580875pt"/> Now let <img alt="$h\in G$" src="svgs/5cfe5d217b5faf309a321aba2f2e5d65.svg" valign=-0.6427030500000053px width="42.48689609999999pt" height="12.05823135pt"/>, then of course
-<img alt="$h = g^x$" src="svgs/c92e611bf40e5dbe151b1b5cefe2fb3d.svg" valign=-3.1963503000000055px width="47.27347514999998pt" height="14.611878599999999pt"/> for some integer <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> in the <img alt="$0\le x &lt; n.$" src="svgs/22454b19ff642fda89b605b08a319ab4.svg" valign=-2.2351411499999947px width="75.88255949999999pt" height="12.82874835pt"/> This (unique) <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is the
-**discrete logarithm** of <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> to the base <img alt="$g.$" src="svgs/be2451a0e7253f40d6336b30d3eca49a.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/>
+How does Athena send you a private message?  Assume that Athena's message <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> is in
+the form of an integer in the range <img alt="$0&lt; m &lt; p.$" src="svgs/9aadc2df3688ef1f3c1c244e8b6c48a1.svg" valign=-3.196350299999994px width="79.32436214999998pt" height="13.789957499999998pt"/> To encrypt <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>, Athena
+* chooses a random integer <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> in the range <img alt="$1 \le k &lt; p,$" src="svgs/53bd604b56fb5e39ad6d81c4950970b4.svg" valign=-3.1963503000000055px width="73.96662404999998pt" height="14.611878599999999pt"/>
+* computes <img alt="$c_1 = g^k \mod p,$" src="svgs/f9d06b2c4f83bd6e7f274604b2f2bfe4.svg" valign=-3.1963519499999897px width="113.70590055pt" height="17.1525717pt"/>
+* computes <img alt="$c_2 = h^k m \mod p,$" src="svgs/2034aad93aadc3eab1b30553d6573839.svg" valign=-3.1963519499999897px width="129.1797573pt" height="17.1525717pt"/>
+* discards <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> or at least keeps it secret;
+* Athena's encrypted message to you is then <img alt="$\{c_1, c_2\}.$" src="svgs/974292983019dbb8192bee5a7b9963ff.svg" valign=-4.109589000000009px width="57.28705454999999pt" height="16.438356pt"/>
 
-Given such a group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> along with a generator <img alt="$g,$" src="svgs/34a5e0267da1d722f0aa361fafc47931.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/> the associated *discrete log problem*
-is: given <img alt="$h\in G,$" src="svgs/0ba7508d8c5c56d3b8c9cd58384cb930.svg" valign=-3.1963503000000055px width="47.053120949999986pt" height="14.611878599999999pt"/> find <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> such that <img alt="$g^x=h.$" src="svgs/61fd231d88be6696e2b6d83a90357905.svg" valign=-3.1963503000000055px width="52.661593049999986pt" height="14.611878599999999pt"/>
+To decrypt Athena's message, you
+* compute <img alt="$c_1 c_2^{-d} \mod p.$" src="svgs/710a2ab4e9445097687deac8411bd098.svg" valign=-4.383444450000004px width="100.3227654pt" height="19.406267099999997pt"/>
 
-As an example, let <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> be the prime in the code block below and consider the
-multiplicative group of units <img alt="$(\mathbb{Z}/p)^*.$" src="svgs/cd2ed76ff1f03db53e977fde3970b52f.svg" valign=-4.109589000000009px width="52.35746339999999pt" height="16.438356pt"/>
+Why does the protocol above the work? First, let us check that decryption actually returns the
+plaintext <img alt="$m:$" src="svgs/56521f075375598a29eddad33e5c7f1f.svg" valign=0.0px width="23.56542374999999pt" height="7.0776222pt"/>
 
-```python
-p = 109724596235497041337751439792847648581284127318023322547075430819623896253787
-```
-It is a theorem of Gauss that <img alt="$(\mathbb{Z}/n)^*$" src="svgs/cc450b1fd7ccdc41e54fbd9d0ee2bd9c.svg" valign=-4.109589000000009px width="48.565654499999994pt" height="16.438356pt"/> is cyclic exactly when <img alt="$n=1, 2,$" src="svgs/e3626c3d5b4d293ff9f2e6d691ec5bcf.svg" valign=-3.196350299999994px width="60.09503279999999pt" height="13.789957499999998pt"/> or <img alt="$4,$" src="svgs/43630ecd0d888ca765ce75b2d04bd1a7.svg" valign=-3.196350299999994px width="12.785434199999989pt" height="13.789957499999998pt"/>
-or <img alt="$p^k$" src="svgs/394d05645a9f1005d2570249301c9610.svg" valign=-3.1963519499999897px width="15.536596349999991pt" height="17.1525717pt"/> or <img alt="$2p^k,$" src="svgs/7e61e44ab0fbd0b5c8dd3550580a45c4.svg" valign=-3.1963519499999897px width="29.14394504999999pt" height="17.1525717pt"/> where <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is an odd prime <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> is a positive integer.
+<p align="center"><img alt="$$c_2 c_1^{-d} \equiv h^k m (g^k)^{-d} \equiv g^{dk}(g^{dk})^{-1} m \equiv m \mod p.$$" src="svgs/97bdb410aaba498179a298ebeb83680f.svg" valign=0.0px width="356.8127145pt" height="19.406267099999997pt"/></p>
 
-Suppose we pick an element of <img alt="$(\mathbb{Z}/p)^*,$" src="svgs/838505e2dc3a37302351e398af15ddd4.svg" valign=-4.109589000000009px width="52.35746339999999pt" height="16.438356pt"/>, like <img alt="$2^{345};$" src="svgs/f8b3b5f6bd1f51f85976ab26795d3354.svg" valign=-3.1963503000000086px width="33.264976799999985pt" height="16.5772266pt"/> how can we
-quickly check if we've found a generator?  More generally, how can we quickly
-compute the order of <img alt="$2^{345}?$" src="svgs/1866ab086537981d3d760c14a862186f.svg" valign=0.0px width="36.461343599999985pt" height="13.380876299999999pt"/> We know the order our group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> which happens
-to have some medium prime factors and so easily decomposes using any factoring algorithm.
-```python
-import numlib as nl
-nl.factor(p-1) # [2, 17, 26833, 66749, 1801818658994555376380171208580284227352493481518765114854892105937]
-```
-Now, we know that the order and element divides <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>.  Using the list in the code
-block we can quickly check the divisors of <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>, in turn, in increasing order starting
-from 2, until we find the order of <img alt="$2^{345}.$" src="svgs/391ce57f8b5f5ce57bc78bd25f7918ff.svg" valign=0.0px width="33.264976799999985pt" height="13.380876299999999pt"/>  This is exactly what numlib's function
-**mulorder** does :
-```python
-F = nl.Zmodp(p)
-print(nl.mulorder(F(2**234), exponent = p-1) == p-1)  # True
-```
-Again, since we know that the order of any element divides the order of the group, and
-the order of the group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> we have included the parameter **exponent** since
-otherwise mulorder would have resorted brute force which have been painfully slow.
-
-#### Exercise
-
-1. With <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> as in the previous discussion, compute the probability that a uniformly randomly chosen element of <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> is a generator?
+The quantity <img alt="$h^k \mod p$" src="svgs/d5c5c235e636cd345c6dfcaf2cd3d494.svg" valign=-3.1963519499999897px width="73.77453929999999pt" height="17.1525717pt"/>, which is called the *shared secret*, obscures
+<img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> and combines with your decryption key <img alt="$d$" src="svgs/2103f85b8b1477f430fc407cad462224.svg" valign=0.0px width="8.55596444999999pt" height="11.4155283pt"/> in such a way that it is not leaked.
+It is best to throw <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> away after <img alt="$h^k$" src="svgs/f987354a1c5b47bf8412c1cae55233f2.svg" valign=0.0px width="16.73714459999999pt" height="13.95621975pt"/> is computed since, if it is leaked, an adversary
+can compute <img alt="$h^{-k} c_2=h^{-k} h^k m =m.$" src="svgs/8051d47313d1195a9f027ae4361550bc.svg" valign=-2.4657286499999893px width="164.98112235pt" height="16.421948399999998pt"/>
 
 
-
-Consider the group <img alt="$(\mathbb{Z}/n)^*$" src="svgs/cc450b1fd7ccdc41e54fbd9d0ee2bd9c.svg" valign=-4.109589000000009px width="48.565654499999994pt" height="16.438356pt"/> where <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is large. Fix a special
-*base point* denoted <img alt="$b\in(\mathbb{Z}/n)^*.$" src="svgs/2c38ded274f81efac18b04b25ee7b701.svg" valign=-4.109589000000009px width="81.09970769999998pt" height="16.438356pt"/> Let <img alt="$m\in \mathbb{Z}$" src="svgs/c7e411e3f2bc79bb89c915f84f583671.svg" valign=-0.6427030499999994px width="45.483178949999996pt" height="11.966898899999999pt"/> be our plaintext.
-And set <img alt="$c = b^m.$" src="svgs/64a3521b4a38f894c501f0f99f515122.svg" valign=0.0px width="53.13922019999998pt" height="11.4155283pt"/> Given <img alt="$c$" src="svgs/3e18a4a28fdee1744e5e3f79d13b9ff6.svg" valign=0.0px width="7.11380504999999pt" height="7.0776222pt"/> and <img alt="$b$" src="svgs/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg" valign=0.0px width="7.054796099999991pt" height="11.4155283pt"/>, how hard is it to find <img alt="$m?$" src="svgs/53390cfddf33597e58bf485b13c25929.svg" valign=0.0px width="22.19569109999999pt" height="11.4155283pt"/>
-Let us conduct an experiment.
-
-Set <img alt="$n=p$" src="svgs/83f792e28d74fbb65cee812028ff49b6.svg" valign=-3.1963502999999895px width="40.05507329999999pt" height="10.2739725pt"/> where <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is the following 512-bit prime.
-```python
-from numlib import Zmodp
-p = 0xd987f939a1ad2f70fae1593f98783f2ecb7a1eaa17d6fa70f0ff7ddc5bae7459451274e184f4eb5bc7d4295269162d6d5645cc92e1beeb81d6affbe47aee8b05
-F = Zmodp(p)  # F is now a field of order p-1
-```
 
 ### Elliptic Curves
 
@@ -1971,10 +2012,8 @@ We can use **numlib** to get our hands on this curve:
 
 ```pycon
 >>> import numlib as nl
->>>
 >>> p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
 >>> F = nl.Zmodp(p)
->>>
 >>> E = nl.EllCurve(0, F(7))
 >>> E
 y^2 = x^3 + 7 over Z/115792089237316195423570985008687907853269984665640564039457584007908834671663
@@ -2015,9 +2054,6 @@ In *asymmetric cryptography* (or *public-key encryption*)
   * [A gentle intro to ECC](https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/)
   * Neal Koblitz's 1985 paper [Elliptic Curve Cryptosystems](https://www.ams.org/journals/mcom/1987-48-177/S0025-5718-1987-0866109-5/S0025-5718-1987-0866109-5.pdf)
 
-* Potentially relevant
-  * MC Frontalot's [Secrets of the future](https://www.youtube.com/watch?v=FUPstXCqyus)
-
 #### Cryptocurrencies
 * [Chart showing which coins use which flavors of cryptography and curves](http://ethanfast.com/top-crypto.html)
 
@@ -2047,26 +2083,6 @@ In *asymmetric cryptography* (or *public-key encryption*)
   def getprime(nbits):
       """ Return an n-bit prime of type mpz. """
       return gmpy2.next_prime(gmpy2.mpz_rrandomb(randstate, nbits))
-  ```
-  The function **getprime()** generates primes. Let us check that they are roughly n-bits.
-  ```python
-  import math
-
-  for _ in range(10):
-     p = getprime(128)
-     print(f'{p}  approx. bit-length: {math.log2(p)}')
-
-  # output:
-  # 170141183460778792299372374151321878621  approx. bit-length: 127.00000000000263
-  # 340281722954356176270385562639172354083  approx. bit-length: 127.9999972697725
-  # 340282366920938463463374607431768080437  approx. bit-length: 128.0
-  # 340282366920938461102191365996962381853  approx. bit-length: 128.0
-  # 340282366919700523719237132310450012183  approx. bit-length: 127.99999999999476
-  # 329648544222309736707797093892948492193  approx. bit-length: 127.95419631593471
-  # 338953138926372144816642355375684713631  approx. bit-length: 127.99435343686405
-  # 340282366920937254539860835811807199379  approx. bit-length: 128.0
-  # 170141183460470440657506916146035556433  approx. bit-length: 127.00000000000001
-  # 340282366920937292316486855759755210761  approx. bit-length: 128.0
   ```
 * Now suppose that we want to (naively) pick two large primes, set up an RSA
   encryption scheme, and encode the message 98765432123456789.
@@ -2197,9 +2213,12 @@ sudo apt install sagemath
 * [zama](https://zama.ai/concrete/)
 * Google's [FHE](https://github.com/google/fully-homomorphic-encryption)
 
-### Curves
+### Curves related
 * [Safecurves](https://safecurves.cr.yp.to/index.html)
 * [Standard Curve Database](https://neuromancer.sk/std/)
+* [EdDSA]
+   * [RFC 8032](https://datatracker.ietf.org/doc/html/rfc8032)
+   * [on a GPU](https://eprint.iacr.org/2014/198.pdf)
 
 ### More
 * [Cryptol](https://cryptol.net/) A DSL for cryptography that sits on top of Haskell.
