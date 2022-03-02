@@ -39,6 +39,7 @@ III. [Leveraging the intractability integer factorization](#iii-leveraging-the-i
 IV. [Leveraging intractability: discrete logarithms](#iv-leveraging-intractability-discrete-logarithms)
    * [ElGamal encryption](#elgamal-encryption)
    * [Abstract algebraic formulation and complexity](#abstract-algebraic-formulation-and-complexity)
+   * [ElGamal over an elliptic curve](#elgamal-over-an-elliptic-curve)
 
 ### Getting started
 
@@ -135,6 +136,12 @@ One may get help on a command in the interpreter:
       This works as expected for ints, but also with polynomials defined
       over fields.
 ```
+Alternatively, you can get help on your command line:
+```bash
+pydoc numlib.xgcd
+```
+where you may need to put **pydoc3**, depending on your system setup.
+
 To see all objects defined in numlib, type **nl.** and hit the TAB key:
 ```pycon
 >>> nl.
@@ -1615,7 +1622,7 @@ Let us implement the padding scheme recommended in
 [PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
 :warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding scheme involving hashing is discussed below.
 
-The function **RSAencrypt** in the following codeblock implements the encryption protocol in the
+The function **RSAencrypt** in the following code-block implements the encryption protocol in the
 standard except that it outputs the ciphertext in the form of an integer (note that it uses the
 Blum Blum Shub PRBG that we constructed above).  Likewise, the function **RSAdecrypt** takes the
 ciphertext in the form of a positive integer.
@@ -1814,14 +1821,30 @@ into pieces when computing your signature (and send along all the pieces).
     can send you a signed message that you can decode and verify. Did Simmons' message
     and signature verify correctly?
 
+    Here is the function that Simmons used to sign his message:
+    ```python
+    from hashlib import sha256
+    def RSAsign(n, d, message):
+        return RSAencrypt(n, d, sha256(message).digest())
+    ```
+
+    Consider using this function or its equivalent to verify Simmons' message:
+    ```python
+    def RSAverify(n, e, message, signature):
+        return RSAdecrypt(n, e, signature) == sha256(message).digest()
+    ```
+
 18. Using [his RSA public key](#simmonsrsakey), send Simmons an encrypted message that
     you have appropriately signed using your RSA key. The message should be either
     "yes" or "no", whichever is the correct answer to the question Simmons sent to
-    you in problem 17.
+    you in problem 17. (Please use RSAsign above or its equivalent to sign your message.)
 
-19. :hammer: **Project** :hammer: The signing scheme outlined in this section is
-    deterministic. Do we need to pad it? If so, implement a padded version; if not,
-    why not.
+
+Notice that our functions RSAsign and RSAverify in the last two problems use
+padding (since they call our "padded" RSAencrypt and RSAdecrypt).  In fact, a deterministic
+RSA signing protocol would not be as blatantly open to attack as would a deterministic
+RSA encryption scheme since, when signing, there is a hash function between the message and the
+exponentiation. However, the modern RSA protocols do indeed use padding (cf. the next section).
 
 #### Optimal asymmetric encryption padding
 
@@ -1928,22 +1951,21 @@ quickly check if we've found a generator?  More generally, how can we quickly
 compute the order of <img alt="$101\cdot 5^{77}?$" src="svgs/0050672fe4d743f28b48538e1ebd3d53.svg" valign=0.0px width="66.43841159999998pt" height="13.380876299999999pt"/> We know that the order our group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> which happens
 to have some small to middling prime factors and so easily decomposes using any
 factoring algorithm.
-```pycon
->>> import numlib as nl
->>> p=303+2**100-3**100+5**100
->>> nl.factor(p-1)
-[2, 101, 2571953, 289269094313323, 52490897720515368208330287977576768339094101729]
+```python
+import numlib as nl
+p=303+2**100-3**100+5**100
+nl.factor(p-1)  # [2, 101, 2571953, 289269094313323, 52490897720515368208330287977576768339094101729]
 ```
 Now, we know that the order of any element divides <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>.  Using the list in the code
 block we can quickly find all divisors of <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/> and check each in turn, in increasing
 order starting from 2, until we find the order of <img alt="$101\cdot 5^{77}.$" src="svgs/bf0d9e8ca0cde837b6b341efb722382f.svg" valign=0.0px width="63.24204479999999pt" height="13.380876299999999pt"/>  This is exactly what
 numlib's function **mulorder** does:
-```pycon
->>> F = nl.Zmodp(p)  # F is now the group (Z/p)*
->>> g = F(101*5**77) # g is now an element of F
->>> g_order = nl.mulorder(g, exponent = p-1)
->>> g_order == p-1
-True
+```python
+p=303+2**100-3**100+5**100
+F = nl.Zmodp(p)  # F is now the group (Z/p)*
+g = F(101*5**77) # g is now an element of F
+g_order = nl.mulorder(g, exponent = p-1)
+g_order == p-1  # True
 ```
 Technical Notes:
 * Again, since we know that the order of any element divides the order of the group, and
@@ -1951,9 +1973,9 @@ Technical Notes:
   parameter **exponent** since otherwise mulorder would have resorted to brute force which
   would have been painfully slow.
 * Each time one calls mulorder as in the code block above, it has to (re)factor <img alt="$p-1.$" src="svgs/2ad55de588e0025342173e657988d28d.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> Alternatively, if you want to compute the order of more than one element, consider calling the helper function **mulorder_** like this:
-  ```pycon
-  >>> divs = divisors(p-1)  # a list of all divisors greater than 1, in increasing order
-  >>> g_order = nl.mulorder_(g, divs)  # mulorder_ accepts a list of potential orders
+  ```python
+  divs = nl.divisors(p-1)  # a list of all divisors greater than 1, in increasing order
+  g_order = nl.mulorder_(g, divs)  # mulorder_ accepts a list of potential orders
   ```
 
 #### Exercise
@@ -2013,7 +2035,7 @@ byte-strings of length <img alt="$\lfloor\log_{256}(p-1)\rfloor=29$" src="svgs/5
 2. Using the group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/>  and generator <img alt="$g$" src="svgs/3cf4fbd05970446973fc3d9fa3fe3c41.svg" valign=-3.1963502999999895px width="8.430376349999989pt" height="10.2739725pt"/> defined above, you set up the following private and public keys:
    ```python
    import numlib as nl
-   p = 303+2^{100}-3^{100}+5^{100}
+   p = 303+2**100-3**100+5**100
    F = nl.Zmodp(p)
    g = F(101*5**77)
    d = 0x4907b21cad05d4c8fa06b35f0fca7500755116d46124a5ccf9392c9e01
@@ -2091,22 +2113,159 @@ We get the even more encryption bang for our buck if we ramp up in mathematical 
 and use an elliptic curve over finite field, or the jacobian of a hyperelliptic curve over a
 finite field, or the class group of an imaginary quadratic number field.
 
-The complexity optimal discrete log problem algorithm is:
+The complexity of the optimal discrete log problem algorithm is:
 * polynomial time (that is, easy) in <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> with addition,
 * sub-exponential time (hard) in <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> with multiplication,
 * exponential time (much harder) in an elliptic curve.
 
-Note: in some systems the cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> used for encryption is taken to be a subgroup of say
-of a larger group in case the latter is not cyclic.
+Note: in some systems the cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> used for encryption is taken to be a subgroup
+of a larger group in the case that the latter is not cyclic.
 
 ### ElGamal over an elliptic curve
 
-Let us implement ElGamal using [Curve25519](https://en.wikipedia.org/wiki/Curve25519).
+Let us implement ElGamal using and elliptic curve called Wei25519.
 
 This curve can be realized as a [Montgomery curve](https://en.wikipedia.org/wiki/Montgomery_curve)
-with equation <img alt="$y^2=x^3+486662x^2+x$" src="svgs/70b8abcd4fea57adf6922578c3ca682e.svg" valign=-3.1963503000000086px width="170.3728191pt" height="16.5772266pt"/> over the prime field <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> where <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is the prime
-<img alt="$p=2^{255}-19.$" src="svgs/04824a49dfd27066a02979bb736e5efe.svg" valign=-3.1963503000000086px width="99.98278454999998pt" height="16.5772266pt"/>
+called [Curve25519](https://en.wikipedia.org/wiki/Curve25519) with equation
+<img alt="$y^2=x^3+486662x^2+x$" src="svgs/70b8abcd4fea57adf6922578c3ca682e.svg" valign=-3.1963503000000086px width="170.3728191pt" height="16.5772266pt"/> over the prime field <img alt="$\mathbb{F}_p=\mathbb{Z}/p$" src="svgs/0fd6f8bd30ea1fbac9b7e06ec4a6ad96.svg" valign=-4.703173200000008px width="67.01040884999999pt" height="17.031940199999998pt"/> where <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is
+the prime <img alt="$p=2^{255}-19.$" src="svgs/04824a49dfd27066a02979bb736e5efe.svg" valign=-3.1963503000000086px width="99.98278454999998pt" height="16.5772266pt"/> Alternatively, it is isomorphic to the curve with short-Weierstrass
+form <img alt="$y^2 = x^3 + a x +b$" src="svgs/ba688014ce50abf6c701b4b6c66c193f.svg" valign=-3.1963503000000086px width="120.03206489999998pt" height="16.5772266pt"/> where <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> and <img alt="$b$" src="svgs/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg" valign=0.0px width="7.054796099999991pt" height="11.4155283pt"/> are as in the following code-block.
+```python
+import numlib as nl
+# The prime field:
+p = 2**255-19
+F = nl.Zmodp(p)
+# The elliptic curve (note both a and b below are elements of F)
+a = F(0x2aaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaa98_4914a144)
+b = F(0x7b425ed0_97b425ed_097b425e_d097b425_ed097b42_5ed097b4_260b5e9c_7710c864)
+E = nl.EllCurve(a, b)  # E is now Wei25519
+```
+Wei25519 is cyclic but not of prime order.  Its cousin, Curve25519, was engineered
+to have order <img alt="$|E|=hq$" src="svgs/ef574c1e38cbaa36503204697ffa2f1d.svg" valign=-4.109589000000009px width="61.53147659999998pt" height="16.438356pt"/> where <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is small and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> is a prime slightly larger than
+a high power of 2 &mdash; namely, <img alt="$2^{252}.$" src="svgs/6ce6792505b0c7038a5cbed758c272d1.svg" valign=0.0px width="33.264976799999985pt" height="13.380876299999999pt"/> 
 
+For Curve25519 and, hence, Wei25519, <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is 8 and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/>, in hex, is:
+```python
+q = 0x10000000_00000000_00000000_00000000_14def9de_a2f79cd6_5812631a_5cf5d3ed
+```
+Moreover, the subgroup <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> generated by <img alt="$g=(x,y)$" src="svgs/0dc3809cb6187c2cc8872b0da866d4bb.svg" valign=-4.109589000000009px width="68.48349914999999pt" height="16.438356pt"/>, the so-called *basepoint*,
+defined as follows, generates a subgroup of order <img alt="$q:$" src="svgs/e47e51504054ed5f961eac5d99f5aa25.svg" valign=-3.1963502999999895px width="17.06040929999999pt" height="10.2739725pt"/>
+```python
+x = 0x2aaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaad245a
+y = 0x20ae19a1_b8a086b4_e01edd2c_7748d14c_923d4d7e_6d7c61b2_29e9c5a2_7eced3d9
+g = E(x, y)  # g is now a point on the curve E
+nl.addorder(g, q*8) == q  # True
+```
+In cryptography parlance, <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is called the (cofactor); in abstract
+algebraic terms <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is the index of <img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> in <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> (i.e.,
+the number of cosets of <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> modulo <img alt="$G).$" src="svgs/b73fcab182ae94b38ad71f6864f90d94.svg" valign=-4.109589000000009px width="23.88358499999999pt" height="16.438356pt"/>
+
+#### :hammer: Project :hammer:
+
+4. The only reason we are implementing this curve as
+   Wei25519 &mdash; that is, in Weierstrass form &mdash; is that Simmons hasn't
+   yet implemented Montgomery form curves in numlib. Fork
+   [numlib](https://github.com/sj-simmons/numlib), implement Montgomery curves by
+   adding a class
+   [here](https://github.com/sj-simmons/numlib/blob/master/numlib/elliptic_curves.py)
+   similar to the Weierstrass class. (Submit a pull request if you get this working
+   right.)
+
+As an instructive aside, let us explicitly produce some more or less random
+points on the curve Wei25519. We start by uniformly
+choosing at random an <img alt="$x\in \mathbb{Z}/p;$" src="svgs/78a5432ec8ceb44aa22ef3fab6a74f09.svg" valign=-4.109589000000009px width="61.50106709999999pt" height="16.438356pt"/> then we check whether we can pair the selected <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>
+with a <img alt="$y\in\mathbb{Z}/p$" src="svgs/cce65fe1c8703c8e388b1890993e053c.svg" valign=-4.109589000000009px width="56.18906039999998pt" height="16.438356pt"/> so that <img alt="$(x,y)$" src="svgs/7392a8cd69b275fa1798ef94c839d2e0.svg" valign=-4.109589000000009px width="38.135511149999985pt" height="16.438356pt"/> satisfies the equation, <img alt="$y^2 = f(x) = x^3 + a x +b,$" src="svgs/8de1f312cd59e038e5a5058d8c41c872.svg" valign=-4.109589000000009px width="178.51375409999997pt" height="17.4904653pt"/>
+that defines Wei25519.  Simply stated: we pick an random <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>, compute <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> and check
+whether it is a square and, if it is, find <img alt="$y$" src="svgs/deceeaf6940a8c7a5a02373728002b0f.svg" valign=-3.1963502999999895px width="8.649225749999989pt" height="10.2739725pt"/> such that <img alt="$y^2=f(x);$" src="svgs/cbc0b8595bf92fd1bc3e2fff1f9f41c0.svg" valign=-4.109589000000009px width="74.50535564999998pt" height="17.4904653pt"/> then <img alt="$(x,y)$" src="svgs/7392a8cd69b275fa1798ef94c839d2e0.svg" valign=-4.109589000000009px width="38.135511149999985pt" height="16.438356pt"/> is a
+point on the curve.
+
+Modulo an odd prime <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/>, it is easy to determine if a co-prime integer <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is a perfect
+square. There are exactly <img alt="$(p-1)/2$" src="svgs/b377cb544cb88987dc0f15b6c5ea55ef.svg" valign=-4.109589000000009px width="65.80481984999999pt" height="16.438356pt"/> perfect squares <img alt="$\mathbb{Z}/p;$" src="svgs/65b68a09ffad5ee62dfbe529b6e5536a.svg" valign=-4.109589000000009px width="32.014941749999984pt" height="16.438356pt"/> moreover,
+by [Euler's criterion](https://en.wikipedia.org/wiki/Euler%27s_criterion)
+<img alt="$x\in\mathbb{Z}/p$" src="svgs/60bd746a28328fd4023ef5233811e546.svg" valign=-4.109589000000009px width="56.93484224999999pt" height="16.438356pt"/> is a square exactly when <img alt="$x^{\frac{p-1}{2}}= 1.$" src="svgs/1099a6ad140944ba65fc8b2ef9e580e5.svg" valign=0.0px width="69.44288339999999pt" height="16.758061650000002pt"/>
+
+Now, if <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is indeed a square, and if <img alt="$p\equiv 3 \mod 4$" src="svgs/7610e098afc851cb27737a4037fbc446.svg" valign=-3.1963503000000055px width="94.57152869999999pt" height="14.611878599999999pt"/>, then
+<img alt="$x^{\frac{p+1}{4}}$" src="svgs/a96e36f1a95c97c480f6b06e4a6aeefc.svg" valign=0.0px width="31.48872869999999pt" height="16.758061650000002pt"/> is a square root of <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> in <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> since
+
+<p align="center"><img alt="$$\left(x^{\frac{p+1}{4}}\right)^2=x^{\frac{p+1}{2}}=x^{\frac{p-1}{2}+1}=x^{\frac{p-1}{2}}x=x.$$" src="svgs/a744cfecb700d7c962506d95178c430c.svg" valign=0.0px width="292.72590599999995pt" height="32.940961349999995pt"/></p>
+
+However, for our current odd prime, <img alt="$p,$" src="svgs/88dda0f87c1bb00d3c39ce2f369504cf.svg" valign=-3.1963502999999895px width="12.836790449999992pt" height="10.2739725pt"/> the only other case holds:
+```python
+p % 4  # 1
+```
+If <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is a square in <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> and <img alt="$p\equiv 1 \mod 4$" src="svgs/b3b8978930c309dde1dffe5e43047f37.svg" valign=-3.1963503000000055px width="94.57152869999999pt" height="14.611878599999999pt"/>, then one must work a little harder
+to find a square root of <img alt="$x.$" src="svgs/9cccd9efb5240c6813ecebb681085a3b.svg" valign=0.0px width="13.96121264999999pt" height="7.0776222pt"/> See [Booher](#references3) for an algorithm that finds a square
+root while remaining in <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> and for, alternatively, Cipolla's algorithm, which works
+in a quadratic extension of <img alt="$(\mathbb{Z}/p).$" src="svgs/acf98e720532077da710f495d5a0d401.svg" valign=-4.109589000000009px width="44.80037429999999pt" height="16.438356pt"/> As yet another instructive exercise, let us use
+numlib to implement that latter.
+```python
+import numlib as nl
+import polylib as pl
+from random import randint
+
+def sqrt(a, p):
+    """Return a square root of a in Z/p
+
+    Args:
+        a (int): a quadratic residue (i.e., square) modulo p.
+        p (int): an odd prime
+
+    Returns:
+        int. An integer whose square equals a, modulo p.
+    """
+    assert p % 2 == 1 and nl.isprime(p), "p must be an odd prime"
+    assert pow(a, (p-1)//2, p) == 1, "no square root exists"
+
+    if p % 4 == 3:
+        return a**((p+1)//4) % p
+    else:
+        # Cipolla's algorithm:
+        t = randint(0, p-1)
+        while pow(t**2-4*a, (p-1)//2, p) == 1:
+            t = randint(0, p-1)
+        Fp = nl.Zmodp(p)  # Fp = Z/p
+        poly = pl.FPolynomial([Fp(a), Fp(t), Fp(1)]) # a+tx+x^2 in Fp[x]
+        Fp2 = nl.FPmod(poly) # the extension field Fp[x]/<a+tx+x^2>
+        x = Fp2([0, 1])      # the element x in Fp[x]/<a+tx+x^2>
+        sqroot = x**((p+1)//2) # this is constant in Fp[x]/<a+tx+x^2>
+        sqroot = sqroot[0]  # now sqroot is in Fp
+        return int(sqroot)  # return an int
+```
+
+Before we use this to generators:
+
+#### Exercise
+5. What is the likelihood that a randomly chosen point on Wei25519 generates
+   the entire curve?  generates the subgroup of order $q?$ has order 8?
+
+The well-known point given in the standards has order <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/> Let us find a generator
+of the whole curve.
+```python
+p = 2**255-19
+F = nl.Zmodp(p)
+a = F(0x2aaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaa98_4914a144)
+b = F(0x7b425ed0_97b425ed_097b425e_d097b425_ed097b42_5ed097b4_260b5e9c_7710c864)
+E = nl.EllCurve(a, b, debug=True)  # E is now Wei25519
+q = 0x10000000_00000000_00000000_00000000_14def9de_a2f79cd6_5812631a_5cf5d3ed
+
+def point(order):
+    """return a point of the given order"""
+    find_order = q*8
+    order = -1
+    while order != find_order:
+        x = randint(0, p-1)
+        fx = int(E.f(x))
+        if pow(fx, (p-1)//2, p) == 1:
+            y = sqrt(fx, p)
+            pt = E(x, y)
+            order = nl.addorder(pt, q*8)
+    return pt
+
+pt = point(q*8)  # pt is now a generator of E
+print(hex(pt.co[0]), hex(pt.co[1]))
+```
+#### Exercise
+6. Find a point on Wei25519 that has order 8. Hint: first find a generator of <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/>; the  modify that.
 
 <p align="right">  <a href="#contents"> contents </a></p>
 
@@ -2150,10 +2309,13 @@ order.
 [0: 1: 0]
 ```
 
+<a id="references3">
+
 #### References
 
 * Neal Koblitz, [Elliptic Curve Cryptosystems](https://www.ams.org/journals/mcom/1987-48-177/S0025-5718-1987-0866109-5/), 1985.
 * Stuik's [Alternative Elliptic Curve Representations](https://tools.ietf.org/id/draft-struik-lwip-curve-representations-00.html)
+* Jeremy Booher, [Square roots in finite fields and quadratic nonresidues](https://www.math.canterbury.ac.nz/~j.booher/expos/sqr_qnr.pdf), 2012.
 
 <!--
 ## Cryptographic primitives
