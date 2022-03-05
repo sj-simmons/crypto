@@ -2119,7 +2119,8 @@ The complexity of the optimal discrete log problem algorithm is:
 * exponential time (much harder) in an elliptic curve.
 
 Note: in some systems the cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> used for encryption is taken to be a subgroup
-of a larger group in the case that the latter is not cyclic.
+of a larger group in the case that the latter is not cyclic, or in the case the larger
+group is cyclic but admits smallish subgroups.
 
 ### ElGamal over an elliptic curve
 
@@ -2160,18 +2161,26 @@ In cryptography parlance, <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551ada
 algebraic terms <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is the index of <img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> in <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> (i.e.,
 the number of cosets of <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> modulo <img alt="$G).$" src="svgs/b73fcab182ae94b38ad71f6864f90d94.svg" valign=-4.109589000000009px width="23.88358499999999pt" height="16.438356pt"/>
 
+In numlib, as in most any elliptic curve implementation in a language that allows
+overriding arithmetic operators (e,g., Python or C++), the group operation is
+realized additively. So, for points <img alt="$P$" src="svgs/df5a289587a2f0247a5b97c1e8ac58ca.svg" valign=0.0px width="12.83677559999999pt" height="11.232861749999998pt"/> and <img alt="$Q$" src="svgs/1afcdb0f704394b16fe85fb40c45ca7a.svg" valign=-3.196350299999991px width="12.99542474999999pt" height="14.42921205pt"/> on the curve, one would write <img alt="$P+Q,$" src="svgs/3a8660837bae038be6d6295b5ad8721d.svg" valign=-3.196350299999991px width="50.48961224999999pt" height="14.42921205pt"/>
+or say <img alt="$100\cdot P;$" src="svgs/dc0d4c15c7c18cf24de5e6dce5708e0c.svg" valign=-3.196350299999991px width="53.93260619999998pt" height="14.42921205pt"/> the inverse of <img alt="$P$" src="svgs/df5a289587a2f0247a5b97c1e8ac58ca.svg" valign=0.0px width="12.83677559999999pt" height="11.232861749999998pt"/> is <img alt="$-P.$" src="svgs/7d9a2307e724e91db7525d4e8aadf953.svg" valign=-1.369874549999991px width="28.36191434999999pt" height="12.6027363pt"/> The discrete
+log problem looks like this additively: given <img alt="$Q=x\cdot P,$" src="svgs/42c87bdf552c2fbecd580e64b54e55d7.svg" valign=-3.196350299999991px width="71.7565068pt" height="14.42921205pt"/> find the integer <img alt="$x.$" src="svgs/9cccd9efb5240c6813ecebb681085a3b.svg" valign=0.0px width="13.96121264999999pt" height="7.0776222pt"/>
+
 #### :hammer: Project :hammer:
 
-4. The only reason we are implementing this curve as
+4. The reason we are implementing this curve as
    Wei25519 &mdash; that is, in Weierstrass form &mdash; is that Simmons hasn't
-   yet implemented Montgomery form curves in numlib. Fork
-   [numlib](https://github.com/sj-simmons/numlib), implement Montgomery curves by
+   yet implemented Montgomery form curves in numlib.  To maximize performance,
+   an implementation of the Montgomery curve version is preferred.
+
+   Fork [numlib](https://github.com/sj-simmons/numlib), implement Montgomery curves by
    adding a class
    [here](https://github.com/sj-simmons/numlib/blob/master/numlib/elliptic_curves.py)
    similar to the Weierstrass class. (Submit a pull request if you get this working
    right.)
 
-As an instructive aside, let us explicitly produce some more or less random
+Let us explicitly produce some more or less random
 points on the curve Wei25519. We start by uniformly
 choosing at random an <img alt="$x\in \mathbb{Z}/p;$" src="svgs/78a5432ec8ceb44aa22ef3fab6a74f09.svg" valign=-4.109589000000009px width="61.50106709999999pt" height="16.438356pt"/> then we check whether we can pair the selected <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>
 with a <img alt="$y\in\mathbb{Z}/p$" src="svgs/cce65fe1c8703c8e388b1890993e053c.svg" valign=-4.109589000000009px width="56.18906039999998pt" height="16.438356pt"/> so that <img alt="$(x,y)$" src="svgs/7392a8cd69b275fa1798ef94c839d2e0.svg" valign=-4.109589000000009px width="38.135511149999985pt" height="16.438356pt"/> satisfies the equation, <img alt="$y^2 = f(x) = x^3 + a x +b,$" src="svgs/8de1f312cd59e038e5a5058d8c41c872.svg" valign=-4.109589000000009px width="178.51375409999997pt" height="17.4904653pt"/>
@@ -2232,14 +2241,13 @@ def sqrt(a, p):
         return int(sqroot)  # return an int
 ```
 
-Before we use this to generators:
+Before we use this to find a generator of Wei25519:
 
 #### Exercise
-5. What is the likelihood that a randomly chosen point on Wei25519 generates
-   the entire curve?  generates the subgroup of order $q?$ has order 8?
+5. What is the likelihood that a randomly chosen point on Wei25519 generates the entire curve?  generates the subgroup of order <img alt="$q?$" src="svgs/b682918429c04844ba596497e9c5ca61.svg" valign=-3.1963503000000055px width="15.69067829999999pt" height="14.611878599999999pt"/> has order 8?
 
-The well-known point given in the standards has order <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/> Let us find a generator
-of the whole curve.
+The well-known point given in the standards that is used for cryptographical purposes has order <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/>
+Let us use our implementation of Cipolla's algorithm to find a generator of the whole curve.
 ```python
 p = 2**255-19
 F = nl.Zmodp(p)
@@ -2265,7 +2273,47 @@ pt = point(q*8)  # pt is now a generator of E
 print(hex(pt.co[0]), hex(pt.co[1]))
 ```
 #### Exercise
-6. Find a point on Wei25519 that has order 8. Hint: first find a generator of <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/>; the  modify that.
+6. Find a point on Wei25519 that has order 8. Hint: first find a generator of <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/>; then  modify that.
+
+Finally, let test us drive ElGamal encryption on Wei25519.  We don't want to use the whole curve since
+it has some small subgroups. Let us use the subgroup of order <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> with the well-known generator <img alt="$g,$" src="svgs/34a5e0267da1d722f0aa361fafc47931.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/>
+mentioned above.
+```
+x = 0x2aaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaad245a
+y = 0x20ae19a1_b8a086b4_e01edd2c_7748d14c_923d4d7e_6d7c61b2_29e9c5a2_7eced3d9
+g = E(x, y)
+```
+We have everything we need except for a way to embed human-readable messages. For ElGamal encryption
+the message space is the ambient cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> in which the encryption takes place which for us
+is currently the large cyclic subgroup of our curve <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> of order <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/> We want a fast way to map
+byte-strings to and from elements of <img alt="$G\subset E.$" src="svgs/f94ef81ce364c14409371296cf67e3bd.svg" valign=-0.6427030499999906px width="52.490676149999985pt" height="11.8755648pt"/>
+
+The <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>-coordinate of a generic point on the <img alt="$E$" src="svgs/84df98c65d88c6adf15d4645ffa25e47.svg" valign=0.0px width="13.08219659999999pt" height="11.232861749999998pt"/> is an element is an element of <img alt="$\mathbb{Z}/p.$" src="svgs/62cd3ae2cb973630fe60c1b010f2057e.svg" valign=-4.109589000000009px width="32.014941749999984pt" height="16.438356pt"/> To
+embed a byte-string, we could, as usual, use OS2IP to get an element of <img alt="$\mathbb{Z}/p.$" src="svgs/62cd3ae2cb973630fe60c1b010f2057e.svg" valign=-4.109589000000009px width="32.014941749999984pt" height="16.438356pt"/>
+A potential issue is that not every element of <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> occurs as the <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>-coordinate of
+a point on our curve. We need a probabilistic scheme.
+
+Here's one way embed byte-strings into Wei25519 using OS2IP with
+<img alt="$xLen = \lfloor 2^255-19 \rfloor -1 = 30.$" src="svgs/303afde9f227fb545255715f0a74f2b5.svg" valign=-4.109589000000009px width="214.42715744999998pt" height="17.4904653pt"/> Let <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> denote (a chunk of)
+our message in byte-string form. Let <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> be the cubic in <img alt="$y^2 = f(x)$" src="svgs/4671c85415f86bbb4ef8bfd4b0f484ec.svg" valign=-4.109589000000009px width="69.93913079999999pt" height="17.4904653pt"/> that defines Wei25519.
+Also, **sqrt** in step 4 below refers to our function above the implements Cipolla's algorithm.
+
+1. Set <img alt="$i = 0.$" src="svgs/a2fa5a8034c977e540f8a6661f8eac59.svg" valign=0.0px width="40.36628969999999pt" height="10.84150485pt"/>
+2. Compute <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> = OS2IP(<img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/>+bytes(<img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.svg" valign=0.0px width="5.663225699999989pt" height="10.84150485pt"/>)) &mdash; here we append a single byte to <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> before applying OS2IP.
+3. Compute <img alt="$f(x).$" src="svgs/b9a2b0716bafb328e9ab3e48ce228ef1.svg" valign=-4.109589000000009px width="36.56405774999999pt" height="16.438356pt"/> If <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> is a quadratic residue modulo <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> (i.e., a square) go to step 4; otherwise, set <img alt="$i= i+1$" src="svgs/198d8ec27890c1c0cd7f02170a29df40.svg" valign=-1.369874550000004px width="61.55448419999999pt" height="12.211379399999998pt"/> and go to step 2.
+4. Set <img alt="$y=$" src="svgs/913f363cb19ad483cd0272500cb65dd3.svg" valign=-3.1963502999999895px width="26.00073794999999pt" height="10.2739725pt"/>sqrt<img alt="$(f(x)).$" src="svgs/5ce8af9064f072fc0634801d0d545519.svg" valign=-4.109589000000009px width="49.34949194999999pt" height="16.438356pt"/>
+5. Return <img alt="$m=(x,y)$" src="svgs/b179ac81e609c1a77b57951a46d6b65e.svg" valign=-4.109589000000009px width="74.48624204999999pt" height="16.438356pt"/> which is our encoded message in the form of a point on Wei25519.
+
+
+#### Exercise
+
+<a id="references3">
+
+#### References
+
+* Neal Koblitz, [Elliptic Curve Cryptosystems](https://www.ams.org/journals/mcom/1987-48-177/S0025-5718-1987-0866109-5/), 1985.
+* Stuik's [Alternative Elliptic Curve Representations](https://tools.ietf.org/id/draft-struik-lwip-curve-representations-00.html)
+* Jeremy Booher, [Square roots in finite fields and quadratic nonresidues](https://www.math.canterbury.ac.nz/~j.booher/expos/sqr_qnr.pdf), 2012.
 
 <p align="right">  <a href="#contents"> contents </a></p>
 
@@ -2309,13 +2357,6 @@ order.
 [0: 1: 0]
 ```
 
-<a id="references3">
-
-#### References
-
-* Neal Koblitz, [Elliptic Curve Cryptosystems](https://www.ams.org/journals/mcom/1987-48-177/S0025-5718-1987-0866109-5/), 1985.
-* Stuik's [Alternative Elliptic Curve Representations](https://tools.ietf.org/id/draft-struik-lwip-curve-representations-00.html)
-* Jeremy Booher, [Square roots in finite fields and quadratic nonresidues](https://www.math.canterbury.ac.nz/~j.booher/expos/sqr_qnr.pdf), 2012.
 
 <!--
 ## Cryptographic primitives
