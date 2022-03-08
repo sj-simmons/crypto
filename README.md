@@ -40,6 +40,7 @@ IV. [Leveraging intractability: discrete logarithms](#iv-leveraging-intractabili
    * [ElGamal encryption](#elgamal-encryption)
    * [Abstract algebraic formulation and complexity](#abstract-algebraic-formulation-and-complexity)
    * [ElGamal over an elliptic curve](#elgamal-over-an-elliptic-curve)
+   * [Diffie-Hellman key exchange](#diffie-hellman-key-exchange)
 
 ### Getting started
 
@@ -142,7 +143,8 @@ pydoc numlib.xgcd
 ```
 where you may need to put **pydoc3**, depending on your system setup.
 
-To see all objects defined in numlib, type **nl.** and hit the TAB key:
+To see all objects defined in numlib, start the Python interpreter,
+type **nl.** and then hit the TAB key:
 ```pycon
 >>> nl.
 nl.EllCurve(        nl.addorder_(       nl.gcd(             nl.mulorder(        nl.truemu(
@@ -153,7 +155,7 @@ nl.Zmod(            nl.elliptic_curves  nl.lcm(             nl.serialize(       
 nl.Zmodp(           nl.factor(          nl.leastdivisor(    nl.sieve(
 nl.addorder(        nl.factorPR(        nl.mu(              nl.squareroot(
 ```
-In what follows, tutorials on basic usage are broken out as the need for a tool arises.
+In what follows, tutorials on basic usage of a tool are broken out as the need for that tool arises.
 
 ### Pseudo-random sequences
 
@@ -1680,15 +1682,15 @@ def RSAdecrypt(n, d, ciphertext):
 
     # strip away the padding
     error = False
-    if message[0] != 0:
+    if len(message) == 0 or message[0] != 0:
         error = True
     message = message[1:]
-    if message[0] != 2:
+    if len(message) == 0 or message[0] != 2:
         error = True
     message = message[1:]
-    while message[0] != 0:
+    while len(message) > 0 and message[0] != 0:
         message = message[1:]
-    if message[0] != 0:
+    if len(message) == 0 or message[0] != 0:
         error = True
     message = message[1:]
 
@@ -1936,7 +1938,7 @@ is: given <img alt="$h\in G,$" src="svgs/0ba7508d8c5c56d3b8c9cd58384cb930.svg" v
 The obvious brute force algorithm for solving the discrete log problem &mdash;
 trying <img alt="$x = 1, 2, \ldots$" src="svgs/18c4a2fc6dceab120e649b2fb99db6b8.svg" valign=-3.196350299999994px width="81.54079395pt" height="13.789957499999998pt"/> until <img alt="$g^x=h$" src="svgs/55bf4011513de244655938e23c1db22b.svg" valign=-3.1963503000000055px width="48.09536984999999pt" height="14.611878599999999pt"/>  &mdash; takes <img alt="$O(n)$" src="svgs/1f08ccc9cd7309ba1e756c3d9345ad9f.svg" valign=-4.109589000000009px width="35.64773519999999pt" height="16.438356pt"/> multiplications where <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is
 the order of <img alt="$g$" src="svgs/3cf4fbd05970446973fc3d9fa3fe3c41.svg" valign=-3.1963502999999895px width="8.430376349999989pt" height="10.2739725pt"/> and is therefore infeasible if <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is large.
-Meanwhile, the best algorithm for solving the discrete log problem, over generic
+Meanwhile, the best algorithm for solving the discrete log problem over generic
 cyclic groups <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> of order <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> uses <img alt="$O(\sqrt{n})$" src="svgs/aea3a2d1b6dea2f0a1568ec4cb4269ad.svg" valign=-4.109588999999997px width="49.34640644999999pt" height="16.607258249999997pt"/> group multiplications &mdash; still
 intractable for large enough <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
 
@@ -1953,15 +1955,15 @@ to have some small to middling prime factors and so easily decomposes using any
 factoring algorithm.
 ```python
 import numlib as nl
-p=303+2**100-3**100+5**100
+p = 303+2**100-3**100+5**100
 nl.factor(p-1)  # [2, 101, 2571953, 289269094313323, 52490897720515368208330287977576768339094101729]
 ```
-Now, we know that the order of any element divides <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>.  Using the list in the code
-block we can quickly find all divisors of <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/> and check each in turn, in increasing
+Now, we know that the order of any element of <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> must divide <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/>.  Using the
+list in the code block we can quickly find all divisors of <img alt="$p-1$" src="svgs/585cf0d6605a58bb5df9e272ae37244a.svg" valign=-3.196350299999994px width="36.58096694999999pt" height="13.789957499999998pt"/> and check each in turn, in increasing
 order starting from 2, until we find the order of <img alt="$101\cdot 5^{77}.$" src="svgs/bf0d9e8ca0cde837b6b341efb722382f.svg" valign=0.0px width="63.24204479999999pt" height="13.380876299999999pt"/>  This is exactly what
 numlib's function **mulorder** does:
 ```python
-p=303+2**100-3**100+5**100
+p = 303+2**100-3**100+5**100
 F = nl.Zmodp(p)  # F is now the group (Z/p)*
 g = F(101*5**77) # g is now an element of F
 g_order = nl.mulorder(g, exponent = p-1)
@@ -1980,21 +1982,22 @@ Technical Notes:
 
 #### Exercise
 
-1. With <img alt="$p = 303+2^{100}-3^{100}+5^{100}$" src="svgs/de8807f55ec1b41501f8c727c96cd351.svg" valign=-3.1963503000000086px width="200.39375565pt" height="16.5772266pt"/>, compute the probability that a uniformly randomly chosen element of <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> is a generator.
+1. With <img alt="$p = 303+2^{100}-3^{100}+5^{100}$" src="svgs/de8807f55ec1b41501f8c727c96cd351.svg" valign=-3.1963503000000086px width="200.39375565pt" height="16.5772266pt"/>, compute the probability that a uniformly randomly chosen element of <img alt="$(\mathbb{Z}/p)^*$" src="svgs/aefaead8ac34b3adac463c51a575eee4.svg" valign=-4.109589000000009px width="46.96934549999999pt" height="16.438356pt"/> is a generator.  :heavy_check_mark: **Marina, and Alvaro, who computed this in class.**
 
 
 ### ElGamal encryption
 
 So, if <img alt="$p = 303+2^{100}-3^{100}+5^{100},$" src="svgs/1b297fc6b8d56cb07f03baefbffc7b60.svg" valign=-3.1963503000000086px width="205.78188344999998pt" height="16.5772266pt"/> then <img alt="$g = 101\cdot 5^{77}$" src="svgs/6f573fe7668b354708639d74a1e1375d.svg" valign=-3.1963503000000086px width="88.20190169999998pt" height="16.5772266pt"/> is a generator of
 <img alt="$G=(\mathbb{Z}/p)^*.$" src="svgs/2518d400562631d8397fd611eeb3270e.svg" valign=-4.109589000000009px width="87.19973789999999pt" height="16.438356pt"/> How can we use the intractability of the discrete log problem for
-<img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> to set up a public-key encryption protocol? (Note: <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> here
-is a 233-bit prime, so <img alt="$\sqrt{n}$" src="svgs/4fd78aba72015f7697ab298a89ec8a9c.svg" valign=-3.940686749999999px width="23.565549149999992pt" height="16.438356pt"/> is well over 100 bits.)
+<img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> to set up a public-key encryption protocol? Note: <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> here
+is a 233-bit prime so that the (currently optimal) number of multiplications required
+to solve a discrete log problem in <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> is of order <img alt="$\sqrt{p-1},$" src="svgs/019257529d169d4984cc8fe5c84abb02.svg" valign=-3.7808578499999896px width="54.84583169999999pt" height="16.438356pt"/> a number well beyond <img alt="$2^{100}.$" src="svgs/465a45149f588e5dd597dae2faa28f8f.svg" valign=0.0px width="33.264976799999985pt" height="13.380876299999999pt"/>
 
 [ElGamal encryption](https://en.wikipedia.org/wiki/ElGamal_encryption)
 is a public-key scheme that works over any finite cyclic group <img alt="$G.$" src="svgs/e1cceaa699790e2e9b0a14a958434239.svg" valign=0.0px width="17.49086789999999pt" height="11.232861749999998pt"/> Let <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> denote the order (cardinality)
 of <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> and let <img alt="$g\in G$" src="svgs/ebc6f9fefaeb3eabf7a11d5c7bb4e6a9.svg" valign=-3.196350299999991px width="41.44613879999999pt" height="14.42921205pt"/> be a generator. In the following description of the ElGamal
 protocol, we use the notation of a multiplicative group.
-The ambient system in which the protocol takes place is <img alt="$\{G, g\}$" src="svgs/f43eff494d4c94adc1ffa00d38b39251.svg" valign=-4.109589000000009px width="45.09930314999999pt" height="16.438356pt"/> which is assumed
+The ambient system in which the protocol takes place is <img alt="$\{G, g, n\}$" src="svgs/aa3b1d6eee2297a4b62305f3cd94e674.svg" valign=-4.109589000000009px width="62.27206259999999pt" height="16.438356pt"/> which is assumed
 to be known by all parties.
 
 Suppose that you want to receive and decrypt private messages. To generate your public
@@ -2084,7 +2087,7 @@ in <img alt="$\mathbb{Z}/n.$" src="svgs/b2db6c8686053451d402312789bf8098.svg" va
 to <img alt="$ax = b;$" src="svgs/89d7997bfc3f835899e82d54d91b9509.svg" valign=-3.1963503000000055px width="51.62279264999999pt" height="14.611878599999999pt"/> it's just <img alt="$x = a^{-1} b$" src="svgs/eb9f6b62b93bae9e343e7294e50baec0.svg" valign=0.0px width="64.70502719999999pt" height="13.380876299999999pt"/>.  In practice, we of course use the Euclidean algorithm to
 (multiplicatively) invert <img alt="$a.$" src="svgs/b14a01741ea4066baa685453531610d9.svg" valign=0.0px width="13.25537729999999pt" height="7.0776222pt"/>
 
-Now, let <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> be any finite cyclic group.  Then <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> is isomorphic to a <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> where <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is
+Now, let <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> be any finite cyclic group.  Then <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> is isomorphic to <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> where <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is
 the order of <img alt="$G.$" src="svgs/e1cceaa699790e2e9b0a14a958434239.svg" valign=0.0px width="17.49086789999999pt" height="11.232861749999998pt"/>  How is it that we cannot simply solve a particular discrete log in <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> by
 mapping to <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/>, solving it there, and mapping back?
 
@@ -2100,12 +2103,12 @@ choice of generator.  In fact, one has the usual change of base formula,
 
 <p align="center"><img alt="$$\log_{g_1}x = \log_{g_1}g_2 \cdot \log_{g_2}x,$$" src="svgs/72a3f83803814d251ca2805ead8c7ea7.svg" valign=0.0px width="185.23040084999997pt" height="17.67121125pt"/></p>
 
-where <img alt="$g_1$" src="svgs/a50c3a6cce0c5b640cc5bef1d62b99bd.svg" valign=-3.1963502999999895px width="14.393129849999989pt" height="10.2739725pt"/> and <img alt="$g_2$" src="svgs/3a0999540a345758e8259a30f523c1c9.svg" valign=-3.1963502999999895px width="14.393129849999989pt" height="10.2739725pt"/> are both generators; so that, once on computes <img alt="$\log_{g_1}g_2,$" src="svgs/595531b6a66d60a257c7603e1e50ca85.svg" valign=-6.255682950000006px width="57.40444874999999pt" height="17.67121125pt"/> solving
+where <img alt="$g_1$" src="svgs/a50c3a6cce0c5b640cc5bef1d62b99bd.svg" valign=-3.1963502999999895px width="14.393129849999989pt" height="10.2739725pt"/> and <img alt="$g_2$" src="svgs/3a0999540a345758e8259a30f523c1c9.svg" valign=-3.1963502999999895px width="14.393129849999989pt" height="10.2739725pt"/> are both generators; so that, once one computes <img alt="$\log_{g_1}g_2,$" src="svgs/595531b6a66d60a257c7603e1e50ca85.svg" valign=-6.255682950000006px width="57.40444874999999pt" height="17.67121125pt"/> solving
  <img alt="$h = \log_{g_1}x$" src="svgs/affcdb988048d6cd9fb2c63e469762d6.svg" valign=-6.255682950000006px width="78.40691594999998pt" height="17.67121125pt"/> is exactly as hard as solving <img alt="$h = \log_{g_2}x.$" src="svgs/be64356c55dd094e8af478ebb31ed378.svg" valign=-6.255682950000006px width="82.97313915pt" height="17.67121125pt"/>
 
 The ElGamal encryption scheme works over any cyclic group. However, to guarantee security
 in practice, one wants a group for which the discrete log problem is computationally infeasible
-but whose binary operations admits efficient implementation.
+but whose binary operation admits efficient implementation.
 
 As above, we can use the multiplicative group of units in <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> or, more generally,
 <img alt="$(\mathbb{Z}/q)^*$" src="svgs/264a92788babc1caf5fc3d20d89796f8.svg" valign=-4.109589000000009px width="46.626864899999994pt" height="16.438356pt"/> where <img alt="$q=p^n$" src="svgs/a45d222501990a73ef2943bc648355e0.svg" valign=-3.1963519500000044px width="46.24230764999999pt" height="14.116037099999998pt"/> is a power of a prime.  Some finite fields are better than others.
@@ -2118,9 +2121,13 @@ The complexity of the optimal discrete log problem algorithm is:
 * sub-exponential time (hard) in <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> with multiplication,
 * exponential time (much harder) in an elliptic curve.
 
-Note: in some systems the cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> used for encryption is taken to be a subgroup
+(The best known classical &mdash; non-quantum &mdash; algorithm for factoring integers, the
+[general number field sieve](https://en.wikipedia.org/wiki/General_number_field_sieve), runs in
+[sub-exponential](https://en.wikipedia.org/wiki/Time_complexity#Sub-exponential_time) time.)
+
+In some systems the cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> used for encryption is taken to be a subgroup
 of a larger group in the case that the latter is not cyclic, or in the case the larger
-group is cyclic but admits smallish subgroups.
+group is cyclic but admits small subgroups.
 
 ### ElGamal over an elliptic curve
 
@@ -2154,7 +2161,7 @@ Moreover, the order-<img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.sv
 ```python
 x = 0x2aaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaaaaaaa_aaad245a
 y = 0x20ae19a1_b8a086b4_e01edd2c_7748d14c_923d4d7e_6d7c61b2_29e9c5a2_7eced3d9
-Q = E(x, y)  # g is now a point on the curve E
+Q = E(x, y)  # Q is now a point on the curve E
 nl.addorder(Q, q*8) == q  # True
 ```
 In cryptography parlance, <img alt="$h$" src="svgs/2ad9d098b937e46f9f58968551adac57.svg" valign=0.0px width="9.47111549999999pt" height="11.4155283pt"/> is called the (cofactor); in abstract
@@ -2169,12 +2176,18 @@ log problem looks like this additively: given <img alt="$P=x\cdot Q,$" src="svgs
 Also, notice the use of numlib's **addorder** (additive order) in the previous code-block as
 opposed to the mulorder that we've used before in groups implemented multiplicatively.
 
-#### :hammer: Project :hammer:
+#### :hammer: Projects :hammer:
 
 4. The reason we are implementing this curve as
    Wei25519 &mdash; that is, in Weierstrass form &mdash; is that Simmons hasn't
-   yet implemented Montgomery form curves in numlib.  To maximize performance,
-   an implementation of the Montgomery curve version is preferred.
+   yet implemented Montgomery form curves in numlib.
+
+   All Montgomery curves can be converted to Weierstrass form but not vice-versa:
+   not all Weierstrass curves can be converted to Montgomery form.  Montgomery curves
+   (and Edwards curves) admit the Montgomery ladder method for
+   [point multiplication](https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication)
+   that is constant-time &mdash; and so (partially) bars against timing attacks &mdash;
+   and faster than the usual point multiplication on Weierstrass curves.
 
    Fork [numlib](https://github.com/sj-simmons/numlib), implement Montgomery curves by
    adding a class
@@ -2182,27 +2195,30 @@ opposed to the mulorder that we've used before in groups implemented multiplicat
    similar to the Weierstrass class. (Submit a pull request if you get this working
    right.)
 
-Let us explicitly produce some more or less random
-points on the curve Wei25519. We start by uniformly
+   A well-known reference for implementing optimized version of the EC group law on
+   Montgomery and Edwards curve this [Berstein, Lange](#references3) paper; see also
+   [Costello, Smith](#references3).
+
+Let us explicitly produce some more or less random points on the curve Wei25519. We start by uniformly
 choosing at random an <img alt="$x\in \mathbb{Z}/p;$" src="svgs/78a5432ec8ceb44aa22ef3fab6a74f09.svg" valign=-4.109589000000009px width="61.50106709999999pt" height="16.438356pt"/> then we check whether we can pair the selected <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>
 with a <img alt="$y\in\mathbb{Z}/p$" src="svgs/cce65fe1c8703c8e388b1890993e053c.svg" valign=-4.109589000000009px width="56.18906039999998pt" height="16.438356pt"/> so that <img alt="$(x,y)$" src="svgs/7392a8cd69b275fa1798ef94c839d2e0.svg" valign=-4.109589000000009px width="38.135511149999985pt" height="16.438356pt"/> satisfies the equation, <img alt="$y^2 = f(x) = x^3 + a x +b,$" src="svgs/8de1f312cd59e038e5a5058d8c41c872.svg" valign=-4.109589000000009px width="178.51375409999997pt" height="17.4904653pt"/>
-that defines Wei25519.  Simply stated: we pick an random <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>, compute <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> and check
+that defines Wei25519.  Simply stated: we pick a random <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/>, compute <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> and check
 whether it is a square and, if it is, find <img alt="$y$" src="svgs/deceeaf6940a8c7a5a02373728002b0f.svg" valign=-3.1963502999999895px width="8.649225749999989pt" height="10.2739725pt"/> such that <img alt="$y^2=f(x);$" src="svgs/cbc0b8595bf92fd1bc3e2fff1f9f41c0.svg" valign=-4.109589000000009px width="74.50535564999998pt" height="17.4904653pt"/> then <img alt="$(x,y)$" src="svgs/7392a8cd69b275fa1798ef94c839d2e0.svg" valign=-4.109589000000009px width="38.135511149999985pt" height="16.438356pt"/> is a
 point on the curve.
 
 Modulo an odd prime <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/>, it is easy to determine if a co-prime integer <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is a perfect
 square. There are exactly <img alt="$(p-1)/2$" src="svgs/b377cb544cb88987dc0f15b6c5ea55ef.svg" valign=-4.109589000000009px width="65.80481984999999pt" height="16.438356pt"/> perfect squares <img alt="$\mathbb{Z}/p;$" src="svgs/65b68a09ffad5ee62dfbe529b6e5536a.svg" valign=-4.109589000000009px width="32.014941749999984pt" height="16.438356pt"/> moreover,
 by [Euler's criterion](https://en.wikipedia.org/wiki/Euler%27s_criterion)
-<img alt="$x\in\mathbb{Z}/p$" src="svgs/60bd746a28328fd4023ef5233811e546.svg" valign=-4.109589000000009px width="56.93484224999999pt" height="16.438356pt"/> is a square exactly when <img alt="$x^{\frac{p-1}{2}}= 1.$" src="svgs/1099a6ad140944ba65fc8b2ef9e580e5.svg" valign=0.0px width="69.44288339999999pt" height="16.758061650000002pt"/>
+<img alt="$x\in(\mathbb{Z}/p)^*$" src="svgs/eb790af23e3d761b00437077d08019dc.svg" valign=-4.109589000000009px width="76.45547084999998pt" height="16.438356pt"/> is a square exactly when <img alt="$x^{\frac{p-1}{2}}= 1.$" src="svgs/1099a6ad140944ba65fc8b2ef9e580e5.svg" valign=0.0px width="69.44288339999999pt" height="16.758061650000002pt"/>
 
-Now, if <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is indeed a square, and if <img alt="$p\equiv 3 \mod 4$" src="svgs/7610e098afc851cb27737a4037fbc446.svg" valign=-3.1963503000000055px width="94.57152869999999pt" height="14.611878599999999pt"/>, then
+Now, if <img alt="$x\in\mathbb{Z}/p$" src="svgs/60bd746a28328fd4023ef5233811e546.svg" valign=-4.109589000000009px width="56.93484224999999pt" height="16.438356pt"/> where <img alt="$p\equiv 3 \mod 4$" src="svgs/7610e098afc851cb27737a4037fbc446.svg" valign=-3.1963503000000055px width="94.57152869999999pt" height="14.611878599999999pt"/> is indeed a square, then
 <img alt="$x^{\frac{p+1}{4}}$" src="svgs/a96e36f1a95c97c480f6b06e4a6aeefc.svg" valign=0.0px width="31.48872869999999pt" height="16.758061650000002pt"/> is a square root of <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> in <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> since
 
 <p align="center"><img alt="$$\left(x^{\frac{p+1}{4}}\right)^2=x^{\frac{p+1}{2}}=x^{\frac{p-1}{2}+1}=x^{\frac{p-1}{2}}x=x.$$" src="svgs/a744cfecb700d7c962506d95178c430c.svg" valign=0.0px width="292.72590599999995pt" height="32.940961349999995pt"/></p>
 
 However, for our current odd prime, <img alt="$p,$" src="svgs/88dda0f87c1bb00d3c39ce2f369504cf.svg" valign=-3.1963502999999895px width="12.836790449999992pt" height="10.2739725pt"/> the only other case holds:
 ```python
-p % 4  # 1
+p % 4 == 1  # True
 ```
 If <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> is a square in <img alt="$\mathbb{Z}/p$" src="svgs/73c9c321abfaf561fdbde1304ada12c1.svg" valign=-4.109589000000009px width="27.448716899999987pt" height="16.438356pt"/> and <img alt="$p\equiv 1 \mod 4$" src="svgs/b3b8978930c309dde1dffe5e43047f37.svg" valign=-3.1963503000000055px width="94.57152869999999pt" height="14.611878599999999pt"/>, then one must work a little harder
 to find a square root of <img alt="$x.$" src="svgs/9cccd9efb5240c6813ecebb681085a3b.svg" valign=0.0px width="13.96121264999999pt" height="7.0776222pt"/> See [Booher](#references3) for an algorithm that finds a square
@@ -2232,7 +2248,7 @@ def sqrt(a, p):
     else:
         # Cipolla's algorithm:
         t = randint(0, p-1)
-        while pow(t**2-4*a, (p-1)//2, p) == 1:
+        while pow(t**2-4*a, (p-1)//2, p) != p-1:
             t = randint(0, p-1)
         Fp = nl.Zmodp(p)  # Fp = Z/p
         poly = pl.FPolynomial([Fp(a), Fp(t), Fp(1)]) # a+tx+x^2 in Fp[x]
@@ -2260,15 +2276,14 @@ q = 0x10000000_00000000_00000000_00000000_14def9de_a2f79cd6_5812631a_5cf5d3ed
 
 def point(order):
     """return a point of the given order"""
-    find_order = q*8
-    order = -1
-    while order != find_order:
+    found_order = -1
+    while found_order != order:
         x = randint(0, p-1)
         fx = int(E.f(x))
         if pow(fx, (p-1)//2, p) == 1:
             y = sqrt(fx, p)
             pt = E(x, y)
-            order = nl.addorder(pt, q*8)
+            found_order = nl.addorder(pt, q*8)
     return pt
 
 P = point(q*8)  # P is now a generator of E
@@ -2298,10 +2313,10 @@ A potential issue is that not every element of <img alt="$\mathbb{Z}/p$" src="sv
 a point on our curve. We need a probabilistic scheme.
 
 Here's one way to embed byte-strings into Wei25519 using OS2IP with
-<img alt="$xLen = \lfloor 2^{255}-19 \rfloor -1 = 30.$" src="svgs/9063acad1c68542137816cc85b01c91f.svg" valign=-4.109589000000009px width="211.0938225pt" height="17.4904653pt"/> Let <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> denote (a chunk of)
+<img alt="$xLen = \lfloor\log_{256}(2^{255}-19-1) \rfloor) - 1 = 30.$" src="svgs/c5a62acbd31af366e52ab3f6bc32d147.svg" valign=-4.109589000000009px width="300.2948289pt" height="17.4904653pt"/> Let <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> denote (a chunk of)
 our message in byte-string form of length no greater than 30. Let <img alt="$f(x)$" src="svgs/7997339883ac20f551e7f35efff0a2b9.svg" valign=-4.109589000000009px width="31.99783454999999pt" height="16.438356pt"/> be the cubic
 in <img alt="$y^2 = f(x)$" src="svgs/4671c85415f86bbb4ef8bfd4b0f484ec.svg" valign=-4.109589000000009px width="69.93913079999999pt" height="17.4904653pt"/> that defines Wei25519.  Also, **sqrt** in step 4 below refers to our
-function above the implements Cipolla's algorithm.
+function above that implements Cipolla's algorithm.
 
 1. Set <img alt="$i = 0.$" src="svgs/a2fa5a8034c977e540f8a6661f8eac59.svg" valign=0.0px width="40.36628969999999pt" height="10.84150485pt"/>
 2. Compute <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> = OS2IP(<img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/>+<img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.svg" valign=0.0px width="5.663225699999989pt" height="10.84150485pt"/>.to_bytes()) &mdash; here we append a single byte to <img alt="$message$" src="svgs/1a3d2947e84d2ca694bb02678372a476.svg" valign=-3.1963502999999895px width="62.271846449999984pt" height="10.2739725pt"/> before applying OS2IP.
@@ -2347,7 +2362,7 @@ def curve2bytes(points):
     """map a tuple of point(s) on Wei25519 to a byte-string"""
     bytestring = b""
     for point in points:
-        x = int(point.co[0])  # the x-coordinate as an integer
+        x = int(point.co[0]*point.co[2]**-1)  # the homogeneous x-coordinate as an integer
         bytestring += I2OSP(x, xLen = 31)[31 - math.ceil(math.log(x, 256)):-1]
     return bytestring
 ```
@@ -2377,34 +2392,59 @@ P = d*Q
    (E(0x442f025ccf4e666184c91ad71138d541731d3a5374c2e166e4a9cce5073ef1d7, 0x15e6cb70ad250ca42356530de86efa71b78f1a218d9dcd9420f075268c3f708e), E(0x449203c6ac791a93e28aa41c011655e5cc7ac62c18bae94324ca18ca8dd7e5e0, 0x40b935335e5256ad00458e0bd5240cac9dd4967a7407e75e6a3533af27d726a2))]
    ```
 
-Diffie Hellman key exchange
+### Diffie-Hellman key exchange
 
 ElGamal encryption is a specialization of the following *key exchange* protocol.
 
-Suppose that you and Athena wish to establish a shared secret key using a line of communication
+Suppose that you and Athena wish to establish a *shared secret key* using a line of communication
 that is possibly insecure in that it may have eavesdroppers who can only observe (not modify)
-transmitions.
+transmissions.
 
 Let <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> be a group of order <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> with generator <img alt="$g.$" src="svgs/be2451a0e7253f40d6336b30d3eca49a.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/>  You and Athena each set up public and private
 keys as follows.  You choose a random <img alt="$a\in \mathbb{Z}/n;$" src="svgs/0c49e2e690aadce0fc4d00945caf7c4d.svg" valign=-4.109589000000009px width="62.39154239999999pt" height="16.438356pt"/> then <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> is your private key and
 your public key is <img alt="$g^a.$" src="svgs/13a7562d1e0f51292084b835036bf9dd.svg" valign=-3.1963519500000044px width="20.948876849999987pt" height="14.116037099999998pt"/> Similarly, Athena chooses uniformly at random <img alt="$b\in \mathbb{Z}/n;$" src="svgs/2a7c236be636358545afe06183a618f6.svg" valign=-4.109589000000009px width="60.757184399999986pt" height="16.438356pt"/> her
 private/public key pair is <img alt="$\{b, g^b\}.$" src="svgs/cc825079e84124710ad0c311554f1f7a.svg" valign=-4.109588999999991px width="50.39841344999999pt" height="18.06580875pt"/>
 
-Next, you transmit your public key <img alt="$g^a$" src="svgs/5b1447365598ecd30eec3006282607b7.svg" valign=-3.1963519500000044px width="15.56074079999999pt" height="14.116037099999998pt"/> to Athena which she then raising to the power of her
-private key obtaining <img alt="$(g^a)^b.$" src="svgs/85fa5f353cd30d53d8229748a3e07598.svg" valign=-4.109588999999991px width="40.33704344999999pt" height="18.06580875pt"/> Similary, Athena sends to you here public key <img alt="$g^b$" src="svgs/ef0e2eae3a30e22f52a88ba4b6891d5e.svg" valign=-3.1963519499999897px width="14.211194249999991pt" height="17.1525717pt"/> which you
-exponentiate using your private key obtaining <img alt="$(g^a)^b.$" src="svgs/85fa5f353cd30d53d8229748a3e07598.svg" valign=-4.109588999999991px width="40.33704344999999pt" height="18.06580875pt"/> Your and Athena's shared secret key is
+Next, you transmit your public key <img alt="$g^a$" src="svgs/5b1447365598ecd30eec3006282607b7.svg" valign=-3.1963519500000044px width="15.56074079999999pt" height="14.116037099999998pt"/> to Athena which she then raises to the power of her
+private key, obtaining <img alt="$(g^a)^b.$" src="svgs/85fa5f353cd30d53d8229748a3e07598.svg" valign=-4.109588999999991px width="40.33704344999999pt" height="18.06580875pt"/> Similarly, Athena sends to you her public key <img alt="$g^b$" src="svgs/ef0e2eae3a30e22f52a88ba4b6891d5e.svg" valign=-3.1963519499999897px width="14.211194249999991pt" height="17.1525717pt"/> which you
+exponentiate using your private key obtaining, <img alt="$(g^a)^b.$" src="svgs/85fa5f353cd30d53d8229748a3e07598.svg" valign=-4.109588999999991px width="40.33704344999999pt" height="18.06580875pt"/> Your and Athena's shared secret key is
 <img alt="$g^{ab}=(g^b)^a=(g^a)^b.$" src="svgs/7ee2d2f46de66d0d4bd3fdd5f52f4b89.svg" valign=-4.109588999999991px width="142.1065932pt" height="18.06580875pt"/>
 
-Suppose that Athena needs to send you a private plaintext message, <img alt="$m.$" src="svgs/4bc868b30aee0dfd5de42ea15b2cb2d8.svg" valign=0.0px width="18.99932429999999pt" height="7.0776222pt"/>  She uses your public
-key <img alt="$g^a$" src="svgs/5b1447365598ecd30eec3006282607b7.svg" valign=-3.1963519500000044px width="15.56074079999999pt" height="14.116037099999998pt"/>, her private key, and the shared key <img alt="$g^{ab}$" src="svgs/2916b74052ea0728e3143cb914a0b4be.svg" valign=-3.1963519499999897px width="21.341576849999992pt" height="17.1525717pt"/> as follows. She computes<img alt="$c_1 = g^b$" src="svgs/73f4c442d60e53f7493e1e205a6424bd.svg" valign=-3.1963519499999897px width="50.61708959999999pt" height="17.1525717pt"/>
-and <img alt="$c_2=g^{ab}m;$" src="svgs/7092bd6c20d6198e443b9ef4ce9c0e6c.svg" valign=-3.1963519499999897px width="77.56868789999999pt" height="17.1525717pt"/> her ciphertext to you is <img alt="$\{c_1, c_2\}.$" src="svgs/974292983019dbb8192bee5a7b9963ff.svg" valign=-4.109589000000009px width="57.28705454999999pt" height="16.438356pt"/>
+Suppose that Athena needs to send you a private plaintext message, <img alt="$m,$" src="svgs/85e0696fc8ec9dcd16fd64c9f562ae0c.svg" valign=-3.1963502999999895px width="18.99932429999999pt" height="10.2739725pt"/> encrypted using your
+shared private key.  If she uses your public key <img alt="$g^a$" src="svgs/5b1447365598ecd30eec3006282607b7.svg" valign=-3.1963519500000044px width="15.56074079999999pt" height="14.116037099999998pt"/> and the shared key
+<img alt="$g^{ab}$" src="svgs/2916b74052ea0728e3143cb914a0b4be.svg" valign=-3.1963519499999897px width="21.341576849999992pt" height="17.1525717pt"/> as follows, she is essentially using the previously discussed ElGamal encryption scheme.
+The ciphertext that Athena sends to you is simply <img alt="$c=g^{ab}m;$" src="svgs/f5cb2b6a6f5600280d7f75ea05895a13.svg" valign=-3.1963519499999897px width="70.19422739999999pt" height="17.1525717pt"/> you decrypt <img alt="$c$" src="svgs/3e18a4a28fdee1744e5e3f79d13b9ff6.svg" valign=0.0px width="7.11380504999999pt" height="7.0776222pt"/> using her public key
+and your private key: <img alt="$c (g^b)^{-a} = g^{ab} m (g^b)^{-a}=m.$" src="svgs/de07a8a69d8ec25d2a6e05eaf21cc452.svg" valign=-4.109588999999991px width="198.63459329999998pt" height="18.06580875pt"/>
 
-Notice that Athena's ciphertext is effectively the same as the ElGamal encryption scheme desribed
-above.  To decode Athena's message, you use your private key <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> and compute
-<img alt="$c_2(c_1)^{-a} =g^{ab}m (g^b)^{-a}=m.$" src="svgs/6cb15609970ac671d27f69d6a4ede6da.svg" valign=-4.109588999999991px width="205.46422709999996pt" height="18.06580875pt"/>
+To be clear, for the encryption scheme in the last paragraph to be non-deterministic &mdash; and,
+hence, to have a chance of being CPA (chosen plaintext attack) secure &mdash; Athena needs to
+regenerate her keys (and share her new public key with you) with every encryption, thereby recovering
+exactly the probabilistic ElGamal protocol described in the last section.
 
+The probabilistic ElGamal Encryption system is in fact CPA (chosen plaintext attack) secure (see, e.g.,
+[Tsionus and Yung](#references3)) but is not CCA (chosen ciphertext attack) secure. The reason
+is similar to that given in our [discussion above](#chosen-ciphertext-attack) of the failure
+of plain RSA to be CCA secure: given <img alt="$(c_1^*, c_2^*)$" src="svgs/e3698c9d184d8ceef54822cfb9d0092f.svg" valign=-4.109589000000009px width="49.43310239999999pt" height="16.438356pt"/> an adversary blinds with
+<img alt="$(c_1^*, c_2^*m')$" src="svgs/348d63b9337f7e6df5ac3e9845c8d679.svg" valign=-4.109589px width="68.47807724999998pt" height="16.4676534pt"/> where <img alt="$m'\in (\mathbb{Z}/n)^*,$" src="svgs/4439a64f892991ab2d4ee89d0b8ebd5e.svg" valign=-4.109589px width="93.08988644999998pt" height="16.4676534pt"/> or even <img alt="$(c_1^*g^{b'}, c_2^*m'(g^a)^{b'})$" src="svgs/845cf03db2826ccfcc0919d22ff0bd02.svg" valign=-4.109589000000006px width="128.17474395pt" height="19.6019175pt"/> where
+<img alt="$b'\in \mathbb{Z}/n.$" src="svgs/f0f4e1232f380220c653708090fb7cf8.svg" valign=-4.109589px width="65.36905979999999pt" height="16.4676534pt"/>
 
+The security of the ElGamal protocol hinges on three number-theoretic assumptions
+regarding computation hardness.
 
+### Digital signing with ElGamal
+
+Suppose now that Athena wants to sign her message to you that she encrypted with your public key
+using the ElGamal encryption scheme discussed above using a cyclic group <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> of order <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> generated
+by <img alt="$g.$" src="svgs/be2451a0e7253f40d6336b30d3eca49a.svg" valign=-3.1963502999999895px width="12.996581399999991pt" height="10.2739725pt"/>
+
+Of course, to sign her message to you, Athena must first generate her own public/private key pair:
+
+* Athena picks uniformly at random an element <img alt="$d\in \mathbb{Z}/n,$" src="svgs/a770caebefe52c86b12bcf44e7f33d55.svg" valign=-4.109589000000009px width="62.258352749999986pt" height="16.438356pt"/> which is her private key; then she
+* computes <img alt="$h=g^d\in G,$" src="svgs/274af25ec94875fe82cf27e7982f4746.svg" valign=-3.1963519499999897px width="85.06610475pt" height="17.1525717pt"/> which is her public key.
+
+To sign her message, Athena employs an agreed upon cryptographic hash function, <img alt="$h,$" src="svgs/f0849a8c84fa1ad535549609018981ad.svg" valign=-3.1963503000000055px width="14.037338699999989pt" height="14.611878599999999pt"/> as follows:
+
+* First, she chooses 
 
 
 <a id="references3">
@@ -2416,6 +2456,10 @@ above.  To decode Athena's message, you use your private key <img alt="$a$" src=
 * J. Booher, [Square roots in finite fields and quadratic nonresidues](https://www.math.canterbury.ac.nz/~j.booher/expos/sqr_qnr.pdf), 2012.
 * J. Wu and D.R.Stinson, [On The Security of The ElGamal Encryption Scheme and Damgard’s Variant](https://www.semanticscholar.org/paper/On-The-Security-of-The-ElGamal-Encryption-Scheme-Wu-Stinson/fb92027bd27198e6a8820aa56b9c83bb73c91e53), 2008.
 * Y. Tsiounis and M. Yung, [On the Security of ElGamal Based Encryption](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.367.681&rep=rep1&type=pdf), 1998.
+* Daniel J. Bernstein's [The elliptic-curve zoo](https://cr.yp.to/talks/2008.06.20/slides.pdf) slides, 2008.
+* [safecurves.cr.yp.to](https://safecurves.cr.yp.to/index.html)
+* Daniel J. Bernstein and Tanja Lange, [Montgomery curves and the Montgomery ladder](https://eprint.iacr.org/2017/293.pdf)
+* Craig Costello and Benjamin Smith, [Montgomery curves and their arithmetic](https://arxiv.org/pdf/1807.00972.pdf)
 
 <p align="right">  <a href="#contents"> contents </a></p>
 
