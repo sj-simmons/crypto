@@ -14,7 +14,7 @@ def chi_squared_test():
     sample = [prng()//(2**64//bins) for _ in range(sample_size)]
 
     # get just the frequences of the occurrences for each bin
-    frequencies = dict()
+    frequencies = dict()  # maps bin to frequency for that bin
     for bin_ in sample:
         frequencies[bin_] = frequencies.get(bin_, 0) + 1
     frequencies = frequencies.values()
