@@ -290,11 +290,11 @@ Generally, a potency of at least 5 is necessary (but not sufficient) for randomn
 1. Does the LCG defined by the program above satisfy all three bulleted conditions so that its period is <img alt="$2^{64}$" src="svgs/f54c544f103d398bf9c036ff710d9361.svg" valign=0.0px width="21.324302999999993pt" height="13.380876299999999pt"/>, the largest possible? :heavy_check_mark: **Emma and Kennady did this in class.**
 
 2. If possible, compute the potency of the LCG above to see if it even has a chance
-   of being sufficiently "random".
+   of being sufficiently "random".  :heavy_check_mark: **Katie wrote a program to do this in general and talked about it in class.**
 
-3. Let <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/>, <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>, and <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> be positive integers and suppose that we want to reduce the product <img alt="$ax$" src="svgs/1590372cccb08e52e5b844dda033b7aa.svg" valign=0.0px width="18.08414189999999pt" height="7.0776222pt"/> modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>. Show the following (we used this above): if <img alt="$gcd(a, m) = d$" src="svgs/c80e3d64932bb680cf2d824d13827a15.svg" valign=-4.109589000000009px width="97.78729124999998pt" height="16.438356pt"/> then, after reducing <img alt="$ax$" src="svgs/1590372cccb08e52e5b844dda033b7aa.svg" valign=0.0px width="18.08414189999999pt" height="7.0776222pt"/> modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>, the result is a multiple of <img alt="$d.$" src="svgs/2d94d6868b0dbbea61050c0cabe84f89.svg" valign=0.0px width="13.12218764999999pt" height="11.4155283pt"/>
+3. Let <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/>, <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>, and <img alt="$x$" src="svgs/332cc365a4987aacce0ead01b8bdcc0b.svg" valign=0.0px width="9.39498779999999pt" height="7.0776222pt"/> be positive integers and suppose that we want to reduce the product <img alt="$ax$" src="svgs/1590372cccb08e52e5b844dda033b7aa.svg" valign=0.0px width="18.08414189999999pt" height="7.0776222pt"/> modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>. Show the following (we used this above): if <img alt="$gcd(a, m) = d$" src="svgs/c80e3d64932bb680cf2d824d13827a15.svg" valign=-4.109589000000009px width="97.78729124999998pt" height="16.438356pt"/> then, after reducing <img alt="$ax$" src="svgs/1590372cccb08e52e5b844dda033b7aa.svg" valign=0.0px width="18.08414189999999pt" height="7.0776222pt"/> modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>, the result is a multiple of <img alt="$d.$" src="svgs/2d94d6868b0dbbea61050c0cabe84f89.svg" valign=0.0px width="13.12218764999999pt" height="11.4155283pt"/> :heavy_check_mark: **Adrienne proved this in class.**
 
-4. In the previous discussion we used the fact that if <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> and <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> are relatively prime, then <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> has a multiplicative inverse modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>; that is, there exists <img alt="$a^{-1}\in \mathbb{Z}/m$" src="svgs/aa1f57396e688f3977a4394d3829566c.svg" valign=-4.109589000000009px width="80.04000015pt" height="17.4904653pt"/> such that <img alt="$a^{-1}a=1 \mod m$" src="svgs/d23399681b00a63da8212e00b487087d.svg" valign=0.0px width="127.54161914999999pt" height="13.380876299999999pt"/>. Above we only needed its existence but what is <img alt="$a^{-1}$" src="svgs/b42707f02d6a6fbbe96ce85d2d4ab42c.svg" valign=0.0px width="25.515722099999987pt" height="13.380876299999999pt"/> if <img alt="$a=123456789$" src="svgs/afa5f8f36ba3ce9a1f38d9fd25e4434b.svg" valign=0.0px width="104.57966969999998pt" height="10.5936072pt"/> and <img alt="$m=2^{64}?$" src="svgs/a03fbd5ed34bcedfd4082b5e04a8c412.svg" valign=0.0px width="66.25953344999999pt" height="13.380876299999999pt"/>
+4. In the previous discussion we used the fact that if <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> and <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> are relatively prime, then <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> has a multiplicative inverse modulo <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>; that is, there exists <img alt="$a^{-1}\in \mathbb{Z}/m$" src="svgs/aa1f57396e688f3977a4394d3829566c.svg" valign=-4.109589000000009px width="80.04000015pt" height="17.4904653pt"/> such that <img alt="$a^{-1}a=1 \mod m$" src="svgs/d23399681b00a63da8212e00b487087d.svg" valign=0.0px width="127.54161914999999pt" height="13.380876299999999pt"/>. Above we only needed its existence but what is <img alt="$a^{-1}$" src="svgs/b42707f02d6a6fbbe96ce85d2d4ab42c.svg" valign=0.0px width="25.515722099999987pt" height="13.380876299999999pt"/> if <img alt="$a=123456789$" src="svgs/afa5f8f36ba3ce9a1f38d9fd25e4434b.svg" valign=0.0px width="104.57966969999998pt" height="10.5936072pt"/> and <img alt="$m=2^{64}?$" src="svgs/a03fbd5ed34bcedfd4082b5e04a8c412.svg" valign=0.0px width="66.25953344999999pt" height="13.380876299999999pt"/> :heavy_check_mark: **Ivan wrote code that does this and ran it in class.**
 
 
 A common initial test to gauge whether a given PRNG is *not* worthy of the term
@@ -402,15 +402,17 @@ with df=9 is <img alt="$0.13$" src="svgs/619592087e8219141eb96df340222866.svg" v
 fail to reject the null hypothesis that our LCG (globally) generates random numbers.
 
 #### :hammer: Projects :hammer:
-5. The histogram and analysis above look pretty good but the original sampling was always split into 30 bins. Conduct the same sort of <img alt="$\chi^2$" src="svgs/a67d576e7d59b991dd010277c7351ae0.svg" valign=-3.1963503000000086px width="16.837900199999993pt" height="16.5772266pt"/> analysis but use different (smallish) numbers of bins and varying (large) sample sizes.
+5. The histogram and analysis above look pretty good but the original sampling was always split into 30 bins. Conduct the same sort of <img alt="$\chi^2$" src="svgs/a67d576e7d59b991dd010277c7351ae0.svg" valign=-3.1963503000000086px width="16.837900199999993pt" height="16.5772266pt"/> analysis but use different (smallish) numbers of bins and varying (large) sample sizes.  :heavy_check_mark: **Andrew did this and talked about it in class.**
 
 6. Replace our LCG with a Python's random number generator and compare.
-     The following might be helpful.
-     ``` python
-     import random
-     def prng():
-         return random.randint(0, 2**64-1)
-     ```
+
+   The following might be helpful.
+   ``` python
+   import random
+   def prng():
+       return random.randint(0, 2**64-1)
+   ```
+   :heavy_check_mark: **Charlie did this and talked about it in class.**
 
 The [spectral test](https://en.wikipedia.org/wiki/Spectral_test) is the test
 most likely to uncover weakness in a LCG. For this test, we first
@@ -473,12 +475,12 @@ compute <img alt="$\nu_2$" src="svgs/9473daf474f8d39427c1a99ddb5ad626.svg" valig
 
 How are the numbers <img alt="$\nu_j$" src="svgs/c7260eb4ab1637d03de7308f52f924a5.svg" valign=-4.7031731999999895px width="14.224781999999989pt" height="11.780795399999999pt"/> used to determine which LCG perform best? We want the <img alt="$d_t,$" src="svgs/10cd08470937e1ffdd2da17b17f31ab6.svg" valign=-3.1963503000000055px width="18.90987614999999pt" height="14.611878599999999pt"/>
 <img alt="$t=2, \ldots, 7,$" src="svgs/2694751a2a66535c88159d27b3a87245.svg" valign=-3.196350299999994px width="85.38778709999998pt" height="13.789957499999998pt"/> to be small, though they will necessarily increase with <img alt="$t$" src="svgs/4f4f4e395762a3af4575de74c019ebb5.svg" valign=0.0px width="5.936097749999991pt" height="10.110901349999999pt"/> even
-if for good performing LCGs. Since <img alt="$\nu_t=1/d_t,$" src="svgs/7bb18e0c45fe84739e9bfcae3a125532.svg" valign=-4.109589000000009px width="71.17388519999999pt" height="16.438356pt"/> we want the <img alt="$\nu_t$" src="svgs/b96ce619e9618788ad604f351c957414.svg" valign=-2.4657286499999893px width="13.08606584999999pt" height="9.54335085pt"/> to be large.
+for good performing LCGs. Since <img alt="$\nu_t=1/d_t,$" src="svgs/7bb18e0c45fe84739e9bfcae3a125532.svg" valign=-4.109589000000009px width="71.17388519999999pt" height="16.438356pt"/> we want the <img alt="$\nu_t$" src="svgs/b96ce619e9618788ad604f351c957414.svg" valign=-2.4657286499999893px width="13.08606584999999pt" height="9.54335085pt"/> to be large.
 [Knuth](#references1) (pg. 105) gives the following rule of thumb: <img alt="$\nu_t\ge 2^{30/t}.$" src="svgs/333a623fd09f05df04e433bb4baa8f2b.svg" valign=-2.465728649999995px width="74.2389681pt" height="17.06121615pt"/>
 
 #### Exercises
 7. Show that <img alt="$\nu_t \le \sqrt{a^2+1}$" src="svgs/7ae1ff3d92039dbc06e050ad364145d5.svg" valign=-2.465728650000001px width="93.89827754999999pt" height="16.821868799999997pt"/> for all <img alt="$t$" src="svgs/4f4f4e395762a3af4575de74c019ebb5.svg" valign=0.0px width="5.936097749999991pt" height="10.110901349999999pt"/>.
-8. Implement the algorithm above and use it to compute the accuracy <img alt="$\nu_2$" src="svgs/9473daf474f8d39427c1a99ddb5ad626.svg" valign=-2.4657286499999893px width="14.672819699999991pt" height="9.54335085pt"/> for our LCG (for which <img alt="$a=123456789$" src="svgs/afa5f8f36ba3ce9a1f38d9fd25e4434b.svg" valign=0.0px width="104.57966969999998pt" height="10.5936072pt"/> and <img alt="$m=2^{64}$" src="svgs/2c0d775f4ac8a5e8615cdf9cf2c1db95.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/>).
+8. Implement the algorithm above and use it to compute the accuracy <img alt="$\nu_2$" src="svgs/9473daf474f8d39427c1a99ddb5ad626.svg" valign=-2.4657286499999893px width="14.672819699999991pt" height="9.54335085pt"/> for our LCG (for which <img alt="$a=123456789$" src="svgs/afa5f8f36ba3ce9a1f38d9fd25e4434b.svg" valign=0.0px width="104.57966969999998pt" height="10.5936072pt"/> and <img alt="$m=2^{64}$" src="svgs/2c0d775f4ac8a5e8615cdf9cf2c1db95.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/>).  :heavy_check_mark: **We did this in class.**
 
 Now, since <img alt="$m=2^{64}$" src="svgs/2c0d775f4ac8a5e8615cdf9cf2c1db95.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/> is so large, many smallish choices of the multiplier <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> immediately
 determine <img alt="$\nu_2.$" src="svgs/79f155422f397afe48afe2bb036af005.svg" valign=-2.4657286499999893px width="20.06095739999999pt" height="9.54335085pt"/>  In fact, according to [Steele, Vigna](#references1), Proposition 1,
@@ -513,8 +515,8 @@ be used to compare different multipliers for a fixed <img alt="$m.$" src="svgs/4
 but also <img alt="$\mu_2,$" src="svgs/8615699836ecb78ef8a53e8d3263850c.svg" valign=-3.1963502999999895px width="21.84560729999999pt" height="10.2739725pt"/> sufficiently large relative to other multipliers.
 
 #### Exercises
-9. Compute <img alt="$\mu_2$" src="svgs/d9324c21b00105263d6f54123813d99c.svg" valign=-3.1963502999999895px width="16.45747124999999pt" height="10.2739725pt"/> for our LCG; i.e., <img alt="$a=123456789,$" src="svgs/7543ddf5c75fb86912c49588ae0fd6e2.svg" valign=-3.196350299999994px width="109.14589289999998pt" height="13.789957499999998pt"/> <img alt="$m=2^{64}.$" src="svgs/a404936c9122ffe075a49b205e698627.svg" valign=0.0px width="63.063166649999985pt" height="13.380876299999999pt"/> Is <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> a good multiplier based on <img alt="$\mu_2$" src="svgs/d9324c21b00105263d6f54123813d99c.svg" valign=-3.1963502999999895px width="16.45747124999999pt" height="10.2739725pt"/>?
-10. What if we leave the modulus at <img alt="$m = 2^{64}$" src="svgs/c7fdaf695852cd6459cc4165d25b86b2.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/> but take the multiplier to be <img alt="$a =$" src="svgs/16a5f39906ca313c4ef3f388684127b8.svg" valign=0.0px width="26.04068609999999pt" height="7.0776222pt"/> 214319739410341? Is this <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> a good multiplier? (This multiplier is recommended in [Steele, Vigna](#references1) on pg. 18.)
+9. Compute <img alt="$\mu_2$" src="svgs/d9324c21b00105263d6f54123813d99c.svg" valign=-3.1963502999999895px width="16.45747124999999pt" height="10.2739725pt"/> for our LCG; i.e., <img alt="$a=123456789,$" src="svgs/7543ddf5c75fb86912c49588ae0fd6e2.svg" valign=-3.196350299999994px width="109.14589289999998pt" height="13.789957499999998pt"/> <img alt="$m=2^{64}.$" src="svgs/a404936c9122ffe075a49b205e698627.svg" valign=0.0px width="63.063166649999985pt" height="13.380876299999999pt"/> Is <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> a good multiplier based on <img alt="$\mu_2$" src="svgs/d9324c21b00105263d6f54123813d99c.svg" valign=-3.1963502999999895px width="16.45747124999999pt" height="10.2739725pt"/>?  :heavy_check_mark: **Jace did this in class.**
+10. What if we leave the modulus at <img alt="$m = 2^{64}$" src="svgs/c7fdaf695852cd6459cc4165d25b86b2.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/> but take the multiplier to be <img alt="$a =$" src="svgs/16a5f39906ca313c4ef3f388684127b8.svg" valign=0.0px width="26.04068609999999pt" height="7.0776222pt"/> 214319739410341? Is this <img alt="$a$" src="svgs/44bc9d542a92714cac84e01cbbb7fd61.svg" valign=0.0px width="8.68915409999999pt" height="7.0776222pt"/> a good multiplier? (This multiplier is recommended in [Steele, Vigna](#references1) on pg. 18.) :heavy_check_mark: **Jace and Charlie did this in class.**
 11. :zap:**Challenge**:zap: When <img alt="$m = 2^{64}$" src="svgs/c7fdaf695852cd6459cc4165d25b86b2.svg" valign=0.0px width="57.67503389999999pt" height="13.380876299999999pt"/> and <img alt="$a =$" src="svgs/16a5f39906ca313c4ef3f388684127b8.svg" valign=0.0px width="26.04068609999999pt" height="7.0776222pt"/> 214319739410341, find <img alt="$\nu_t$" src="svgs/b96ce619e9618788ad604f351c957414.svg" valign=-2.4657286499999893px width="13.08606584999999pt" height="9.54335085pt"/> for <img alt="$3 \le t \le 6$" src="svgs/a1b101a367cf06ca257ded541b352ac1.svg" valign=-2.2351411499999947px width="66.20977769999999pt" height="12.82874835pt"/> by either directly implementing the algorithm in [Knuth](#references1) or by comparing
 with the definitions and listed values in [Steele, Vigna](#references1).
 Also compute <img alt="$\mu_t$" src="svgs/87eefe082e181864d1321025c2705ecd.svg" valign=-3.1963502999999895px width="14.870715749999988pt" height="10.2739725pt"/> for <img alt="$3 \le t \le 6.$" src="svgs/4572a9d4690118768057d1b4e6e1f08a.svg" valign=-2.2351411499999947px width="70.77600089999999pt" height="12.82874835pt"/> What do those gauges say about the randomness of our LCG? 
@@ -685,7 +687,7 @@ A commutative ring (such as <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0
 multiplicative inverse is called a *field*.
 
 #### Exercises
-1. Show that <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> is a field if and only if <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is prime.
+1. Show that <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> is a field if and only if <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is prime. :heavy_check_mark: **Aspen and Ari proved this.**
 2. Show that multiplicative inverses in <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> (or any ring) are unique.
 
 If an element of a ring admits a multiplicative inverse, it is called a *unit*.
@@ -755,12 +757,12 @@ import numlib
 numlib.isprime(decimal) # True or False according to whether decimal is prime
 ```
 #### Exercise
-4. Write a function, using the scheme outlined above, that returns a <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit prime. :heavy_check_mark: **Homework.**
+4. Write a function, using the scheme outlined above, that returns a <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit prime.
 
 At issue is the fact that larger primes are harder to find. The difficulty is gauged by the Prime
 Number Theorem.  If we define <img alt="$\pi(n)$" src="svgs/ab6b1f726144febfe19f0c5d987822fa.svg" valign=-4.109589000000009px width="32.61239849999999pt" height="16.438356pt"/> to be the number of primes less than or equal to <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, then
 the theorem states that <img alt="$\pi(n)$" src="svgs/ab6b1f726144febfe19f0c5d987822fa.svg" valign=-4.109589000000009px width="32.61239849999999pt" height="16.438356pt"/> is well-approximated by <img alt="$n/\ln(n)$" src="svgs/9bbe784fa51a44e5989bc0b2cac489c3.svg" valign=-4.109589000000009px width="57.17672729999999pt" height="16.438356pt"/> in the sense that
-<p align="center"><img alt="$$\lim_{n\rightarrow\infty}\pi(n)\cdot\ln(n)/n=1.$$" src="svgs/bbbfdbd8c7959c658b17fe94615640ac.svg" valign=0.0px width="170.7003078pt" height="22.1917806pt"/></p>
+<p align="center"><img alt="$$\lim_{n\rightarrow\infty}\frac{\pi(n)}{n/\ln(n)}=1.$$" src="svgs/9dd013651b7ae10bdb203d62f2a5ca5c.svg" valign=0.0px width="132.9007713pt" height="38.83491479999999pt"/></p>
 
 The Prime Number Theorem implies that the number of primes between <img alt="$2^{k-1}$" src="svgs/2e1f67948de7f97ecae4757c305597fe.svg" valign=0.0px width="32.31180644999999pt" height="13.95621975pt"/> and <img alt="$2^{k}$" src="svgs/b26c1428d8122e80fc36d46fdfb1ca57.svg" valign=0.0px width="15.48523844999999pt" height="13.95621975pt"/>
 is approximately
@@ -771,13 +773,13 @@ hence, the probability <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5
 prime is approximately <img alt="$p = (k-2)/(\ln(2)k(k-1))$" src="svgs/ba4fb647bc16756d617d1280f33496f1.svg" valign=-4.109589000000009px width="195.31391055pt" height="16.438356pt"/> which, for large <img alt="$k,$" src="svgs/902e83fb24d54487d5ceebd041639ffb.svg" valign=-3.1963503000000055px width="13.64158619999999pt" height="14.611878599999999pt"/> becomes <img alt="$p \approx 1/(\ln(2)k).$" src="svgs/da7229fb613ee83e3c176de402c7d29d.svg" valign=-4.109589000000009px width="107.75695094999999pt" height="16.438356pt"/>
 But since your program from the last exercise doesn't bother with even numbers, a given candidate **decimal**
 has a likelihood of about <img alt="$p = 2/(\ln(2)k)$" src="svgs/e555980e9b695645e92caf5d9af89aa7.svg" valign=-4.109589000000009px width="103.19072609999999pt" height="16.438356pt"/> of being prime.
-It is an basic fact from probability theory (see e.g., section 2.1 of
+It is a basic fact from probability theory (see e.g., section 2.1 of
 [Simmons' primer on random variables](https://github.com/sj-simmons/probthry/blob/main/primer.pdf)) that,
 on average, one expects to test about <img alt="$1/p=k\ln(2)/2$" src="svgs/6c97d8dd61ac519e745292cae1789830.svg" valign=-4.109589000000009px width="109.5833706pt" height="16.438356pt"/> numbers before turning up one that is
 indeed prime.
 
 #### Exercise
-5. Write a program that verifies that the expected number of tries before your prime generating function returns a 200-bit prime is about <img alt="$200\ln(2)/2\approx 69.$" src="svgs/9e6f25ea02c1b59eff12628ea34c16eb.svg" valign=-4.109589000000009px width="121.46129489999998pt" height="16.438356pt"/> :heavy_check_mark: **Nargiss posted this.**
+5. Write a program that verifies that the expected number of tries before your prime generating function returns a 200-bit prime is about <img alt="$200\ln(2)/2\approx 69.$" src="svgs/9e6f25ea02c1b59eff12628ea34c16eb.svg" valign=-4.109589000000009px width="121.46129489999998pt" height="16.438356pt"/>
 
 Note: since <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> is small, the variance here is very large so that the time it takes for your
 program to find a single prime can vary greatly; said variance is <img alt="$(1-p)/p^2 \approx 4735.2$" src="svgs/07b12faa29e1cf6d90eece6f9c72b99f.svg" valign=-4.109589000000009px width="140.81053799999998pt" height="17.4904653pt"/> so that
@@ -785,9 +787,9 @@ the standard deviation of the number of tries before finding a 200 bit prime is 
 standard deviation is <img alt="$\sqrt{(1-p)/p^2},$" src="svgs/44ca9338a2247d7391f898c6588a020d.svg" valign=-5.013835199999992px width="94.23517949999999pt" height="19.726228499999998pt"/> which is approximately <img alt="$1/p$" src="svgs/b6bd4fb45663b60f83a799556b0eeffb.svg" valign=-4.109589000000009px width="24.70898594999999pt" height="16.438356pt"/> for small <img alt="$p.)$" src="svgs/c984e348f5a9e47e87ef86e2ed395d6c.svg" valign=-4.109589000000009px width="19.22950754999999pt" height="16.438356pt"/>
 
 #### Exercises
-6. Estimate the probability that two uniformly chosen <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit primes are equal. :heavy_check_mark: **In class.**
+6. Estimate the probability that two uniformly chosen <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit primes are equal.
 7. What is the expected number of tries and the associated standard deviation when finding a 2048-bit
-    prime. :heavy_check_mark: **In class.**
+    prime.
 8. (Optional) Write a program that displays the sampling distribution for the number of tries before finding a prime using the method outlined above. The mean and standard deviation should both be about <img alt="$69.$" src="svgs/bc2aede8e8ec573d7068e3c67fedf605.svg" valign=0.0px width="21.00464354999999pt" height="10.5936072pt"/>
 
 ### Euler's totient function
@@ -859,7 +861,7 @@ cyclic group of order <img alt="$mn.$" src="svgs/57b4da86b04bbeb1e8cacc81bc6cf95
 <p align="center"><img alt="$$(g,h)^{mn}=(g^{mn},h^{mn})=((g^m)^n,(h^n)^m)=(e_G, e_H)=e_{G\times H}.$$" src="svgs/bdb157e24bb85127e8b81bbbebe2095a.svg" valign=0.0px width="436.04847329999996pt" height="16.438356pt"/></p>
 
 Hence, whatever the order of <img alt="$(g,h)$" src="svgs/aac259452e7e6c3323a67127751b0420.svg" valign=-4.109589000000009px width="37.99278944999999pt" height="16.438356pt"/>, call it <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>, we must have that it divides <img alt="$mn.$" src="svgs/57b4da86b04bbeb1e8cacc81bc6cf95c.svg" valign=0.0px width="28.86620054999999pt" height="7.0776222pt"/>
-To prove our claim, we must show that <img alt="$mn$" src="svgs/e482c73e1741b27cd59b521c3f47e0b1.svg" valign=0.0px width="24.29997734999999pt" height="7.0776222pt"/> divides <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>, so that <img alt="$k=mn.$" src="svgs/9da8276d1af83f61442b78e3e88a8e42.svg" valign=0.0px width="59.85919334999999pt" height="11.4155283pt"/>
+To prove our claim, we will show that <img alt="$mn$" src="svgs/e482c73e1741b27cd59b521c3f47e0b1.svg" valign=0.0px width="24.29997734999999pt" height="7.0776222pt"/> divides <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>, so that <img alt="$k=mn.$" src="svgs/9da8276d1af83f61442b78e3e88a8e42.svg" valign=0.0px width="59.85919334999999pt" height="11.4155283pt"/>
 Looking at just the first component of <img alt="$(g^k,h^k)=(g,h)^k=e_{G\times H}=(e_G,e_H)$" src="svgs/aaeed85b89084dd8b856a4631124a5d6.svg" valign=-4.109588999999991px width="265.5570373499999pt" height="18.06580875pt"/>, we see that <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
 divides <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>; similarly, looking at only the second component, <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> divides <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>. But then <img alt="$mn$" src="svgs/e482c73e1741b27cd59b521c3f47e0b1.svg" valign=0.0px width="24.29997734999999pt" height="7.0776222pt"/>
 must divide <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/> since <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/> and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> are relatively prime.
@@ -1005,9 +1007,10 @@ Let your public key be <img alt="$\{n, e\},$" src="svgs/8cbafb9a3db34ec0c1a7e97b
 of the two primes in the previous code-block.
 
 #### Exercises
+
 1. Verify that your key <img alt="$e=65537$" src="svgs/9031a800c7cdc076f354cc5ff9cafbb8.svg" valign=0.0px width="70.66781535pt" height="10.5936072pt"/> is indeed relatively prime to <img alt="$\phi(n)$" src="svgs/f4bdf2149704f6b9d6d0068d05021138.svg" valign=-4.109589000000009px width="32.44685399999999pt" height="16.438356pt"/> for your <img alt="$n.$" src="svgs/ea8d90fb4a8d92af94283e10af3efb57.svg" valign=0.0px width="14.433101099999991pt" height="7.0776222pt"/>
 
-2. Suppose that Carmichael uses your private key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> to encrypt a (numeric) message. What is your
+2. Suppose that Carmichael uses your public key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> to encrypt a (numeric) message. What is your
 decrypting exponent, <img alt="$d,$" src="svgs/7194e1d4b173c3ff8fec4422c3f90097.svg" valign=-3.1963503000000055px width="13.12218764999999pt" height="14.611878599999999pt"/> and what was the original message if the ciphertext you receive from Carmichael is:
    ```python
    1228656544646342294930925759475188964963998457780851975302427012554675014888739125369008335923675038120110871984093074455
@@ -1015,7 +1018,8 @@ decrypting exponent, <img alt="$d,$" src="svgs/7194e1d4b173c3ff8fec4422c3f90097.
 
 <a id="arthurmarvin">
 
-3. :zap:**Challenge**:zap: Marvin can't be bothered to use large primes, so his public key is <img alt="$\{n, e\}=$" src="svgs/08190cb050929da6f85279c0ab82dc8a.svg" valign=-4.109589000000009px width="58.616848949999984pt" height="16.438356pt"/> \{932311734169679424087726241879, 65537\}. Arthur sends Marvin the following encrypted very secret message. You break Marvin's encryption, and intercept and decode the following ciphertext.
+3. :zap:**Challenge**:zap: Marvin can't be bothered to use large primes, so his public key is <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> = {932311734169679424087726241879, 65537}.
+   Arthur sends Marvin the following encrypted very secret message. You break Marvin's encryption, and intercept and decode the following ciphertext.
    ```python
    504779851614048359547310249856
    ```
@@ -1372,8 +1376,8 @@ they could check whether <img alt="$(c^\ell)^e=c;$" src="svgs/31f29c08a30f1cf5e7
 could continually multiply <img alt="$c^e$" src="svgs/5bcaf5cc289f68a9c90676a2849d44ec.svg" valign=0.0px width="13.350722549999988pt" height="10.91968515pt"/> by itself, obtaining <img alt="$(c^{e})^\ell=(c^{\ell})^e,$" src="svgs/438f1212a56075e55741b2de07c1df92.svg" valign=-4.109588999999991px width="93.0484863pt" height="18.06580875pt"/> until
 they get <img alt="$c.$" src="svgs/857431164e0fb928019e5dcd76861f58.svg" valign=0.0px width="11.680028249999989pt" height="7.0776222pt"/>
 
-If <img alt="$ed=1$" src="svgs/78289bd1e9f7ded7c6346a6d3a9b79a7.svg" valign=0.0px width="46.34694074999999pt" height="11.4155283pt"/> in <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/> then, as positive integers less than <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/>, <img alt="$ed &gt; n;$" src="svgs/73472f7d0ffb93f0386395e64454a83a.svg" valign=-3.1963503000000055px width="52.56083249999998pt" height="14.611878599999999pt"/>
-hence <img alt="$d &gt; \lfloor n/e \rfloor.$" src="svgs/cb2c771bcdae95cd8e334b40637c0988.svg" valign=-4.109589000000009px width="75.39195179999999pt" height="16.438356pt"/>
+If <img alt="$ed=1$" src="svgs/78289bd1e9f7ded7c6346a6d3a9b79a7.svg" valign=0.0px width="46.34694074999999pt" height="11.4155283pt"/> in <img alt="$\mathbb{Z}/\phi(n)$" src="svgs/ca13f370ea412c16d503fe9cfd115bd6.svg" valign=-4.109589000000009px width="51.62500364999998pt" height="16.438356pt"/> then, as positive integers less than <img alt="$\phi(n)$" src="svgs/f4bdf2149704f6b9d6d0068d05021138.svg" valign=-4.109589000000009px width="32.44685399999999pt" height="16.438356pt"/>, we have that
+<img alt="$ed &gt; \phi(n);$" src="svgs/1c6b769c6a47efa4cfa6a5beab193824.svg" valign=-4.109589000000009px width="75.14081024999999pt" height="16.438356pt"/> hence <img alt="$d &gt; \lfloor \phi(n)/e \rfloor.$" src="svgs/de597d3ffc9b00c17b4763894f11082f.svg" valign=-4.109589000000009px width="97.97192954999998pt" height="16.438356pt"/>
 Now, if <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> are fairly large k-bit primes, then <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> and <img alt="$\phi(n)$" src="svgs/f4bdf2149704f6b9d6d0068d05021138.svg" valign=-4.109589000000009px width="32.44685399999999pt" height="16.438356pt"/> are 2k-bit numbers;
 and, if <img alt="$e=65337,$" src="svgs/2b862298f3fc4340cc8116e95936f4a7.svg" valign=-3.196350299999994px width="75.2340402pt" height="13.789957499999998pt"/> which is a 16-bit number, then <img alt="$d$" src="svgs/2103f85b8b1477f430fc407cad462224.svg" valign=0.0px width="8.55596444999999pt" height="11.4155283pt"/> must be at least (2k-16)-bits.  An attacker
 could start computing incremental powers <img alt="$(m^e)^\ell=m^{\ell e}$" src="svgs/670af095a8c2fcc76f4d96ffa385ad2a.svg" valign=-4.109588999999991px width="88.69160684999999pt" height="18.06580875pt"/> starting from <img alt="$\ell=2^{2k-16}.$" src="svgs/4b7f7bb2695f01f4e4800c44c84aa83c.svg" valign=0.0px width="79.57199909999999pt" height="13.95621975pt"/>
@@ -1384,7 +1388,7 @@ prohibit this sort of naive attack.
 The point of the previous discussion, in algebraic terms, is that, if large enough primes are
 used, then the cyclic subgroup (of the permutation group of the set <img alt="$\mathbb{Z}/n$" src="svgs/5a25068b686730b0d5c6d3c047688395.svg" valign=-4.109589000000009px width="29.04502589999999pt" height="16.438356pt"/>) generated
 by <img alt="$m\mapsto m^e$" src="svgs/b01d456ec4b11056a006a150293a1169.svg" valign=0.0px width="60.673720799999984pt" height="10.91968515pt"/> likely has very large order. An attacker cannot simply iterate the
-permutation to that order; rather, <img alt="$d$" src="svgs/2103f85b8b1477f430fc407cad462224.svg" valign=0.0px width="8.55596444999999pt" height="11.4155283pt"/> is must be know which requires knowledge of <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/>
+permutation to that order; rather, <img alt="$d$" src="svgs/2103f85b8b1477f430fc407cad462224.svg" valign=0.0px width="8.55596444999999pt" height="11.4155283pt"/> must be known, which requires knowledge of <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q.$" src="svgs/2e25588bd69787207bf5da9706a3070f.svg" valign=-3.1963502999999895px width="12.49431149999999pt" height="10.2739725pt"/>
 
 #### Chosen-ciphertext attack
 
@@ -1407,7 +1411,7 @@ Suppose that Bloem discovers a very special number, encrypts it using Harshad's 
 ```python
 0xa8713dfdd0acb832e983ad568087001493afb8de806d45dedcf8cc2f35607e3aa7bf9fed857ee35aeb3c880962dbf5491b596528908007f1c89504c03b948917704fe29eef5afe934a9bcd5e7334daa994584109d704ee8bd6d3733323d7ce14e5f7bfd63e92441206e95d8316b8c25d8093c7afc219032ef56d354830c81f2
 ```
-11. Next, you use Harshad's public key to encrypt, say, <img alt="$m'=142857$" src="svgs/91688f5ff10555c58f3052647d17ef46.svg" valign=0.0px width="90.27786239999999pt" height="12.358064399999998pt"/> obtaining <img alt="$c'$" src="svgs/3ce681234d1b2ad17008503143e3ed8b.svg" valign=0.0px width="10.90376594999999pt" height="12.358064399999998pt"/>. Then you trick Harshad into deciphering the product <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> and sending the resulting plaintext to you.  If he sends you <img alt="$288071548868146555184504832$" src="svgs/7803dcdee68289fd1b7f60f7ce8c8016.svg" valign=0.0px width="221.91865409999997pt" height="10.5936072pt"/>, how can you now compute Bloem's original plaintext?  What is Bloem's original plaintext?
+11. Next, you use Harshad's public key to encrypt, say, <img alt="$m'=142857$" src="svgs/91688f5ff10555c58f3052647d17ef46.svg" valign=0.0px width="90.27786239999999pt" height="12.358064399999998pt"/> obtaining <img alt="$c'$" src="svgs/3ce681234d1b2ad17008503143e3ed8b.svg" valign=0.0px width="10.90376594999999pt" height="12.358064399999998pt"/>. Then you trick Harshad into deciphering the product <img alt="$c'c$" src="svgs/a3555722ecd81027239508a8d75bd575.svg" valign=0.0px width="18.839483849999993pt" height="12.358064399999998pt"/> and sending the resulting plaintext to you.  If he sends you 288071548868146555184504832, how can you now compute Bloem's original plaintext?  What is Bloem's original plaintext?
 
 In algebraic terms, the attacker picks any non-identity element <img alt="$m'\in (\mathbb{Z}/n)^*$" src="svgs/21e3ec33ebbafec11263001d6e76a59a.svg" valign=-4.109589px width="87.70176855pt" height="16.4676534pt"/> and encrypts
 it using the public key <img alt="$\{n, e\}$" src="svgs/5dbdee6d2f28cec315050f4a14b95b0c.svg" valign=-4.109589000000009px width="41.265316949999985pt" height="16.438356pt"/> obtaining <img alt="$c'=(m')^e.$" src="svgs/746fed1486569b6e9ad56e48833ec0d3.svg" valign=-4.109589px width="77.09875799999999pt" height="16.4676534pt"/>   Then the attacker somehow tricks Harshad
@@ -1464,7 +1468,7 @@ semantically secure which, even then, may be still be open to chosen-ciphertext 
 The modern solution is to use randomly-generated padding to augment messages before they
 are encrypted using the public-key &mdash;
 [OAEP](https://en.wikipedia.org/wiki/Optimal_asymmetric_encryption_padding)
-(Optimal Asymmetric Encryption Padding) is usual method for doing this with RSA.
+(Optimal Asymmetric Encryption Padding) is the usual method for doing this with RSA.
 RSA with OAEP is non-deterministic; multiple ciphertexts corresponding to the same message
 will, with extremely high-probability, be mutually distinct.
 
@@ -1574,7 +1578,7 @@ number of zero bytes are added to the front of <img alt="$x$" src="svgs/332cc365
 We want to test drive the two functions on the message above.
 
 First, as is convention among cryptographers when generating RSA keys, let us assume
-that our <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit primes <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> satisfy <img alt="$\sqrt{2}2^{k-1} &lt; p, q &lt; 2^k;$" src="svgs/90d48e024ade9bf2cd560507ebd1ea05.svg" valign=-3.1963503000000086px width="143.2647447pt" height="17.4520335pt"/> that way,
+that our <img alt="$k$" src="svgs/63bb9849783d01d91403bc9a5fea12a2.svg" valign=0.0px width="9.075367949999992pt" height="11.4155283pt"/>-bit primes <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> and <img alt="$q$" src="svgs/d5c18a8ca1894fd3a7d25f242cbe8890.svg" valign=-3.1963502999999895px width="7.928106449999989pt" height="10.2739725pt"/> satisfy <img alt="$2^{k-1}\sqrt{2} &lt; p, q &lt; 2^k;$" src="svgs/0ad47cca3172e50e1463927b6664474a.svg" valign=-3.1963503000000086px width="143.2647447pt" height="17.4520335pt"/> that way,
 <img alt="$n = pq$" src="svgs/981fac7bd1123ff6bebafc850f41286b.svg" valign=-3.1963502999999895px width="47.98317974999999pt" height="10.2739725pt"/> will be an <img alt="$2k$" src="svgs/f1738bbe3646e5962be59daa0aa34d56.svg" valign=0.0px width="17.29457729999999pt" height="11.4155283pt"/>-bit number: <img alt="$2^{2k-1}&lt; n &lt; 2^{2k}.$" src="svgs/153b334055d6f4379fc401254ad92c40.svg" valign=-0.6427046999999894px width="120.81429194999998pt" height="14.598924449999998pt"/>
 (Thus far, we have assumed only that <img alt="$2^{k-1} &lt; p, q &lt; 2^k$" src="svgs/f3a28d1aad9fcc1cf4f3075b0f8bac67.svg" valign=-3.1963519499999897px width="115.95873135pt" height="17.1525717pt"/> so that, about half the time,
 if we sample uniformly over that range, <img alt="$n=pq&lt;2^{2k-1}$" src="svgs/ff11416a5b38cf469083cd1f4edbbcca.svg" valign=-3.1963519499999897px width="108.76514549999999pt" height="17.1525717pt"/> and <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.svg" valign=0.0px width="9.86687624999999pt" height="7.0776222pt"/> is not actually a <img alt="$2k$" src="svgs/f1738bbe3646e5962be59daa0aa34d56.svg" valign=0.0px width="17.29457729999999pt" height="11.4155283pt"/>-bit number.)
@@ -1621,13 +1625,11 @@ uniformly in <img alt="$\mathbb{Z}/n,$" src="svgs/4ee8f29e8fc6ff907c10277ad56123
 message.  A good approximation to uniformly distributed plaintexts can be achieved by padding our
 human-readable messages in such a way that all are of maximum length.
 
-Also,
-we want to pad with randomly generated bytes; then the same message leads to distinct plaintexts
-under repeated encodings, so that we our scheme at least has a chance at being semantically secure.
+Also, we want to pad with randomly generated bytes; then the same message leads to distinct plaintexts
+under repeated encodings, so that our encryption protocol at least has a chance at being semantically secure.
 
 Let us implement the padding scheme recommended in
-[PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).
-:warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding scheme involving hashing is discussed below.
+[PKCS #1 v2.2: RSA Cryptography Standard](http://mpqs.free.fr/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp_EMC_Corporation_Public-Key_Cryptography_Standards_(PKCS).pdf#page=24).  :warning: This padding scheme bars against the exploits mentioned above but is still open to compromise.  An improved padding scheme involving hashing is discussed below.
 
 The function **RSAencrypt** in the following code-block implements the encryption protocol in the
 standard except that it outputs the ciphertext in the form of an integer (note that it uses the
@@ -1974,10 +1976,10 @@ g = F(101*5**77) # g is now an element of F
 g_order = nl.mulorder(g, exponent = p-1)
 g_order == p-1  # True
 ```
-Technical Notes:
+Technical notes:
 * Again, since we know that the order of any element divides the order of the group, and
   the order of the group is <img alt="$p-1,$" src="svgs/50233a696c2a1b6d8eca7fa677a806d6.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> we have included that information as argument to the
-  parameter **exponent** since otherwise mulorder would have resorted to brute force which
+  parameter **exponent** since otherwise the mulorder function would have resorted to brute force which
   would have been painfully slow.
 * Each time one calls mulorder as in the code block above, it has to (re)factor <img alt="$p-1.$" src="svgs/2ad55de588e0025342173e657988d28d.svg" valign=-3.196350299999994px width="41.14719179999999pt" height="13.789957499999998pt"/> Alternatively, if you want to compute the order of more than one element, consider calling the helper function **mulorder_** like this:
   ```python
@@ -1994,7 +1996,7 @@ Technical Notes:
 
 So, if <img alt="$p = 303+2^{100}-3^{100}+5^{100},$" src="svgs/1b297fc6b8d56cb07f03baefbffc7b60.svg" valign=-3.1963503000000086px width="205.78188344999998pt" height="16.5772266pt"/> then <img alt="$g = 101\cdot 5^{77}$" src="svgs/6f573fe7668b354708639d74a1e1375d.svg" valign=-3.1963503000000086px width="88.20190169999998pt" height="16.5772266pt"/> is a generator of
 <img alt="$G=(\mathbb{Z}/p)^*.$" src="svgs/2518d400562631d8397fd611eeb3270e.svg" valign=-4.109589000000009px width="87.19973789999999pt" height="16.438356pt"/> How can we use the intractability of the discrete log problem for
-<img alt="$G=\langle g\rangle$" src="svgs/e14d5fb37551a22951e7ca3b5bda3eb4.svg" valign=-4.109589000000009px width="56.05806524999999pt" height="16.438356pt"/> to set up a public-key encryption protocol? Note: <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> here
+<img alt="$G=\langle g\rangle=(\mathbb{Z}/p)^*$" src="svgs/d3161eab0fad2660517391abc50df02e.svg" valign=-4.109589000000009px width="124.94504054999999pt" height="16.438356pt"/> to set up a public-key encryption protocol? Note: <img alt="$p$" src="svgs/2ec6e630f199f589a2402fdf3e0289d5.svg" valign=-3.1963502999999895px width="8.270567249999992pt" height="10.2739725pt"/> here
 is a 233-bit prime so that the (currently optimal) number of multiplications required
 to solve a discrete log problem in <img alt="$G$" src="svgs/5201385589993766eea584cd3aa6fa13.svg" valign=0.0px width="12.92464304999999pt" height="11.232861749999998pt"/> is of order <img alt="$\sqrt{p-1},$" src="svgs/019257529d169d4984cc8fe5c84abb02.svg" valign=-3.7808578499999896px width="54.84583169999999pt" height="16.438356pt"/> a number well beyond <img alt="$2^{100}.$" src="svgs/465a45149f588e5dd597dae2faa28f8f.svg" valign=0.0px width="33.264976799999985pt" height="13.380876299999999pt"/>
 
